@@ -152,11 +152,13 @@ farmx-backend/
 
 ```
 
-----
+---
+
 Frontend Folder Structure
+
 The frontend follows Angular best practices and Clean Architecture principles, with NgRx for state management.
 
-----
+---
 
 ```
 farmx-frontend/
@@ -241,34 +243,37 @@ farmx-frontend/
 
 ```
 
+---
 
-Key Features Implementation
-Backend
-Authentication:
-JWT for token-based authentication.
-OAuth2 for Google login.
-OTP generation and verification.
-Role Management:
-Role-based access control (RBAC).
-Real-Time Services:
-WebSocket for chat and notifications.
-Caching:
-Redis for caching frequently accessed data.
-Search and Filtering:
-Elasticsearch for advanced search and filtering.
-Payment Integration:
-Payment gateway for course purchases.
-Calendar Integration:
-Add events to user calendars.
-Frontend
-State Management:
-NgRx for managing application state.
-Styling:
-Tailwind CSS for utility-first styling.
-SASS for custom styles.
-PWA Features:
-Angular PWA module for offline capabilities.
-Reusable Components:
-Shared components for consistent UI/UX.
-Role-Based UI:
-Dynamic UI based on user roles.
+## **Key Features Implementation**
+
+### **Backend**
+1. **Authentication & Authorization**  
+   - **JWT** for token-based authentication.  
+   - **OAuth2** (Google login integration).  
+   - **Role-Based Access Control (RBAC)** for permissions.  
+
+2. **Real-Time Services**  
+   - **WebSocket** for live chat and notifications.  
+
+3. **Performance Optimization**  
+   - **Redis** for caching high-frequency data.  
+   - **Elasticsearch** for advanced search and filtering.  
+
+4. **Integrations**  
+   - Payment gateway for course purchases.  
+   - Calendar API for event scheduling.  
+
+### **Frontend**
+1. **State Management**  
+   - **NgRx** for centralized state management.  
+
+2. **Styling & UI**  
+   - **Tailwind CSS** (utility-first) + **SASS** (custom styles).  
+   - Reusable component library for consistency.  
+   - Dynamic UI rendering based on user roles.  
+
+3. **Offline & PWA**  
+   - **Angular PWA** for offline functionality.  
+
+---  
