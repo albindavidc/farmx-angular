@@ -1,9 +1,16 @@
 # FarmX
-FarmX
-The folder structure for the FarmX application, designed using Clean Architecture principles. The structure is divided into frontend (Angular) and backend (Node.js + Express.js).
+The folder structure for **FarmX** application using **Clean Architecture** principles involves organizing the codebase into layers that promote separation of concerns, scalability, and maintainability. Below is a detailed folder structure for both the **frontend** (Angular) and **backend** (Node.js + Express.js).
 
-Backend Folder Structure
-The backend follows Clean Architecture, with layers for Domain, Application, Infrastructure, and Presentation.
+---
+
+## **Backend Folder Structure**
+
+The backend follows Clean Architecture principles, dividing the codebase into **layers**:
+1. **Domain Layer**: Core business logic and entities.
+2. **Application Layer**: Use cases and application-specific logic.
+3. **Infrastructure Layer**: External services, databases, and frameworks.
+4. **Presentation Layer**: API controllers and routes.
+
 
 ```
 farmx-backend/
@@ -154,11 +161,13 @@ farmx-backend/
 
 ---
 
-Frontend Folder Structure
+## **Frontend Folder Structure**
 
-The frontend follows Angular best practices and Clean Architecture principles, with NgRx for state management.
+The frontend follows Angular best practices and Clean Architecture principles, with a focus on modularity and state management using **NgRx**.
 
----
+
+
+
 
 ```
 farmx-frontend/
