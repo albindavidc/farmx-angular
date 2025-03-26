@@ -1,1 +1,91 @@
-<p>signup works!</p>
+<div class="auth-container">
+  <h2>Create Account</h2>
+  <form (ngSubmit)="onSubmit()" [formGroup]="signupForm">
+    <div class="error-message" *ngIf="error$ | async as error">
+      {{ error$ }}
+    </div>
+
+    <div class="form-field">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" formControlName="name" />
+
+      <div
+        class="field-error"
+        *ngIf="
+          signupForm.get('name')?.invalid && signupForm.get('name')?.touched
+        "
+      >
+        Name is required
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" formControlName="email" />
+
+      <div
+        class="field-error"
+        *ngIf="
+          signupForm.get('email')?.invalid && signupForm.get('email')?.touched
+        "
+      >
+        Email is required
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="phone">Phone Number</label>
+      <input type="tel" name="phone" id="phone" formControlName="phone" />
+
+      <div
+        class="field-error"
+        *ngIf="
+          signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched
+        "
+      >
+        Phone Number is required
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="password">Password</label>
+      <input type="password" name="" id="password" formControlName="password" />
+
+      <div
+        class="field-error"
+        *ngIf="
+          signupForm.get('password')?.invalid &&
+          signupForm.get('password')?.touched
+        "
+      >
+        Password must be 8 characters long
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="confirmPassword">Confirm Password</label>
+      <input
+        type="password"
+        name=""
+        id="confirmPassword"
+        formControlName="confirmPassword"
+      />
+
+      <div class="field-error" *ngIf="signupForm.hasError('mismatch')">
+        Password do not match
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="signupForm.invalid || (isLoading$ | async)"
+    >
+      <span *ngIf="!(isLoading$ | async)">Sign Up</span>
+      <span *nfIf="isLoading$">Processing...</span>
+    </button>
+
+    <div class="auth-footer">
+      <p>Already have an account? <a routerLink="/login">Login In</a></p>
+    </div>
+  </form>
+</div>
