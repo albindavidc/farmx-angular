@@ -1,10 +1,15 @@
+<!-- signup.component.html -->
 <div class="auth-container">
   <h2>Create Account</h2>
+
+  <!-- Signup Form -->
   <form (ngSubmit)="onSubmit()" [formGroup]="signupForm">
+    <!-- Error Message -->
     <div class="error-message" *ngIf="error$ | async as error">
       {{ error$ }}
     </div>
 
+    <!-- Form Fields -->
     <div class="form-field">
       <label for="name">Full Name</label>
       <input type="text" id="name" formControlName="name" />
@@ -83,9 +88,9 @@
       <span *ngIf="!(isLoading$ | async)">Sign Up</span>
       <span *nfIf="isLoading$">Processing...</span>
     </button>
-
-    <div class="auth-footer">
-      <p>Already have an account? <a routerLink="/login">Login In</a></p>
-    </div>
   </form>
+
+  <div class="auth-footer">
+    <p>Already have an account? <a routerLink="/login">Login In</a></p>
+  </div>
 </div>
