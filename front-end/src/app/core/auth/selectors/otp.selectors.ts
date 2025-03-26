@@ -27,3 +27,13 @@ export const selectResendAvailableIn = createSelector(
   selectOtpState,
   (state) => state.resendAvailableIn
 );
+
+export const selectUserEmail = createSelector(
+  selectOtpState,
+  (state) => state.email
+);
+
+export const selectVerificationType = createSelector(
+  selectOtpState,
+  (state) => state.verificationType
+);

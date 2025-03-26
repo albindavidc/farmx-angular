@@ -10,6 +10,8 @@ export const initialState: OTPState = {
   isLoading: false,
   remainingAttempts: 3,
   resendAvailableIn: 60,
+  email: '',
+  verificationType: 'email',
 };
 
 export const reducer = createReducer(

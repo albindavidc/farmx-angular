@@ -18,6 +18,9 @@ export interface OTPState {
   isLoading: boolean;
   remainingAttempts: number;
   resendAvailableIn: number;
+  email: string;
+  verificationType: 'email' | 'phone';
+  tempUserId?: string;
 }
 
 export interface User {
