@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { OtpService } from '../services/otp.service';
 import { OtpActions } from '../actions/otp.actions';
@@ -6,7 +6,8 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 
 @Injectable()
 export class OtpEffects {
-  constructor(private actions$: Actions, private otpService: OtpService) {}
+  private actions$ = inject(Actions);
+  private otpService = inject(OtpService);
 
   verifyOtp$ = createEffect(() =>
     this.actions$.pipe(
