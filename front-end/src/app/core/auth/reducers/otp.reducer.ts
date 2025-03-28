@@ -14,7 +14,7 @@ export const initialState: OTPState = {
   verificationType: 'email',
 };
 
-export const reducer = createReducer(
+export const otpReducer = createReducer(
   initialState,
   on(OtpActions.verifyOtp, (state) => ({
     ...state,

@@ -86,7 +86,7 @@
       [disabled]="signupForm.invalid || (isLoading$ | async)"
     >
       <span *ngIf="!(isLoading$ | async)">Sign Up</span>
-      <span *nfIf="isLoading$">Processing...</span>
+      <span *ngIf="isLoading$">Processing...</span>
     </button>
   </form>
 

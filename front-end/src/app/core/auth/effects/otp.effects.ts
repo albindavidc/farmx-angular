@@ -3,7 +3,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { OtpService } from '../services/otp.service';
 import { OtpActions } from '../actions/otp.actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
-import { response } from 'express';
 
 @Injectable()
 export class OtpEffects {
