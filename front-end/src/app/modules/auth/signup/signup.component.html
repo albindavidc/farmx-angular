@@ -85,7 +85,7 @@
       type="submit"
       [disabled]="signupForm.invalid || (isLoading$ | async)"
     >
-      <span *ngIf="!(isLoading$ | async)">Sign Up</span>
+      <span *ngIf="!(isLoading$ | async)">Sign Up </span>
       <span *ngIf="isLoading$">Processing...</span>
     </button>
   </form>
