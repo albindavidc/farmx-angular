@@ -1,19 +1,23 @@
-FarmX
-FarmX The folder structure for the FarmX application, designed using Clean Architecture principles. The structure is divided into frontend (Angular) and backend (Node.js + Express.js).
+# 🌾 **FarmX - Clean Architecture Folder Structure**  
 
-Backend Folder Structure The backend follows Clean Architecture, with layers for Domain, Application, Infrastructure, and Presentation.
+FarmX is a modern application designed using **Clean Architecture** principles, ensuring **scalability, maintainability, and separation of concerns**. The project is divided into:  
 
-The folder structure for FarmX application using Clean Architecture principles involves organizing the codebase into layers that promote separation of concerns, scalability, and maintainability. Below is a detailed folder structure for both the frontend (Angular) and backend (Node.js + Express.js).
+- 📌 **Frontend:** Built with **Angular**, using **NgRx** for state management.  
+- 📌 **Backend:** Powered by **Node.js + Express.js**, following a structured Clean Architecture approach.  
+
+---  
+
+## 📂 **Project Folder Structure**  
+
+### 🖥️ **Frontend (Angular)**  
+The frontend follows **Angular best practices**, emphasizing modularity, reusable components, and state management with **NgRx**.  
+
+### 📂 **Frontend Folder Structure**  
 
 
 
 
-
-
-
-Frontend Folder Structure
-The frontend follows Angular best practices and Clean Architecture principles, with NgRx for state managementa focus on modularity and state management using NgRx.
-
+```
 farmx-frontend/
 ├── src/
 │   ├── app/
@@ -92,21 +96,17 @@ farmx-frontend/
 ├── package.json                    # Frontend dependencies
 ├── tailwind.config.js              # Tailwind CSS configuration
 └── README.md                       # Project documentation
+```
 
 
+---
 
-Backend Folder Structure
-The backend follows Clean Architecture principles, dividing the codebase into layers:
+### 🖥️ **Backend (Node.js + Express.js)**  
+The backend is structured based on **Clean Architecture**, dividing responsibilities into multiple layers.  
 
-Domain Layer: Core business logic and entities.
-Application Layer: Use cases and application-specific logic.
-Infrastructure Layer: External services, databases, and frameworks.
-Presentation Layer: API controllers and routes.
+### 📂 **Backend Folder Structure**  
 
-
-
-###Backend
-
+```
 farmx-backend/
 ├── src/
 │   ├── domain/                     # Pure Business Logic
@@ -224,37 +224,40 @@ farmx-backend/
 ├── .env
 ├── package.json
 └── README.md
+```
 
 
+---
 
+## 🚀 **Key Features Implementation**  
 
-Key Features Implementation
-Backend
-Authentication & Authorization
+### 🔒 **Backend Features**  
+✅ **Authentication & Authorization**  
+- JWT for secure **token-based authentication**.  
+- OAuth2 for **Google login integration**.  
+- **Role-Based Access Control (RBAC)** for managing user permissions.  
 
-JWT for token-based authentication.
-OAuth2 (Google login integration).
-Role-Based Access Control (RBAC) for permissions.
-Real-Time Services
+✅ **Real-Time Services**  
+- **WebSockets** for live chat and notifications.  
 
-WebSocket for live chat and notifications.
-Performance Optimization
+✅ **Performance Optimization**  
+- **Redis caching** for high-frequency data.  
+- **Elasticsearch** for advanced search & filtering.  
 
-Redis for caching high-frequency data.
-Elasticsearch for advanced search and filtering.
-Integrations
+✅ **Integrations**  
+- **Payment Gateway** for secure transactions.  
+- **Calendar API** for event scheduling.  
 
-Payment gateway for course purchases.
-Calendar API for event scheduling.
-Frontend
-State Management
+---
 
-NgRx for centralized state management.
-Styling & UI
+### 🎨 **Frontend Features**  
+✅ **State Management**  
+- **NgRx** for centralized, predictable state management.  
 
-Tailwind CSS (utility-first) + SASS (custom styles).
-Reusable component library for consistency.
-Dynamic UI rendering based on user roles.
-Offline & PWA
+✅ **Styling & UI**  
+- **Tailwind CSS** + **SASS** for flexible, utility-first styling.  
+- **Reusable component library** for consistency across UI.  
+- **Dynamic UI rendering** based on **user roles**.  
 
-Angular PWA for offline functionality.
+✅ **Offline & PWA**  
+- **Angular PWA** for **offline functionality** and better performance.  
