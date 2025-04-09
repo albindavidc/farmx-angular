@@ -19,10 +19,10 @@ export const signupReducer = createReducer(
     error: null,
   })),
 
-  on(SignupActions.signupSuccess, (state, { tempUserId }) => ({
+  on(SignupActions.signupSuccess, (state, { tempUser }) => ({
     ...state,
     isRegistered: true,
-    tempUser: { id: tempUserId } as any,
+    tempUser: { id: tempUser } as any,
     isLoading: false,
     error: null,
   })),
