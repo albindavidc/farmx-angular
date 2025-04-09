@@ -13,7 +13,7 @@ import {
   selectSignupError,
   selectSignupLoading,
 } from '../../../core/auth/selectors/signup.selectors';
-import { SignupRequestModel } from '../../../core/auth/models/signup-request.model';
+import { SignupRequestModel } from '../../../core/auth/models/signup.model';
 import { SignupActions } from '../../../core/auth/actions/signup.actions';
 import { Router } from '@angular/router';
 

@@ -12,7 +12,7 @@ import { OtpActions } from '../../../core/auth/actions/otp.actions';
 import {
   VerifyOtpRequest,
   ResendOtpRequest,
-} from '../../../core/auth/models/otp-request.model';
+} from '../../../core/auth/models/otp.model';
 import { selectTempUserId } from '../../../core/auth/selectors/signup.selectors';
 import {
   selectIsVerified,

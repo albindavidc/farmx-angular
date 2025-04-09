@@ -2,7 +2,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import {
   ResendOtpRequest,
   VerifyOtpRequest,
-} from '../models/otp-request.model';
+} from '../models/otp.model';
 
 export const OtpActions = createActionGroup({
   source: 'Auth',

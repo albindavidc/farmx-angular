@@ -10,3 +10,9 @@ export interface ResendOtpRequest {
   verificationType: 'email' | 'phone';
   reason: 'signup' | 'login' | 'password-reset';
 }
+
+export interface SendOtpResponse {
+  success: boolean;
+  message: string;
+  data?: any;
+}
