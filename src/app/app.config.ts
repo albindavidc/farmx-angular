@@ -22,6 +22,7 @@ export const appConfig: ApplicationConfig = {
 
     provideHttpClient(withFetch()),
     provideStore(),
+
     provideEffects([SignupEffects, OtpEffects]),
     provideState('signup', signupReducer),
     provideState('otp', otpReducer),

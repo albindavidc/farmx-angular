@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { filter, Observable, take } from 'rxjs';
 import {
   FormBuilder,
   FormGroup,
@@ -15,6 +15,7 @@ import {
 } from '../../../core/auth/selectors/signup.selectors';
 import { SignupRequestModel } from '../../../core/auth/models/signup-request.model';
 import { SignupActions } from '../../../core/auth/actions/signup.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -22,13 +23,17 @@ import { SignupActions } from '../../../core/auth/actions/signup.actions';
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
-export class SignupComponent {
+export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   isLoading$: Observable<boolean>;
   error$: Observable<string | null>;
   isRegistered$: Observable<boolean>;
 
-  constructor(private fb: FormBuilder, private store: Store) {
+  constructor(
+    private fb: FormBuilder,
+    private store: Store,
+    private router: Router
+  ) {
     this.signupForm = this.fb.group(
       {
         name: ['', Validators.required],
@@ -43,6 +48,20 @@ export class SignupComponent {
     this.isLoading$ = this.store.select(selectSignupLoading);
     this.error$ = this.store.select(selectSignupError);
     this.isRegistered$ = this.store.select(selectIsRegistered);
+  }
+
+  ngOnInit() {
+    this.isRegistered$
+      .pipe(
+        filter((isRegistered) => isRegistered),
+        take(1)
+      )
+      .subscribe(() => {
+        const email = this.signupForm.get('email')?.value;
+        this.router.navigate(['/auth/otp-verification'], {
+          queryParams: { email },
+        });
+      });
   }
 
   passwordMatchValidator(form: FormGroup) {
