@@ -22,10 +22,10 @@ export class OtpService {
   }
 
   verifyOtp(request: VerifyOtpRequest): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.apiURL}/verify`, request);
+    return this.http.post<{ token: string }>(`${this.apiURL}/verify-otp`, request);
   }
 
   resendOtp(request: ResendOtpRequest): Observable<void> {
-    return this.http.post<void>(`${this.apiURL}/resend`, request);
+    return this.http.post<void>(`${this.apiURL}/resend-otp`, request);
   }
 }

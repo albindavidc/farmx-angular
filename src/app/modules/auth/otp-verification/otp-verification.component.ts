@@ -24,6 +24,7 @@ import {
   selectVerificationType,
 } from '../../../core/auth/selectors/otp.selectors';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-otp-verification',
@@ -44,8 +45,14 @@ export class OtpVerificationComponent implements OnInit {
   countdownInterval: any;
   email$!: Observable<string>;
   verificationType$!: Observable<string>;
+  emailFromParams!: string;
 
-  constructor(private fb: FormBuilder, private store: Store) {
+  constructor(
+    private fb: FormBuilder,
+    private store: Store,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.otpForm = this.fb.group({
       code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
     });
@@ -62,6 +69,14 @@ export class OtpVerificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.emailFromParams = params['email'];
+
+      if (!this.emailFromParams) {
+        this.router.navigate(['/auth/signup']);
+      }
+    });
+
     // Start countdown timer for resend OTP
     this.countdownInterval = setInterval(() => {
       this.resendAvailableIn$.subscribe((time) => {
@@ -82,9 +97,9 @@ export class OtpVerificationComponent implements OnInit {
       this.tempUserId$.subscribe((tempUserId) => {
         if (tempUserId) {
           const request: VerifyOtpRequest = {
-            verificationType: 'email',
             otp: this.otpForm.value.code,
-            email: this.otpForm.value.email,
+            email: this.emailFromParams,
+            verificationType: 'email',
           };
           this.store.dispatch(OtpActions.verifyOtp({ request }));
         }
