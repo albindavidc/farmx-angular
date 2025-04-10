@@ -13,6 +13,7 @@ export const AuthActions = createActionGroup({
       role: 'user' | 'farmer' | 'admin';
       isVerified: boolean;
     }>(),
+    'Navigate After Auth': props<{ role: string }>(),
 
     'Refresh Token': emptyProps(),
     'Refresh Token Success': props<{

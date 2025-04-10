@@ -7,5 +7,5 @@ export const routes: Routes = [
   { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
   { path: 'auth/signup', component: SignupComponent },
   { path: 'auth/otp-verification', component: OtpVerificationComponent },
-  { path: '/user', component: UserComponent },
+  { path: 'user/home', component: UserComponent },
 ];

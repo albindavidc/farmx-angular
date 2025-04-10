@@ -13,7 +13,7 @@ export const initialState: AuthState = {
   refreshToken: null,
 };
 
-export const reducer = createReducer(
+export const authReducer = createReducer(
   initialState,
   on(AuthActions.refreshToken, (state) => ({
     ...state,
