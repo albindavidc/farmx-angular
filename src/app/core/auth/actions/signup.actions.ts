@@ -6,7 +6,7 @@ export const SignupActions = createActionGroup({
   source: 'Auth',
   events: {
     'Signup': props<{ userData: SignupRequestModel }>(),
-    'Signup Success': props<{ tempUser: Partial<User> }>(),
+    'Signup Success': props<{ tempUser: any }>(),
     'Signup Failure': props<{ error: string }>(),
   },
 });

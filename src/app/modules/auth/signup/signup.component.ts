@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { filter, Observable, take } from 'rxjs';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import {
   FormBuilder,
   FormGroup,
@@ -23,11 +23,13 @@ import { Router } from '@angular/router';
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent {
   signupForm: FormGroup;
   isLoading$: Observable<boolean>;
   error$: Observable<string | null>;
   isRegistered$: Observable<boolean>;
+
+  role: string = 'user';
 
   constructor(
     private fb: FormBuilder,
@@ -37,31 +39,17 @@ export class SignupComponent implements OnInit {
     this.signupForm = this.fb.group(
       {
         name: ['', Validators.required],
-        email: ['', Validators.required, Validators.email],
-        phone: ['', Validators.required],
-        password: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', Validators.required],
       },
-      { Validators: this.passwordMatchValidator }
+      { validator: this.passwordMatchValidator }
     );
 
     this.isLoading$ = this.store.select(selectSignupLoading);
     this.error$ = this.store.select(selectSignupError);
     this.isRegistered$ = this.store.select(selectIsRegistered);
-  }
-
-  ngOnInit() {
-    this.isRegistered$
-      .pipe(
-        filter((isRegistered) => isRegistered),
-        take(1)
-      )
-      .subscribe(() => {
-        const email = this.signupForm.get('email')?.value;
-        this.router.navigate(['/auth/otp-verification'], {
-          queryParams: { email },
-        });
-      });
   }
 
   passwordMatchValidator(form: FormGroup) {
@@ -70,15 +58,20 @@ export class SignupComponent implements OnInit {
       : { mismatch: true };
   }
 
+  
+
   onSubmit() {
     if (this.signupForm.valid) {
       const userData: SignupRequestModel = {
-        name: this.signupForm.value.name,
-        email: this.signupForm.value.email,
-        phone: this.signupForm.value.phone,
+        name: this.signupForm.value.name.trim(),
+        email: this.signupForm.value.email.trim(),
+        phone: this.signupForm.value.phone.trim(),
+        role: this.role,
         password: this.signupForm.value.password,
       };
       this.store.dispatch(SignupActions.signup({ userData }));
+    } else {
+      console.error('Form is invalid', this.signupForm.errors);
     }
   }
 }

@@ -4,7 +4,7 @@ import { OtpVerificationComponent } from './otp-verification/otp-verification.co
 
 @Component({
   selector: 'app-auth',
-  imports: [SignupComponent],
+  imports: [],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss'
 })

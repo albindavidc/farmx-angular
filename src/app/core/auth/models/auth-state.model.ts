@@ -28,7 +28,7 @@ export interface User {
   email: string;
   name: string;
   password: string;
-  phone?: string;
+  phone: string;
   roles: string[];
   isVerified: boolean;
 }

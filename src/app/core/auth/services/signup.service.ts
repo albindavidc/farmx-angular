@@ -11,7 +11,7 @@ export class SignupService {
   private readonly apiURL = `${environment.apiURL}/auth`;
   constructor(private http: HttpClient) {}
 
-  register(userData: SignupRequestModel): Observable<SignupResponseModel> {
-    return this.http.post<SignupResponseModel>(this.apiURL, userData);
+  signup(userData: SignupRequestModel): Observable<SignupResponseModel> {
+    return this.http.post<SignupResponseModel>(`${this.apiURL}/signup`, userData);
   }
 }

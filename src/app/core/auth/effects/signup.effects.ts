@@ -1,38 +1,54 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { SignupService } from '../services/signup.service';
 import { SignupActions } from '../actions/signup.actions';
 import { OtpService } from '../services/otp.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class SignupEffects {
   private actions$ = inject(Actions);
   private signupService = inject(SignupService);
   private otpService = inject(OtpService);
+  private router = inject(Router);
 
   signup$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SignupActions.signup),
       mergeMap(({ userData }) =>
-        this.signupService.register(userData).pipe(
-          map((response) => {
-            if (response.success && response.tempUser) {
-              this.otpService.sendOtp(userData.email).subscribe();
-              return SignupActions.signupSuccess({
-                tempUser: response.tempUser,
-              });
+        this.signupService.signup(userData).pipe(
+          switchMap((response) => {
+            console.log(response);
+            if (response.success && response.data) {
+              console.log(response.data);
+              console.log(userData.email);
+              return this.otpService.sendOtp(userData.email).pipe(
+                switchMap(() => [
+                  SignupActions.signupSuccess({ tempUser: response.data }),
+                ]),
+                tap(() => {
+                  this.router.navigate(['/auth/otp-verification'], {
+                    queryParams: { email: userData.email },
+                  });
+                }),
+                catchError((otpError) =>
+                  of(
+                    SignupActions.signupFailure({
+                      error: otpError.message || 'Failed to send OTP',
+                    })
+                  )
+                )
+              );
             }
-            return SignupActions.signupFailure({
-              error: response.message || 'Signup Failed',
-            });
+            return of(
+              SignupActions.signupFailure({
+                error: response.message || 'Signup Failed',
+              })
+            );
           }),
           catchError((error) =>
-            of(
-              SignupActions.signupFailure({
-                error: error.message,
-              })
-            )
+            of(SignupActions.signupFailure({ error: error.message }))
           )
         )
       )
