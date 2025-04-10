@@ -91,58 +91,58 @@ export class OtpVerificationComponent implements OnInit {
 
     this.startCountdown();
 
-    this.isVerified$
-      .pipe(
-        filter((isVerified) => isVerified),
-        take(1),
-        switchMap(() => this.user$),
-        filter((user): user is User => !!user),
-        take(1),
-        tap((user) => {
-          const otpPayload = {
-            email: this.emailFromParams,
-            otp: this.otpForm.value.code,
-          };
+    // this.isVerified$
+    //   .pipe(
+    //     filter((isVerified) => isVerified),
+    //     take(1),
+    //     switchMap(() => this.user$),
+    //     filter((user): user is User => !!user),
+    //     take(1),
+    //     tap((user) => {
+    //       const otpPayload = {
+    //         email: this.emailFromParams,
+    //         otp: this.otpForm.value.code,
+    //       };
 
-          this.loginService.signup(otpPayload).subscribe({
-            next: (res) => {
-              this.store.dispatch(
-                AuthActions.setAccessToken({ accessToken: res.accessToken })
-              );
+    //       this.loginService.signup(otpPayload).subscribe({
+    //         next: (res) => {
+    //           this.store.dispatch(
+    //             AuthActions.setAccessToken({ accessToken: res.accessToken })
+    //           );
 
-              this.store.dispatch(
-                AuthActions.setUser({
-                  id: user.id,
-                  email: user.email,
-                  name: user.name,
-                  password: '',
-                  phone: user.phone,
-                  role: user.role,
-                  isVerified: user.isVerified,
-                })
-              );
+    //           this.store.dispatch(
+    //             AuthActions.setUser({
+    //               id: user.id,
+    //               email: user.email,
+    //               name: user.name,
+    //               password: '',
+    //               phone: user.phone,
+    //               role: user.role,
+    //               isVerified: user.isVerified,
+    //             })
+    //           );
 
-              switch (user.role) {
-                case 'user':
-                  this.router.navigate(['/user']);
-                  break;
-                case 'farmer':
-                  this.router.navigate(['/farmer']);
-                  break;
-                case 'admin':
-                  this.router.navigate(['/admin']);
-                  break;
-                default:
-                  this.router.navigate(['/']);
-              }
-            },
-            error: (err) => {
-              console.error('Login failed after Otp Verification:', err);
-            },
-          });
-        })
-      )
-      .subscribe();
+    //           switch (user.role) {
+    //             case 'user':
+    //               this.router.navigate(['/user']);
+    //               break;
+    //             case 'farmer':
+    //               this.router.navigate(['/farmer']);
+    //               break;
+    //             case 'admin':
+    //               this.router.navigate(['/admin']);
+    //               break;
+    //             default:
+    //               this.router.navigate(['/']);
+    //           }
+    //         },
+    //         error: (err) => {
+    //           console.error('Login failed after Otp Verification:', err);
+    //         },
+    //       });
+    //     })
+    //   )
+    //   .subscribe();
   }
 
   ngOnDestroy(): void {
