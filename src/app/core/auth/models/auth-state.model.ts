@@ -3,6 +3,8 @@ export interface AuthState {
   user: User | null;
   error: string | null;
   isLoading: boolean;
+  accessToken: string | null;
+  refreshToken: string | null;
 }
 
 export interface SignupState {
@@ -29,6 +31,6 @@ export interface User {
   name: string;
   password: string;
   phone: string;
-  roles: string[];
+  role: 'user' | 'farmer' | 'admin';
   isVerified: boolean;
 }

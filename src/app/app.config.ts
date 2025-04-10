@@ -12,9 +12,12 @@ import { signupReducer } from './core/auth/reducers/signup.reducer';
 import { OtpEffects } from './core/auth/effects/otp.effects';
 import { SignupEffects } from './core/auth/effects/signup.effects';
 import { otpReducer } from './core/auth/reducers/otp.reducer';
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { SignupService } from './core/auth/services/signup.service';
-import { OtpService } from './core/auth/services/otp.service';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
+import { authInterceptor } from './core/auth/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,7 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(withEventReplay()),
 
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideStore(),
 
     provideEffects([SignupEffects, OtpEffects]),

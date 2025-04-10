@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -6,8 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
-import { filter, map, take, tap } from 'rxjs/operators';
+import { combineLatest, interval, Observable, Subscription } from 'rxjs';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { OtpActions } from '../../../core/auth/actions/otp.actions';
 import {
   VerifyOtpRequest,
@@ -25,6 +25,10 @@ import {
 } from '../../../core/auth/selectors/otp.selectors';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User } from '../../../core/auth/models/auth-state.model';
+import { selectUser } from '../../../core/auth/selectors/auth.selectors';
+import { LoginService } from '../../../core/auth/services/login.service';
+import { AuthActions } from '../../../core/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-otp-verification',
@@ -35,6 +39,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class OtpVerificationComponent implements OnInit {
   otpForm: FormGroup;
+  emailFromParams!: string;
+
+  countdown = 60;
+  countdownSubscription!: Subscription;
+
   isLoading$: Observable<boolean>;
   error$: Observable<string | null>;
   isVerified$: Observable<boolean>;
@@ -45,7 +54,9 @@ export class OtpVerificationComponent implements OnInit {
   countdownInterval: any;
   email$!: Observable<string>;
   verificationType$!: Observable<string>;
-  emailFromParams!: string;
+  user$: Observable<User | null>;
+
+  private loginService = inject(LoginService);
 
   constructor(
     private fb: FormBuilder,
@@ -66,6 +77,7 @@ export class OtpVerificationComponent implements OnInit {
     this.canResend$ = this.resendAvailableIn$.pipe(map((time) => time === 0));
     this.email$ = this.store.select(selectUserEmail);
     this.verificationType$ = this.store.select(selectVerificationType);
+    this.user$ = this.store.select(selectUser);
   }
 
   ngOnInit(): void {
@@ -77,19 +89,66 @@ export class OtpVerificationComponent implements OnInit {
       }
     });
 
-    // Start countdown timer for resend OTP
-    this.countdownInterval = setInterval(() => {
-      this.resendAvailableIn$.subscribe((time) => {
-        if (time > 0) {
-          // Normally we'd dispatch an action to decrement, but for simplicity:
-          // In a real app, you'd manage this in state with effects
-        }
-      });
-    }, 1000);
+    this.startCountdown();
+
+    this.isVerified$
+      .pipe(
+        filter((isVerified) => isVerified),
+        take(1),
+        switchMap(() => this.user$),
+        filter((user): user is User => !!user),
+        take(1),
+        tap((user) => {
+          const otpPayload = {
+            email: this.emailFromParams,
+            otp: this.otpForm.value.code,
+          };
+
+          this.loginService.signup(otpPayload).subscribe({
+            next: (res) => {
+              this.store.dispatch(
+                AuthActions.setAccessToken({ accessToken: res.accessToken })
+              );
+
+              this.store.dispatch(
+                AuthActions.setUser({
+                  id: user.id,
+                  email: user.email,
+                  name: user.name,
+                  password: '',
+                  phone: user.phone,
+                  role: user.role,
+                  isVerified: user.isVerified,
+                })
+              );
+
+              switch (user.role) {
+                case 'user':
+                  this.router.navigate(['/user']);
+                  break;
+                case 'farmer':
+                  this.router.navigate(['/farmer']);
+                  break;
+                case 'admin':
+                  this.router.navigate(['/admin']);
+                  break;
+                default:
+                  this.router.navigate(['/']);
+              }
+            },
+            error: (err) => {
+              console.error('Login failed after Otp Verification:', err);
+            },
+          });
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.countdownInterval);
+    if (this.countdownSubscription) {
+      this.countdownSubscription.unsubscribe();
+    }
   }
 
   onSubmit() {
@@ -129,5 +188,17 @@ export class OtpVerificationComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  private startCountdown(): void {
+    this.countdown = 60;
+    if (this.countdownSubscription) this.countdownSubscription.unsubscribe();
+    this.countdownSubscription = interval(1000).subscribe(() => {
+      if (this.countdown > 0) {
+        this.countdown--;
+      } else {
+        this.countdownSubscription.unsubscribe();
+      }
+    });
   }
 }

@@ -5,6 +5,12 @@ export interface VerifyOtpRequest {
   deviceId?: string;
 }
 
+export interface VerifyOtpResponse {
+  user: any;
+  accessToken: string;
+  refreshToken: string;
+}
+
 export interface ResendOtpRequest {
   email: string;
   verificationType: 'email' | 'phone';

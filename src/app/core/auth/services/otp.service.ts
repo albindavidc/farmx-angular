@@ -5,6 +5,7 @@ import {
   ResendOtpRequest,
   SendOtpResponse,
   VerifyOtpRequest,
+  VerifyOtpResponse,
 } from '../models/otp.model';
 import { Observable } from 'rxjs';
 
@@ -21,11 +22,22 @@ export class OtpService {
     });
   }
 
-  verifyOtp(request: VerifyOtpRequest): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.apiURL}/verify-otp`, request);
+  verifyOtp(request: VerifyOtpRequest): Observable<VerifyOtpResponse> {
+    return this.http.post<VerifyOtpResponse>(
+      `${this.apiURL}/verify-otp`,
+      request
+    );
   }
 
   resendOtp(request: ResendOtpRequest): Observable<void> {
     return this.http.post<void>(`${this.apiURL}/resend-otp`, request);
+  }
+
+  refreshToken(): Observable<{ accessToken: string; refreshToken: string }> {
+    return this.http.post<{ accessToken: string; refreshToken: string }>(
+      '/auth/refresh-token',
+      {},
+      { withCredentials: true }
+    );
   }
 }
