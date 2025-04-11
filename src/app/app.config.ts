@@ -19,6 +19,8 @@ import {
 } from '@angular/common/http';
 import { authInterceptor } from './core/auth/auth.interceptor';
 import { authFeatureKey, authReducer } from './core/auth/reducers/auth.reducer';
+import { LoginEffects } from './core/auth/effects/login.effects';
+import { loginReducer } from './core/auth/reducers/login.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,9 +31,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideStore(),
 
-    provideEffects([SignupEffects, OtpEffects]),
+    provideEffects([SignupEffects, OtpEffects, LoginEffects]),
     provideState('signup', signupReducer),
     provideState('otp', otpReducer),
     provideState('auth', authReducer),
+    provideState('login', loginReducer),
   ],
 };
