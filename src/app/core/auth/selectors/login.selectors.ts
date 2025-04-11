@@ -3,7 +3,7 @@ import { LoginState } from '../models/auth-state.model';
 
 export const selectLoginState = createFeatureSelector<LoginState>('login');
 
-export const selectEmail = createSelector(
+export const selectLoginEmail = createSelector(
   selectLoginState,
   (state) => state.email
 );
@@ -13,27 +13,27 @@ export const selectIsLoggedIn = createSelector(
   (state) => state.isLoggedIn
 );
 
-export const selectUser = createSelector(
+export const selectLoginUser = createSelector(
   selectLoginState,
   (state) => state.user
 );
 
-export const selectIsLoading = createSelector(
+export const selectLoginLoading = createSelector(
   selectLoginState,
   (state) => state.isLoading
 );
 
-export const selectError = createSelector(
+export const selectLoginError = createSelector(
   selectLoginState,
   (state) => state.error
 );
 
-export const selectAccessToken = createSelector(
+export const selectLoginAccessToken = createSelector(
   selectLoginState,
   (state) => state.accessToken
 );
 
-export const selectRefreshToken = createSelector(
+export const selectLoginRefreshToken = createSelector(
   selectLoginState,
   (state) => state.refreshToken
 );

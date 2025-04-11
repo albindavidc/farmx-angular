@@ -1,1 +1,16 @@
-<p>login works!</p>
+<div class="login-container">
+  <div class="logincard">
+    <h2 class="login-heading">Login</h2>
+    <form
+      #loginForm="ngForm"
+      (ngSubmit)="onSubmit(loginForm)"
+      class="login-form"
+      novalidate
+    >
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" #email="ngModel">
+      </div>
+    </form>
+  </div>
+</div>
