@@ -1,10 +1,11 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { LoginRequest, LoginResponse } from '../models/login';
 
 export const LoginActions = createActionGroup({
   source: 'Login',
   events: {
-    'Load Logins': emptyProps(),
-    
-    
-  }
+    'Load Login': props<{ request: LoginRequest }>(),
+    'Login Success': props<{ response: LoginResponse }>(),
+    'Login Failure': props<{ error: string }>(),
+  },
 });
