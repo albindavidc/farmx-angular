@@ -25,6 +25,12 @@ export interface OTPState {
   tempUserId?: string;
 }
 
+export interface LoginState {
+  isLoggedIn: boolean;
+  error: string | null;
+  isLoading: boolean;
+}
+
 export interface User {
   id: string;
   email: string;
