@@ -44,4 +44,8 @@ export class LoginComponent {
       console.error(`The form is invalid: ${form.errors}`);
     }
   }
+
+  toggelPasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
 }
