@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, inject, PLATFORM_ID } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   FormBuilder,
@@ -16,10 +16,22 @@ import {
 import { SignupRequestModel } from '../../../core/auth/models/signup.model';
 import { SignupActions } from '../../../core/auth/actions/signup.actions';
 import { Router, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faQuoteLeft,
+  faQuoteLeftAlt,
+  faStar,
+} from '@fortawesome/free-solid-svg-icons';
+
+interface Testimonial {
+  quote: string;
+  author: string;
+  role: string;
+}
 
 @Component({
   selector: 'app-signup',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, FontAwesomeModule],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
@@ -28,7 +40,10 @@ export class SignupComponent {
   isLoading$: Observable<boolean>;
   error$: Observable<string | null>;
   isRegistered$: Observable<boolean>;
-
+  faQuoteRight = faQuoteLeft;
+  faStar = faStar;
+  faQuoteLeft = faQuoteLeftAlt;
+  isBrowser = isPlatformBrowser(inject(PLATFORM_ID)); // Check if running in browser
   role: string = 'user';
 
   constructor(
@@ -58,7 +73,6 @@ export class SignupComponent {
       : { mismatch: true };
   }
 
-
   onSubmit() {
     if (this.signupForm.valid) {
       const userData: SignupRequestModel = {
@@ -73,4 +87,41 @@ export class SignupComponent {
       console.error('Form is invalid', this.signupForm.errors);
     }
   }
+
+  //testimonials
+  testimonials: Testimonial[] = [
+    {
+      quote:
+        'Searching, finding and solving your day to day concerns regarding farming has become an ease. Just open the app and browse the related farming.',
+      author: 'Rajesh',
+      role: 'Cotton Farmer',
+    },
+    {
+      quote:
+        'This app has transformed how I manage my crops. The tips and community support are invaluable!',
+      author: 'Anita',
+      role: 'Vegetable Farmer',
+    },
+    {
+      quote:
+        'I never thought technology could make farming so efficient. The weather updates and market prices are spot-on.',
+      author: 'Vikram',
+      role: 'Wheat Farmer',
+    },
+    {
+      quote:
+        'Thanks to this platform, I connected with experts who helped me improve my yield significantly.',
+      author: 'Priya',
+      role: 'Rice Farmer',
+    },
+    {
+      quote:
+        "The app's simplicity makes it easy for me to access resources and learn new techniques every day.",
+      author: 'Suresh',
+      role: 'Organic Farmer',
+    },
+  ];
+
+
+  
 }

@@ -1,96 +1,239 @@
 <!-- signup.component.html -->
 <div class="auth-container">
-  <h2>Create Account</h2>
+  <!-- Left Side: Signup Form -->
+  <div
+    class="custom-auth-container-left"
+    role="region"
+    aria-labelledby="signup-heading"
+  >
+    <img
+      src="logo.svg"
+      alt="FarmX logo"
+      class="custom-logo animate__fadeIn"
+      loading="lazy"
+    />
+    <h2 id="signup-heading" class="animate__slideInUp">Create Account</h2>
 
-  <!-- Signup Form -->
-  <form (ngSubmit)="onSubmit()" [formGroup]="signupForm">
-    <!-- Error Message -->
-    <div class="error-message" *ngIf="error$ | async as error">
-      {{ error$ }}
-    </div>
-
-    <!-- Form Fields -->
-    <div class="form-field">
-      <label for="name">Full Name</label>
-      <input type="text" id="name" formControlName="name" />
-
-      <div
-        class="field-error"
-        *ngIf="
-          signupForm.get('name')?.invalid && signupForm.get('name')?.touched
-        "
-      >
-        Name is required
-      </div>
-    </div>
-
-    <div class="form-field">
-      <label for="email">Email</label>
-      <input type="email" name="email" id="email" formControlName="email" />
-
-      <div
-        class="field-error"
-        *ngIf="
-          signupForm.get('email')?.invalid && signupForm.get('email')?.touched
-        "
-      >
-        Email is required
-      </div>
-    </div>
-
-    <div class="form-field">
-      <label for="phone">Phone Number</label>
-      <input type="tel" name="phone" id="phone" formControlName="phone" />
-
-      <div
-        class="field-error"
-        *ngIf="
-          signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched
-        "
-      >
-        Phone Number is required
-      </div>
-    </div>
-
-    <div class="form-field">
-      <label for="password">Password</label>
-      <input type="password" name="" id="password" formControlName="password" />
-
-      <div
-        class="field-error"
-        *ngIf="
-          signupForm.get('password')?.invalid &&
-          signupForm.get('password')?.touched
-        "
-      >
-        Password must be 8 characters long
-      </div>
-    </div>
-
-    <div class="form-field">
-      <label for="confirmPassword">Confirm Password</label>
-      <input
-        type="password"
-        name=""
-        id="confirmPassword"
-        formControlName="confirmPassword"
-      />
-
-      <div class="field-error" *ngIf="signupForm.hasError('mismatch')">
-        Password do not match
-      </div>
-    </div>
-
-    <button
-      type="submit"
-      [disabled]="signupForm.invalid || (isLoading$ | async)"
+    <!-- Signup Form -->
+    <form
+      (ngSubmit)="onSubmit()"
+      [formGroup]="signupForm"
+      novalidate
+      class="animate__slideInUp"
+      aria-describedby="form-error"
     >
-      <span *ngIf="!(isLoading$ | async)">Sign Up </span>
-      <span *ngIf="isLoading$">Processing...</span>
-    </button>
-  </form>
+      <!-- Error Message -->
+      <div
+        class="error-message animate__shakeX"
+        *ngIf="error$ | async as error"
+        id="form-error"
+        role="alert"
+      >
+        {{ error }}
+      </div>
 
-  <div class="auth-footer">
-    <p>Already have an account? <a routerLink="/auth/login">Login In</a></p>
+      <!-- Form Fields -->
+      <div class="form-field">
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          placeholder="Enter your full name"
+          aria-required="true"
+          [attr.aria-invalid]="
+            signupForm.get('name')?.invalid && signupForm.get('name')?.touched
+          "
+        />
+        <div
+          class="field-error animate__fadeIn"
+          *ngIf="
+            signupForm.get('name')?.invalid && signupForm.get('name')?.touched
+          "
+        >
+          Full name is required
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Enter your email"
+          aria-required="true"
+          [attr.aria-invalid]="
+            signupForm.get('email')?.invalid && signupForm.get('email')?.touched
+          "
+        />
+        <div
+          class="field-error animate__fadeIn"
+          *ngIf="
+            signupForm.get('email')?.invalid && signupForm.get('email')?.touched
+          "
+        >
+          A valid email is required
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="phone">Phone Number</label>
+        <input
+          type="tel"
+          id="phone"
+          formControlName="phone"
+          placeholder="Enter your phone number"
+          aria-required="true"
+          [attr.aria-invalid]="
+            signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched
+          "
+        />
+        <div
+          class="field-error animate__fadeIn"
+          *ngIf="
+            signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched
+          "
+        >
+          A valid phone number is required
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="Enter your password"
+          aria-required="true"
+          [attr.aria-invalid]="
+            signupForm.get('password')?.invalid &&
+            signupForm.get('password')?.touched
+          "
+        />
+        <div
+          class="field-error animate__fadeIn"
+          *ngIf="
+            signupForm.get('password')?.invalid &&
+            signupForm.get('password')?.touched
+          "
+        >
+          Password must be at least 8 characters
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          placeholder="Confirm your password"
+          aria-required="true"
+          [attr.aria-invalid]="signupForm.hasError('mismatch')"
+        />
+        <div
+          class="field-error animate__fadeIn"
+          *ngIf="signupForm.hasError('mismatch')"
+        >
+          Passwords do not match
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="animate__pulse"
+        [disabled]="signupForm.invalid || (isLoading$ | async)"
+        aria-busy="isLoading$ | async"
+      >
+        <span *ngIf="!(isLoading$ | async)">Sign Up</span>
+        <span *ngIf="isLoading$ | async">Processing...</span>
+      </button>
+    </form>
+
+    <div class="auth-footer animate__fadeIn">
+      <p>
+        Already have an account?
+        <a routerLink="/auth/login" aria-label="Log in to your account"
+          >Log In</a
+        >
+      </p>
+    </div>
+  </div>
+
+  <!-- Right Side: Testimonials and Card (Hidden on Mobile/Tablet Portrait) -->
+  <div
+    class="custom-auth-container-right animate__fadeInRight"
+    role="complementary"
+    aria-label="Farmer testimonials and information"
+  >
+    <h1 class="right-header-text">What Our Farmers Say</h1>
+
+    <fa-icon
+      *ngIf="isBrowser"
+      [icon]="faQuoteRight"
+      class="quote-icon-right"
+      aria-hidden="true"
+    ></fa-icon>
+
+    <div class="testimonials-container" [class.auto-scroll]="isBrowser">
+      <div class="testimonials-wrapper" role="list">
+        @for (testimonial of testimonials; track testimonial.author) {
+        <div class="testimonial-card animate__zoomIn" role="listitem">
+          <fa-icon
+            [icon]="faQuoteLeft"
+            class="quote-icon"
+            aria-hidden="true"
+          ></fa-icon>
+          <p>{{ testimonial.quote }}</p>
+          <h5>{{ testimonial.author }}</h5>
+          <p class="role">{{ testimonial.role }}</p>
+          <div class="stars" aria-label="5-star rating">
+            <fa-icon [icon]="faStar" aria-hidden="true"></fa-icon>
+            <fa-icon [icon]="faStar" aria-hidden="true"></fa-icon>
+            <fa-icon [icon]="faStar" aria-hidden="true"></fa-icon>
+            <fa-icon [icon]="faStar" aria-hidden="true"></fa-icon>
+            <fa-icon [icon]="faStar" aria-hidden="true"></fa-icon>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <div
+      class="card animate__fadeInUp"
+      role="article"
+      aria-label="FarmX benefits"
+    >
+      <h2>Grow Your Farm, Reach More Customers</h2>
+      <p>
+        Connect with local buyers and sell your fresh, organic products
+        directly. Join a thriving community where farmers and customers
+        collaborate for a better harvest.
+      </p>
+      <div class="image-stack" aria-label="Farmer avatars">
+        <img
+          src="https://api.dicebear.com/9.x/avataaars/svg?seed=John"
+          alt="Farmer John avatar"
+          class="stacked-image animate__fadeIn"
+        />
+        <img
+          src="https://api.dicebear.com/9.x/avataaars/svg?seed=Jane"
+          alt="Farmer Jane avatar"
+          class="stacked-image animate__fadeIn"
+        />
+        <img
+          src="https://api.dicebear.com/9.x/avataaars/svg?seed=Alex"
+          alt="Farmer Alex avatar"
+          class="stacked-image animate__fadeIn"
+        />
+        <img
+          src="https://api.dicebear.com/9.x/avataaars/svg?seed=Emma"
+          alt="Farmer Emma avatar"
+          class="stacked-image animate__fadeIn"
+        />
+      </div>
+    </div>
   </div>
 </div>

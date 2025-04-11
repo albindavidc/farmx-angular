@@ -5,6 +5,11 @@
   "cli": {
     "schematicCollections": ["@ngrx/schematics"]
   },
+  "schematics": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
   "projects": {
     "front-end": {
       "projectType": "application",
@@ -30,10 +35,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets"
             ],
             "styles": [
-              "src/styles/material-theme.scss", 
+              "src/styles/material-theme.scss",
               "src/styles/styles.scss"
             ],
             "scripts": [],
