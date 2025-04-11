@@ -58,7 +58,6 @@ export class SignupComponent {
       : { mismatch: true };
   }
 
-  
 
   onSubmit() {
     if (this.signupForm.valid) {
