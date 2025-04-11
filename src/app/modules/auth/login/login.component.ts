@@ -4,7 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Observable, takeUntil } from 'rxjs';
 import { User } from '../../../core/auth/models/auth-state.model';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   selectLoginEmail,
   selectLoginError,
@@ -16,7 +16,7 @@ import { LoginActions } from '../../../core/auth/actions/login.actions';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

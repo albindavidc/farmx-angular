@@ -10,6 +10,7 @@ import { LoginRequest, LoginResponse } from '../models/login';
 })
 export class LoginService {
   private readonly apiUrl = `${environment.apiURL}/auth`;
+
   constructor(private http: HttpClient) {}
 
   login(payload: LoginRequest): Observable<LoginResponse> {
