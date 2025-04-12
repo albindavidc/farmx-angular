@@ -25,6 +25,12 @@ import { authInterceptor } from './core/auth/auth.interceptor';
 import { authFeatureKey, authReducer } from './core/auth/reducers/auth.reducer';
 import { LoginEffects } from './core/auth/effects/login.effects';
 import { loginReducer } from './core/auth/reducers/login.reducer';
+import { provideServerRendering } from '@angular/platform-server';
+import {
+  SvgIconRegistryService,
+  SvgLoader,
+  SvgHttpLoader,
+} from 'angular-svg-icon';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,9 +38,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(withEventReplay()),
 
-
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideStore(),
+
+    SvgIconRegistryService,
+    { provide: SvgLoader, useClass: SvgHttpLoader },
 
     provideEffects([SignupEffects, OtpEffects, LoginEffects]),
     provideState('signup', signupReducer),

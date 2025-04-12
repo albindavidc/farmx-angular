@@ -1,34 +1,69 @@
 // Animation keyframes
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideInUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes zoomIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes shakeX {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes fadeInRight {
-  from { transform: translateX(20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 // Apply animations
@@ -84,12 +119,10 @@
   .custom-logo {
     width: 120px;
     height: 120px;
+    fill: var(--md-sys-color-on-surface) !important;
+
     margin-bottom: 1.5rem;
     transition: transform 0.3s ease;
-
-    &:hover {
-      transform: rotate(10deg);
-    }
   }
 
   h2 {
@@ -258,11 +291,21 @@ button {
   animation: slideIn 20s infinite;
 }
 
-.auto-scroll .testimonial-card:nth-child(1) { animation-delay: 0s; }
-.auto-scroll .testimonial-card:nth-child(2) { animation-delay: 4s; }
-.auto-scroll .testimonial-card:nth-child(3) { animation-delay: 8s; }
-.auto-scroll .testimonial-card:nth-child(4) { animation-delay: 12s; }
-.auto-scroll .testimonial-card:nth-child(5) { animation-delay: 16s; }
+.auto-scroll .testimonial-card:nth-child(1) {
+  animation-delay: 0s;
+}
+.auto-scroll .testimonial-card:nth-child(2) {
+  animation-delay: 4s;
+}
+.auto-scroll .testimonial-card:nth-child(3) {
+  animation-delay: 8s;
+}
+.auto-scroll .testimonial-card:nth-child(4) {
+  animation-delay: 12s;
+}
+.auto-scroll .testimonial-card:nth-child(5) {
+  animation-delay: 16s;
+}
 
 .testimonials-wrapper:hover .testimonial-card {
   animation-play-state: paused;
@@ -273,11 +316,13 @@ button {
     opacity: 0;
     transform: translateX(100%);
   }
-  10%, 20% {
+  10%,
+  20% {
     opacity: 1;
     transform: translateX(0);
   }
-  30%, 100% {
+  30%,
+  100% {
     opacity: 0;
     transform: translateX(-100%);
   }
@@ -355,10 +400,22 @@ button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, z-index 0.3s ease;
 
-  &:nth-child(1) { z-index: 4; left: 0; }
-  &:nth-child(2) { z-index: 3; left: 15px; }
-  &:nth-child(3) { z-index: 2; left: 30px; }
-  &:nth-child(4) { z-index: 1; left: 45px; }
+  &:nth-child(1) {
+    z-index: 4;
+    left: 0;
+  }
+  &:nth-child(2) {
+    z-index: 3;
+    left: 15px;
+  }
+  &:nth-child(3) {
+    z-index: 2;
+    left: 30px;
+  }
+  &:nth-child(4) {
+    z-index: 1;
+    left: 45px;
+  }
 
   &:hover {
     transform: scale(1.2);
@@ -413,9 +470,15 @@ button {
       width: 28px;
       height: 28px;
 
-      &:nth-child(2) { left: 12px; }
-      &:nth-child(3) { left: 24px; }
-      &:nth-child(4) { left: 36px; }
+      &:nth-child(2) {
+        left: 12px;
+      }
+      &:nth-child(3) {
+        left: 24px;
+      }
+      &:nth-child(4) {
+        left: 36px;
+      }
     }
   }
 }

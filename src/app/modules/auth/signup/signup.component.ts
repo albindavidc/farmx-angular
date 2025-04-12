@@ -22,6 +22,7 @@ import {
   faQuoteLeftAlt,
   faStar,
 } from '@fortawesome/free-solid-svg-icons';
+import { SvgIconComponent } from 'angular-svg-icon';
 
 interface Testimonial {
   quote: string;
@@ -31,7 +32,13 @@ interface Testimonial {
 
 @Component({
   selector: 'app-signup',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, FontAwesomeModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    FontAwesomeModule,
+    SvgIconComponent,
+  ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
@@ -121,7 +128,4 @@ export class SignupComponent {
       role: 'Organic Farmer',
     },
   ];
-
-
-  
 }
