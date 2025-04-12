@@ -2,7 +2,7 @@
 $font-weights: (
   thin: 100,
   light: 300,
-  regular: 400,
+  normal: 400,
   bold: 700,
   black: 900,
 );
@@ -103,6 +103,11 @@ $font-lato: "Lato", sans-serif;
   animation: fadeInRight 1s ease-out forwards;
 }
 
+//-------------------------------------------------------//
+body {
+  background-color: var(--md-sys-color-surface);
+}
+
 // Main container
 .auth-container {
   display: grid;
@@ -110,9 +115,9 @@ $font-lato: "Lato", sans-serif;
   max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
-  background: var(--md-sys-color-surface);
-  border-radius: 16px; // Rounded corners
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  // background: var(--md-sys-color-surface);
+  // border-radius: 16px; // Rounded corners
+  // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   gap: 2rem;
 }
 
@@ -243,28 +248,36 @@ button {
 }
 
 // Right side: Testimonials and Card
+
 .custom-auth-container-right {
   background: var(--md-sys-color-surface-container-low);
   padding: 2rem;
-  border-radius: 12px; // Rounded corners
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+
+  .right-header-div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: left;
+    position: relative;
+  }
 
   .right-header-text {
-    color: var(--md-sys-color-on-surface);
-    font-size: 2rem;
-    font-weight: 700;
+    color: var(--md-sys-color-on-primary-fixed);
+    font-family: $font-lato;
+    font-weight: map-get($font-weights, bold);
+    line-height: 65px;
+    font-size: 3.5rem;
+    margin-top: 2rem;
     margin-bottom: 1rem;
   }
 
   .quote-icon-right {
-    font-size: 3rem;
-    color: var(--md-sys-color-primary);
-    opacity: 0.2;
-    position: absolute;
-    right: 2rem;
-    top: 2rem;
+    font-size: 4rem;
+    color: var(--md-sys-color-on-primary-fixed);
+    opacity: 1;
   }
 }
 
@@ -272,9 +285,7 @@ button {
 .testimonials-container {
   overflow: hidden;
   width: 100%;
-  background: var(--md-sys-color-surface-variant);
-  padding: 1.5rem;
-  border-radius: 12px; // Rounded corners
+  // padding: 1.5rem;
 }
 
 .testimonials-wrapper {
@@ -288,7 +299,7 @@ button {
   border-radius: 12px; // Rounded corners
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  text-align: left;
   position: absolute;
   opacity: 0;
   transform: translateX(100%);
@@ -297,6 +308,14 @@ button {
   &.animate__zoomIn {
     animation-delay: calc(var(--index) * 0.2s); // Staggered entrance
   }
+}
+
+.quote {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .auto-scroll .testimonial-card {
@@ -340,12 +359,6 @@ button {
   }
 }
 
-.quote-icon {
-  font-size: 1.5rem;
-  color: var(--md-sys-color-primary);
-  margin-bottom: 1rem;
-}
-
 .testimonial-card p {
   font-size: 0.95rem;
   color: var(--md-sys-color-on-surface);
@@ -353,7 +366,7 @@ button {
 }
 
 .testimonial-card h5 {
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   color: var(--md-sys-color-primary);
   margin: 0.5rem 0;
 }
@@ -375,22 +388,29 @@ button {
 
 // Card
 .card {
-  background: var(--md-sys-color-primary-container);
+  background: var(--md-sys-color-surface-container-highest);
   padding: 1.5rem;
   border-radius: 12px; // Rounded corners
-  text-align: center;
+  text-align: left;
 
   h2 {
-    color: var(--md-sys-color-on-primary-container);
-    font-size: 1.5rem;
+    color: var(--md-sys-color-on-primary-fixed);
+    font-size: 1.2rem;
     margin-bottom: 1rem;
+    font-weight: map-get($font-weights, bold);
   }
 
   p {
-    color: var(--md-sys-color-on-primary-container);
+    color: var(--md-sys-color-on-primary-fixed);
     font-size: 0.95rem;
     margin-bottom: 1.5rem;
+    max-width: 70%;
   }
+}
+
+.card-right-div {
+  display: flex;
+  flex-direction: row;
 }
 
 // Image Stack
@@ -400,17 +420,29 @@ button {
   width: 92px; // Adjusted for 15px offsets
   display: flex;
   align-items: center;
-  margin: 0 auto;
+  justify-content: space-between;
+  margin: 1rem auto;
 }
 
 .stacked-image {
   position: absolute;
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: 1px solid var(--md-sys-color-outline);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, z-index 0.3s ease;
+  background-color: var(--md-sys-color-on-primary);
+  overflow: hidden;
+
+  /* Ensure the image inside scales correctly */
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Scale image to cover container without stretching */
+    object-position: center; /* Center the image */
+    display: block; /* Remove any default image spacing */
+  }
 
   &:nth-child(1) {
     z-index: 4;

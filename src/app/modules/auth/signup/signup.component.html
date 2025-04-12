@@ -14,7 +14,6 @@
       [applyClass]="true"
     ></svg-icon>
 
-    
     <h2 id="signup-heading" class="animate__slideInUp">Create Account</h2>
 
     <!-- Signup Form -->
@@ -171,25 +170,25 @@
     role="complementary"
     aria-label="Farmer testimonials and information"
   >
-    <h1 class="right-header-text">What Our Farmers Say</h1>
+    <div class="right-header-div">
+      <h1 class="right-header-text">
+        What's our <br />
+        farmers said.
+      </h1>
 
-    <fa-icon
-      *ngIf="isBrowser"
-      [icon]="faQuoteRight"
-      class="quote-icon-right"
-      aria-hidden="true"
-    ></fa-icon>
+      <fa-icon
+        *ngIf="isBrowser"
+        [icon]="faQuoteRight"
+        class="quote-icon-right"
+        aria-hidden="true"
+      ></fa-icon>
+    </div>
 
     <div class="testimonials-container" [class.auto-scroll]="isBrowser">
       <div class="testimonials-wrapper" role="list">
         @for (testimonial of testimonials; track testimonial.author) {
         <div class="testimonial-card animate__zoomIn" role="listitem">
-          <fa-icon
-            [icon]="faQuoteLeft"
-            class="quote-icon"
-            aria-hidden="true"
-          ></fa-icon>
-          <p>{{ testimonial.quote }}</p>
+          <p class="quote">{{ testimonial.quote }}</p>
           <h5>{{ testimonial.author }}</h5>
           <p class="role">{{ testimonial.role }}</p>
           <div class="stars" aria-label="5-star rating">
@@ -210,32 +209,34 @@
       aria-label="FarmX benefits"
     >
       <h2>Grow Your Farm, Reach More Customers</h2>
-      <p>
-        Connect with local buyers and sell your fresh, organic products
-        directly. Join a thriving community where farmers and customers
-        collaborate for a better harvest.
-      </p>
-      <div class="image-stack" aria-label="Farmer avatars">
-        <img
-          src="https://api.dicebear.com/9.x/avataaars/svg?seed=John"
-          alt="Farmer John avatar"
-          class="stacked-image animate__fadeIn"
-        />
-        <img
-          src="https://api.dicebear.com/9.x/avataaars/svg?seed=Jane"
-          alt="Farmer Jane avatar"
-          class="stacked-image animate__fadeIn"
-        />
-        <img
-          src="https://api.dicebear.com/9.x/avataaars/svg?seed=Alex"
-          alt="Farmer Alex avatar"
-          class="stacked-image animate__fadeIn"
-        />
-        <img
-          src="https://api.dicebear.com/9.x/avataaars/svg?seed=Emma"
-          alt="Farmer Emma avatar"
-          class="stacked-image animate__fadeIn"
-        />
+      <div class="card-right-div">
+        <p class="card-quote">
+          Connect with local buyers and sell your fresh, organic products
+          directly. Join a thriving community where farmers and customers
+          collaborate for a better harvest.
+        </p>
+        <div class="image-stack" aria-label="Farmer avatars">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRC8kiSH5ZSAcVoj3tAQQDoP_ux0sSricMyUg&s"
+            alt="Farmer John avatar"
+            class="stacked-image animate__fadeIn"
+          />
+          <img
+            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Jane"
+            alt="Farmer Jane avatar"
+            class="stacked-image animate__fadeIn"
+          />
+          <img
+            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Alex"
+            alt="Farmer Alex avatar"
+            class="stacked-image animate__fadeIn"
+          />
+          <img
+            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Emma"
+            alt="Farmer Emma avatar"
+            class="stacked-image animate__fadeIn"
+          />
+        </div>
       </div>
     </div>
   </div>
