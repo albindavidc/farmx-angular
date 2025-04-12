@@ -103,17 +103,29 @@
 
       <div class="form-field">
         <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          placeholder="Enter your password"
-          aria-required="true"
-          [attr.aria-invalid]="
-            signupForm.get('password')?.invalid &&
-            signupForm.get('password')?.touched
-          "
-        />
+        <div class="password-input">
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            [type]="showPassword ? 'text' : 'password'"
+
+            aria-label="Password"
+            [attr.aria-invalid]="
+              signupForm.get('password')?.invalid &&
+              signupForm.get('password')?.touched
+            "
+          />
+          <p
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="'Toggle password visibility'"
+          >
+            {{ showPassword ? "🙈" : "👁️" }}
+          </p>
+        </div>
         <div
           class="field-error animate__fadeIn"
           *ngIf="
@@ -127,14 +139,26 @@
 
       <div class="form-field">
         <label for="confirmPassword">Confirm Password</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          formControlName="confirmPassword"
-          placeholder="Confirm your password"
-          aria-required="true"
-          [attr.aria-invalid]="signupForm.hasError('mismatch')"
-        />
+        <div class="password-input">
+          <input
+            type="password"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            placeholder="Confirm your password"
+            aria-label="Confirm Password"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+
+            [attr.aria-invalid]="signupForm.hasError('mismatch')"
+          />
+          <p
+            type="button"
+            class="toggle-password"
+            (click)="toggleConfirmPasswordVisibility()"
+            [attr.aria-label]="'Toggle confirm password visibility'"
+          >
+            {{ showConfirmPassword ? "🙈" : "👁️" }}
+          </p>
+        </div>
         <div
           class="field-error animate__fadeIn"
           *ngIf="signupForm.hasError('mismatch')"

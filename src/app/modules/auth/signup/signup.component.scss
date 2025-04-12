@@ -1,3 +1,5 @@
+@use "sass:map";
+
 //Variables
 $font-weights: (
   thin: 100,
@@ -115,34 +117,33 @@ body {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
-  // background: var(--md-sys-color-surface);
-  // border-radius: 16px; // Rounded corners
-  // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  gap: 2rem;
+  gap: 7rem;
+}
+
+.custom-logo {
+  width: 150px;
+  height: 150px;
+  fill-opacity: 100%;
+  margin-bottom: 3rem;
+  transition: transform 0.3s ease;
+  svg path {
+    fill:var(--md-sys-color-on-primary-fixed) !important;
+  }
 }
 
 // Left side: Signup form
 .custom-auth-container-left {
-  background: var(--md-sys-color-surface-container);
-  padding: 2rem;
+  // background: var(--md-sys-color-surface-container);
+  padding: 3rem;
   border-radius: 12px; // Rounded corners
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 400px;
-  margin: 0 auto;
-
-  .custom-logo {
-    width: 120px;
-    height: 120px;
-    fill: var(--md-sys-color-on-surface) !important;
-
-    margin-bottom: 1.5rem;
-    transition: transform 0.3s ease;
-  }
+  max-width: 100%;
+  // margin: 0 300px;
 
   h2 {
-    color: var(--md-sys-color-on-surface);
+    color: var(--md-sys-color-on-primary-fixed);
     font-size: 1.8rem;
     font-weight: 600;
     margin-bottom: 2rem;
@@ -153,12 +154,13 @@ body {
   }
 }
 
+
 .form-field {
   margin-bottom: 1.5rem;
 
   label {
     display: block;
-    color: var(--md-sys-color-on-surface);
+    color: var(--md-sys-color-on-primary-fixed);
     margin-bottom: 0.5rem;
     font-family: "Lato", sans-serif;
     font-weight: 400;
@@ -166,18 +168,22 @@ body {
 
   input {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.75rem 2.5rem 0.75rem 1rem; /* Right padding for button */
     border: 1px solid var(--md-sys-color-outline);
-    border-radius: 8px; // Rounded corners
-    background: var(--md-sys-color-surface);
+    border-radius: 8px; /* Consistent with .form-field input */
     color: var(--md-sys-color-on-surface);
     font-size: 1rem;
+    box-sizing: border-box;
     transition: border-color 0.2s, box-shadow 0.2s;
 
     &:focus {
       outline: none;
       border-color: var(--md-sys-color-primary);
-      box-shadow: 0 0 0 3px rgba(71, 103, 48, 0.2); // Primary color shadow
+      box-shadow: 0 0 0 3px rgba(71, 103, 48, 0.2);
+    }
+
+    &.error {
+      border-color: var(--md-sys-color-error);
     }
 
     &[aria-invalid="true"] {
@@ -186,19 +192,61 @@ body {
   }
 }
 
-.error-message {
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  background: var(--md-sys-color-error-container);
-  color: var(--md-sys-color-on-error-container);
-  border-radius: 8px; // Rounded corners
-  font-size: 0.875rem;
+.password-input {
+  position: relative; /* Reference for absolute positioning */
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%); /* Center vertically */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem; /* Size for emoji */
+  color: var(--md-sys-color-on-surface-variant);
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--md-sys-color-primary);
+  }
+
+  &:focus {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+  }
 }
 
 .field-error {
   margin-top: 0.25rem;
   color: var(--md-sys-color-error);
   font-size: 0.875rem;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .form-field {
+    max-width: 100%; /* Full width on mobile */
+  }
+
+  .form-field input {
+    padding: 0.625rem 2rem 0.625rem 0.75rem; /* Slightly smaller */
+    font-size: 0.875rem;
+  }
+
+  .toggle-password {
+    right: 0.5rem;
+    font-size: 1rem; /* Smaller emoji for mobile */
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  .form-field {
+    max-width: 100%; /* Adjust for tablets */
+  }
 }
 
 button {
@@ -267,7 +315,7 @@ button {
   .right-header-text {
     color: var(--md-sys-color-on-primary-fixed);
     font-family: $font-lato;
-    font-weight: map-get($font-weights, bold);
+    font-weight: map.get($font-weights, bold);
     line-height: 65px;
     font-size: 3.5rem;
     margin-top: 2rem;
@@ -397,7 +445,7 @@ button {
     color: var(--md-sys-color-on-primary-fixed);
     font-size: 1.2rem;
     margin-bottom: 1rem;
-    font-weight: map-get($font-weights, bold);
+    font-weight: map.get($font-weights, bold);
   }
 
   p {

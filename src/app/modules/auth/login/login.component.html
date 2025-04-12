@@ -1,19 +1,46 @@
-<div class="login-container">
-  <div class="logincard">
-    <h2 class="login-heading">Login</h2>
+<!-- login.component.html -->
+
+<div class="auth-container">
+  <!-- Left Side: Login Form -->
+  <div
+    class="custom-auth-container-left"
+    role="region"
+    aria-labelledby="signup-heading"
+  >
+    <svg-icon
+      src="/assets/logo.svg"
+      class="custom-logo animate__fadeIn"
+      alt="FarmX Logo"
+      loading="lazy"
+      [applyClass]="true"
+    ></svg-icon>
+
+    <h2 id="signup-heading" class="animate__slideInUp">Create Account</h2>
+
+    <!-- Login Form -->
     <form
       #loginForm="ngForm"
       (ngSubmit)="onSubmit(loginForm)"
-      class="login-form"
+      class="animate__slideInUp"
       novalidate
     >
-      <div class="form-group">
+      <!-- Error Message -->
+      <div
+        class="error-message animate__shakeX"
+        *ngIf="error$ | async as error"
+        id="form-error"
+        role="alert"
+      >
+        {{ error }}
+      </div>
+
+      <div class="form-field">
         <label for="email">Email</label>
         <input
           type="email"
           name="email"
           id="email"
-          [(ngModel)]="email"
+          ngModel
           #email="ngModel"
           [class.error]="email.invalid && email.touched"
           placeholder="Enter your email"
@@ -21,7 +48,10 @@
           email
           aria-label="Email address"
         />
-        <div *ngIf="email.invalid && email.touched" class="error-message">
+        <div
+          class="field-error animate__fadeIn"
+          *ngIf="email.invalid && email.touched"
+        >
           <span *ngIf="email.errors?.['required']">Email is required</span>
           <span *ngIf="email.errors?.['email']"
             >Please enter a valid email address.</span
@@ -29,14 +59,14 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-field">
         <label for="password">Password</label>
         <div class="password-input">
           <input
             id="password"
             name="password"
             #password="ngModel"
-            [(ngModel)]="password"
+            ngModel
             [type]="showPassword ? 'text' : 'password'"
             [class.error]="password.invalid && password.touched"
             placeholder="Enter your password"
@@ -45,16 +75,19 @@
             aria-label="Password"
           />
 
-          <button
+          <p
             type="button"
             class="toggle-password"
-            (click)="toggelPasswordVisibility()"
+            (click)="togglePasswordVisibility()"
             [attr.aria-label]="'Toggle password visibility'"
           >
             {{ showPassword ? "🙈" : "👁️" }}
-          </button>
+          </p>
         </div>
-        <div class="error-message" *ngIf="password.invalid && password.touched">
+        <div
+          class="field-error animate__fadeIn"
+          *ngIf="password.invalid && password.touched"
+        >
           <span *ngIf="password.errors?.['required']"
             >Password is required.</span
           >
@@ -66,21 +99,102 @@
 
       <button
         type="submit"
-        class="login-button"
+        class="animate__pulse"
         [disabled]="(isLoading$ | async) || loginForm.invalid"
       >
         <span *ngIf="!(isLoading$ | async)">Login</span>
         <span *ngIf="isLoading$ | async" class="spinner"></span>
       </button>
 
-      <div *ngIf="error$ | async as error" class="error-message global-error">
-        {{ error }}
-      </div>
-
-      <div class="links">
+      <div class="auth-footer animate__fadeIn">
         <a routerLink="/auth/forgot-password">Forgot Password?</a>
-        <a routerLink="/auth/signup">Create an Account</a>
       </div>
     </form>
+
+    <div class="auth-footer animate__fadeIn">
+      <p>
+        Don't have an account ?
+        <a routerLink="/auth/signup" aria-label="Log in to your account"
+          >Create an Account</a
+        >
+      </p>
+    </div>
+  </div>
+
+  <!-- Right Side: Testimonials and Card (Hidden on Mobile/Tablet Portrait) -->
+  <div
+    class="custom-auth-container-right animate__fadeInRight"
+    role="complementary"
+    aria-label="Farmer testimonials and information"
+  >
+    <div class="right-header-div">
+      <h1 class="right-header-text">
+        What's our <br />
+        farmers said.
+      </h1>
+
+      <fa-icon
+        *ngIf="isBrowser"
+        [icon]="faQuoteRight"
+        class="quote-icon-right"
+        aria-hidden="true"
+      ></fa-icon>
+    </div>
+
+    <div class="testimonials-container" [class.auto-scroll]="isBrowser">
+      <div class="testimonials-wrapper" role="list">
+        @for (testimonial of testimonials; track testimonial.author) {
+        <div class="testimonial-card animate__zoomIn" role="listitem">
+          <p class="quote">{{ testimonial.quote }}</p>
+          <h5>{{ testimonial.author }}</h5>
+          <p class="role">{{ testimonial.role }}</p>
+          <div class="stars" aria-label="5-star rating">
+            <fa-icon [icon]="faStar" aria-hidden="true"></fa-icon>
+            <fa-icon [icon]="faStar" aria-hidden="true"></fa-icon>
+            <fa-icon [icon]="faStar" aria-hidden="true"></fa-icon>
+            <fa-icon [icon]="faStar" aria-hidden="true"></fa-icon>
+            <fa-icon [icon]="faStar" aria-hidden="true"></fa-icon>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <div
+      class="card animate__fadeInUp"
+      role="article"
+      aria-label="FarmX benefits"
+    >
+      <h2>Grow Your Farm, Reach More Customers</h2>
+      <div class="card-right-div">
+        <p class="card-quote">
+          Connect with local buyers and sell your fresh, organic products
+          directly. Join a thriving community where farmers and customers
+          collaborate for a better harvest.
+        </p>
+        <div class="image-stack" aria-label="Farmer avatars">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRC8kiSH5ZSAcVoj3tAQQDoP_ux0sSricMyUg&s"
+            alt="Farmer John avatar"
+            class="stacked-image animate__fadeIn"
+          />
+          <img
+            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Jane"
+            alt="Farmer Jane avatar"
+            class="stacked-image animate__fadeIn"
+          />
+          <img
+            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Alex"
+            alt="Farmer Alex avatar"
+            class="stacked-image animate__fadeIn"
+          />
+          <img
+            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Emma"
+            alt="Farmer Emma avatar"
+            class="stacked-image animate__fadeIn"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </div>

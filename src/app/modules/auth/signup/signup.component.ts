@@ -52,6 +52,8 @@ export class SignupComponent {
   faQuoteLeft = faQuoteLeftAlt;
   isBrowser = isPlatformBrowser(inject(PLATFORM_ID)); // Check if running in browser
   role: string = 'user';
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -93,6 +95,14 @@ export class SignupComponent {
     } else {
       console.error('Form is invalid', this.signupForm.errors);
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   //testimonials
