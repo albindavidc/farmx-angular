@@ -26,12 +26,12 @@
     >
       <!-- Error Message -->
       <div
-        class="error-message animate__shakeX"
+        class="main-error animate__shakeX"
         *ngIf="error$ | async as error"
         id="form-error"
         role="alert"
       >
-        {{ error }}
+        <span>All the servers are busy. Try again later</span>
       </div>
 
       <!-- Form Fields -->
@@ -110,7 +110,6 @@
             formControlName="password"
             placeholder="Enter your password"
             [type]="showPassword ? 'text' : 'password'"
-
             aria-label="Password"
             [attr.aria-invalid]="
               signupForm.get('password')?.invalid &&
@@ -147,7 +146,6 @@
             placeholder="Confirm your password"
             aria-label="Confirm Password"
             [type]="showConfirmPassword ? 'text' : 'password'"
-
             [attr.aria-invalid]="signupForm.hasError('mismatch')"
           />
           <p
