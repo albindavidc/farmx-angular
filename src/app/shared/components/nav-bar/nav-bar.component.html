@@ -32,7 +32,12 @@
         <app-fa-wrapper class="material-icons" icon="bell"></app-fa-wrapper>
         <span>Notification</span>
       </a>
-      <a  class="menu-item bottom-item" [routerLink]="route" routerLinkActive="false">
+      <a
+        class="menu-item bottom-item"
+        [routerLink]="route"
+        routerLinkActive="active"
+        [attr.data-selected]="shareSelect"
+      >
         <app-fa-wrapper class="material-icons" icon="gear"></app-fa-wrapper>
         <span class="label">Settings</span>
       </a>

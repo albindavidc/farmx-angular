@@ -7,6 +7,7 @@ import { FarmerComponent } from './modules/farmer/farmer.component';
 import { LoginComponent } from './modules/auth/login/login.component';
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
 import { UserNavBarComponent } from './shared/components/nav-bar/user-nav-bar/user-nav-bar.component';
+import { UserSettingsComponent } from './modules/user/user-settings/user-settings.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
@@ -16,5 +17,5 @@ export const routes: Routes = [
   { path: 'user/home', component: UserComponent },
   { path: 'admin/dashboard', component: AdminComponent },
   { path: 'farmer/home', component: FarmerComponent },
-  { path: 'user/settings', component: UserNavBarComponent },
+  { path: 'user/settings', component: UserSettingsComponent },
 ];

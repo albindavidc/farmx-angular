@@ -1,9 +1,9 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faBell, faGear } from '@fortawesome/free-solid-svg-icons';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { FaWrapperComponent } from './fa-wrapper.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,9 +11,19 @@ import { RouterLink } from '@angular/router';
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss',
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit {
   @Input() route!: string;
-  constructor(library: FaIconLibrary) {
+  @Input() shareSelect: boolean = false;
+
+  constructor(library: FaIconLibrary, private router: Router) {
     library.addIcons(faGear, faBell);
+  }
+
+  ngOnInit(): void {
+    this.updateSelectState();
+  }
+
+  private updateSelectState() {
+    this.shareSelect = this.router.url === this.route;
   }
 }
