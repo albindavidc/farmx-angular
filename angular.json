@@ -46,12 +46,7 @@
               "src/styles/material-theme.scss",
               "src/styles/styles.scss"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -85,6 +80,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "liveReload": true,
+            "hmr": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "front-end:build:production"
