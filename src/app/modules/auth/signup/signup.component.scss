@@ -4,7 +4,7 @@
 $font-weights: (
   thin: 100,
   light: 300,
-  normal: 400,
+  regular: 400,
   bold: 700,
   black: 900,
 );
@@ -121,7 +121,7 @@ body {
   justify-content: center;
   align-items: center;
   font-family: $font-lato;
-  font-weight: map.get($font-weights, normal);
+  font-weight: map.get($font-weights, regular);
   font-size: 0.875rem; /* Slightly larger than .field-error */
   line-height: 1.25rem;
   margin-bottom: 1rem; /* Space before grid */

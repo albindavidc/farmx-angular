@@ -12,12 +12,12 @@
   position: fixed; 
   top: 0;
   left: 20px;
-  width: 85px; 
+  width: 86px; 
   height: 100dvh; 
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  z-index: 1000; 
+  // z-index: 1000; 
   transition: width 0.3s ease; /* Smooth mobile expansion */
 }
 

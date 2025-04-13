@@ -1,5 +1,102 @@
 <div class="settings">
-  <p>settings works!</p>
+  <!-- Animated Header Section -->
+  <header class="settings-header">
+    <div class="header-content">
+      <h1 class="heading">
+        <span class="heading-text">Settings</span>
+        <span class="heading-underline"></span>
+      </h1>
+      <div class="header-line"></div>
+    </div>
+  </header>
 
-  <h2>this is the new settings</h2>
+  <!-- Main Content Grid -->
+  <div class="settings-grid">
+    <!-- Profile Card -->
+    <div class="settings-card profile-card">
+      <div class="card-content">
+        <div class="profile-section">
+          <div class="profile-pic-container">
+            <div
+              class="profile-pic"
+              [style.backgroundImage]="'url(' + user.avatar + ')'"
+            >
+              <div class="edit-overlay">
+                <i class="fas fa-camera"></i>
+              </div>
+            </div>
+          </div>
+          <div class="profile-details">
+            <div class="form-field">
+              <label class="form-field-label">Name</label>
+              <p>Albin David C</p>
+            </div>
+            <div class="form-field">
+              <label class="form-field-label">Email</label>
+              <p>albindavidc007gmail.com</p>
+            </div>
+            <div class="form-field">
+              <label class="form-field-label">Phone</label>
+              <p>8089001112</p>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn-primary" (click)="saveProfile()">
+              <span>Update Profile</span>
+              <i class="fas fa-save"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security Card -->
+    <div class="settings-card security-card">
+      <h3 class="card-title">Security</h3>
+
+      <div class="security-actions">
+        <div class="form-field">
+          <label class="form-field-label">Forgot Password</label>
+          <p class="form-field-value">•••••••••••</p>
+          <button class="btn-text" (click)="openPasswordModal('reset')">
+            <span>Reset Password</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field-label">Change Password</label>
+          <p class="form-field-value">•••••••••••</p>
+          <button class="btn-text" (click)="openPasswordModal('reset')">
+            <span>Forgot Password</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications Card -->
+    <div class="settings-card notifications-card">
+      <h3 class="card-title">Notifications</h3>
+
+      <div class="notification-settings">
+        <div class="notification-item">
+          <div class="notification-info">
+            <fa-icon class="notification-icon " [icon]="faBell" [size]="'lg'" aria-hidden="true" ></fa-icon>
+            <div>
+              <h4>Email Notifications</h4>
+              <p>Receive updates via email</p>
+            </div>
+          </div>
+          <label class="toggle-switch small">
+            <input type="checkbox" [(ngModel)]="notificationEnabled" />
+            <div class="toggle-switch-background">
+              <div class="toggle-switch-handle"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
