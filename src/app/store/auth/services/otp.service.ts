@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import {
-  ResendOtpRequest,
-  SendOtpResponse,
-  VerifyOtpRequest,
-  VerifyOtpResponse,
-} from '../models/otp.model';
+
 import { Observable } from 'rxjs';
+import { ResendOtpRequest, SendOtpResponse, VerifyOtpRequest, VerifyOtpResponse } from '../../../shared/models/otp.model';
 
 @Injectable({
   providedIn: 'root',

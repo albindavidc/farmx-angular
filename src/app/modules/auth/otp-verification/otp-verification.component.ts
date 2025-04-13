@@ -8,12 +8,9 @@ import {
 import { Store } from '@ngrx/store';
 import { combineLatest, interval, Observable, Subscription } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { OtpActions } from '../../../core/auth/actions/otp.actions';
-import {
-  VerifyOtpRequest,
-  ResendOtpRequest,
-} from '../../../core/auth/models/otp.model';
-import { selectTempUserId } from '../../../core/auth/selectors/signup.selectors';
+import { OtpActions } from '../../../store/auth/actions/otp.actions';
+
+import { selectTempUserId } from '../../../store/auth/selectors/signup.selectors';
 import {
   selectIsVerified,
   selectOtpError,
@@ -22,13 +19,13 @@ import {
   selectResendAvailableIn,
   selectUserEmail,
   selectVerificationType,
-} from '../../../core/auth/selectors/otp.selectors';
+} from '../../../store/auth/selectors/otp.selectors';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '../../../core/auth/models/auth-state.model';
-import { selectUser } from '../../../core/auth/selectors/auth.selectors';
-import { LoginService } from '../../../core/auth/services/login.service';
-import { AuthActions } from '../../../core/auth/actions/auth.actions';
+import { selectUser } from '../../../store/auth/selectors/auth.selectors';
+import { User } from '../../../shared/models/auth-state.model';
+import { LoginService } from '../../../store/auth/services/login.service';
+import { ResendOtpRequest, VerifyOtpRequest } from '../../../shared/models/otp.model';
 
 @Component({
   selector: 'app-otp-verification',
@@ -90,59 +87,6 @@ export class OtpVerificationComponent implements OnInit {
     });
 
     this.startCountdown();
-
-    // this.isVerified$
-    //   .pipe(
-    //     filter((isVerified) => isVerified),
-    //     take(1),
-    //     switchMap(() => this.user$),
-    //     filter((user): user is User => !!user),
-    //     take(1),
-    //     tap((user) => {
-    //       const otpPayload = {
-    //         email: this.emailFromParams,
-    //         otp: this.otpForm.value.code,
-    //       };
-
-    //       this.loginService.signup(otpPayload).subscribe({
-    //         next: (res) => {
-    //           this.store.dispatch(
-    //             AuthActions.setAccessToken({ accessToken: res.accessToken })
-    //           );
-
-    //           this.store.dispatch(
-    //             AuthActions.setUser({
-    //               id: user.id,
-    //               email: user.email,
-    //               name: user.name,
-    //               password: '',
-    //               phone: user.phone,
-    //               role: user.role,
-    //               isVerified: user.isVerified,
-    //             })
-    //           );
-
-    //           switch (user.role) {
-    //             case 'user':
-    //               this.router.navigate(['/user']);
-    //               break;
-    //             case 'farmer':
-    //               this.router.navigate(['/farmer']);
-    //               break;
-    //             case 'admin':
-    //               this.router.navigate(['/admin']);
-    //               break;
-    //             default:
-    //               this.router.navigate(['/']);
-    //           }
-    //         },
-    //         error: (err) => {
-    //           console.error('Login failed after Otp Verification:', err);
-    //         },
-    //       });
-    //     })
-    //   )
-    //   .subscribe();
   }
 
   ngOnDestroy(): void {

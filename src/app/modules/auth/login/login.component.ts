@@ -2,7 +2,6 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Observable, takeUntil } from 'rxjs';
-import { User } from '../../../core/auth/models/auth-state.model';
 import { Store } from '@ngrx/store';
 import { Router, RouterLink } from '@angular/router';
 import {
@@ -10,9 +9,8 @@ import {
   selectLoginError,
   selectLoginLoading,
   selectLoginUser,
-} from '../../../core/auth/selectors/login.selectors';
-import { LoginRequest } from '../../../core/auth/models/login';
-import { LoginActions } from '../../../core/auth/actions/login.actions';
+} from '../../../store/auth/selectors/login.selectors';
+import { LoginActions } from '../../../store/auth/actions/login.actions';
 import { SvgIconComponent } from 'angular-svg-icon';
 import {
   faQuoteLeft,
@@ -20,6 +18,8 @@ import {
   faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LoginRequest } from '../../../shared/models/login';
+import { User } from '../../../shared/models/auth-state.model';
 
 interface Testimonial {
   quote: string;
@@ -72,7 +72,7 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
-  //testimonials
+  //Testimonials
   testimonials: Testimonial[] = [
     {
       quote:

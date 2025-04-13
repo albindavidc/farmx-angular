@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { LoginRequest, LoginResponse } from '../models/login';
+import { LoginRequest, LoginResponse } from '../../../shared/models/login';
 
 export const LoginActions = createActionGroup({
   source: 'Login',

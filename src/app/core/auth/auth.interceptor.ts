@@ -8,9 +8,8 @@ import {
 import {
   selectAccessToken,
   selectRefreshToken,
-} from './selectors/auth.selectors';
+} from '../../store/auth/selectors/auth.selectors';
 import { createActionGroup, Store } from '@ngrx/store';
-import { OtpService } from './services/otp.service';
 import {
   catchError,
   firstValueFrom,
@@ -20,8 +19,9 @@ import {
   throwError,
 } from 'rxjs';
 import { inject } from '@angular/core';
-import { AuthActions } from './actions/auth.actions';
-import { SignupActions } from './actions/signup.actions';
+import { AuthActions } from '../../store/auth/actions/auth.actions';
+import { SignupActions } from '../../store/auth/actions/signup.actions';
+import { OtpService } from '../../store/auth/services/otp.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const store = inject(Store);

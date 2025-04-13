@@ -12,19 +12,19 @@ import {
 } from '@angular/platform-browser';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import { signupReducer } from './core/auth/reducers/signup.reducer';
-import { OtpEffects } from './core/auth/effects/otp.effects';
-import { SignupEffects } from './core/auth/effects/signup.effects';
-import { otpReducer } from './core/auth/reducers/otp.reducer';
+import { signupReducer } from './store/auth/reducers/signup.reducer';
+import { OtpEffects } from './store/auth/effects/otp.effects';
+import { SignupEffects } from './store/auth/effects/signup.effects';
+import { otpReducer } from './store/auth/reducers/otp.reducer';
 import {
   provideHttpClient,
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
 import { authInterceptor } from './core/auth/auth.interceptor';
-import { authFeatureKey, authReducer } from './core/auth/reducers/auth.reducer';
-import { LoginEffects } from './core/auth/effects/login.effects';
-import { loginReducer } from './core/auth/reducers/login.reducer';
+import { authFeatureKey, authReducer } from './store/auth/reducers/auth.reducer';
+import { LoginEffects } from './store/auth/effects/login.effects';
+import { loginReducer } from './store/auth/reducers/login.reducer';
 import { provideServerRendering } from '@angular/platform-server';
 import {
   SvgIconRegistryService,

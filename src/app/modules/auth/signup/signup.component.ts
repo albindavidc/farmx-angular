@@ -12,9 +12,8 @@ import {
   selectIsRegistered,
   selectSignupError,
   selectSignupLoading,
-} from '../../../core/auth/selectors/signup.selectors';
-import { SignupRequestModel } from '../../../core/auth/models/signup.model';
-import { SignupActions } from '../../../core/auth/actions/signup.actions';
+} from '../../../store/auth/selectors/signup.selectors';
+import { SignupActions } from '../../../store/auth/actions/signup.actions';
 import { Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -23,6 +22,7 @@ import {
   faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import { SvgIconComponent } from 'angular-svg-icon';
+import { SignupRequestModel } from '../../../shared/models/signup.model';
 
 interface Testimonial {
   quote: string;

@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { SignupActions } from '../actions/signup.actions';
-import { SignupState } from '../models/auth-state.model';
+import { SignupState } from '../../../shared/models/auth-state.model';
 
 export const signupFeatureKey = 'signup';
 

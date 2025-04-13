@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { LoginState } from '../models/auth-state.model';
 import { LoginActions } from '../actions/login.actions';
+import { LoginState } from '../../../shared/models/auth-state.model';
 
 export const loginFeatureKey = 'login';
 

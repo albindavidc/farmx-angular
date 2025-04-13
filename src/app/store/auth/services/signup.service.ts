@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SignupRequestModel, SignupResponseModel } from '../models/signup.model';
+import { SignupRequestModel, SignupResponseModel } from '../../../shared/models/signup.model';
 
 @Injectable({
   providedIn: 'root',

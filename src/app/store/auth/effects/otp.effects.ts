@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { OtpService } from '../services/otp.service';
 import { OtpActions } from '../actions/otp.actions';
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { AuthActions } from '../actions/auth.actions';
-import { VerifyOtpResponse } from '../models/otp.model';
 import { Router } from '@angular/router';
+import { OtpService } from '../services/otp.service';
+import { VerifyOtpResponse } from '../../../shared/models/otp.model';
 
 @Injectable()
 export class OtpEffects {

@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
 import { Observable } from 'rxjs';
-import { User } from '../models/auth-state.model';
-import { LoginRequest, LoginResponse } from '../models/login';
+import { LoginRequest, LoginResponse } from '../../../shared/models/login';
 
 @Injectable({
   providedIn: 'root',

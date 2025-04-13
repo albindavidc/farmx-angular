@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
-import { SignupService } from '../services/signup.service';
 import { SignupActions } from '../actions/signup.actions';
-import { OtpService } from '../services/otp.service';
 import { Router } from '@angular/router';
+import { SignupService } from '../services/signup.service';
+import { OtpService } from '../services/otp.service';
 
 @Injectable()
 export class SignupEffects {

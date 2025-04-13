@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { OTPState } from '../models/auth-state.model';
 import { OtpActions } from '../actions/otp.actions';
+import { OTPState } from '../../../shared/models/auth-state.model';
 
 export const otpFeatureKey = 'otp';
 

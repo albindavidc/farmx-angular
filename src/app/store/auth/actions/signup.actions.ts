@@ -1,6 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { SignupRequestModel } from '../models/signup.model';
-import { User } from '../models/auth-state.model';
+import { SignupRequestModel } from '../../../shared/models/signup.model';
 
 export const SignupActions = createActionGroup({
   source: 'Auth',

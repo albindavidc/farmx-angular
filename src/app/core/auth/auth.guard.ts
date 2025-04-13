@@ -1,5 +1,5 @@
 import { CanActivateFn } from '@angular/router';
-import { selectAccessToken } from './selectors/auth.selectors';
+import { selectAccessToken } from '../../store/auth/selectors/auth.selectors';
 import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';

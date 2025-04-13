@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { OTPState } from '../models/auth-state.model';
+import { OTPState } from '../../../shared/models/auth-state.model';
 
 export const selectOtpState = createFeatureSelector<OTPState>('otp');
 
