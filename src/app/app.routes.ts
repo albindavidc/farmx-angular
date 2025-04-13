@@ -15,5 +15,5 @@ export const routes: Routes = [
   { path: 'user/home', component: UserComponent },
   { path: 'admin/dashboard', component: AdminComponent },
   { path: 'farmer/home', component: FarmerComponent },
-  { path: 'navbar', component: NavBarComponent },
+  { path: 'newnavbar', component: NavBarComponent },
 ];

@@ -1,3 +1,35 @@
-<div class="nav">
-<p class="nav">this is a nnew component</p>
+<div class="main-nav">
+  <div class="nav">
+    <svg-icon
+      src="/assets/logo.svg"
+      class="custom-logo animate__fadeIn"
+      alt="FarmX Logo"
+      loading="lazy"
+      [applyClass]="true"
+    ></svg-icon>
+
+    <button class="hamburger" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="menu">
+      <a href="#" class="menu-item" data-selected="false">
+        <span class="material-icons">inbox</span>
+        <span class="label">Inbox</span>
+      </a>
+      <a href="#" class="menu-item" data-selected="false">
+        <span class="material-icons">send</span>
+        <span class="label">Sent</span>
+      </a>
+      <a href="#" class="menu-item" data-selected="false">
+        <span class="material-icons">drafts</span>
+        <span class="label">Drafts</span>
+      </a>
+    </div>
+    <a href="#" class="menu-item bottom-item" data-selected="false">
+      <span class="material-icons">settings</span>
+      <span class="label">Settings</span>
+    </a>
+  </div>
 </div>
