@@ -1,4 +1,16 @@
-.settings{
-    position: relative;
-    top: 20px;
+// Reset
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Settings */
+.settings {
+  margin-left: 106+48px;
+  margin-top: 48px;
+  min-height: 100dvh;
+
 }
