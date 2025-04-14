@@ -57,21 +57,21 @@
 
       <div class="security-actions">
         <div class="form-field">
-          <label class="form-field-label">Forgot Password</label>
+          <label class="form-field-label">Password</label>
           <p class="form-field-value">•••••••••••</p>
-          <button class="btn-text" (click)="openPasswordModal('reset')">
-            <span>Reset Password</span>
-            <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
 
-        <div class="form-field">
-          <label class="form-field-label">Change Password</label>
-          <p class="form-field-value">•••••••••••</p>
-          <button class="btn-text" (click)="openPasswordModal('reset')">
-            <span>Forgot Password</span>
-            <i class="fas fa-chevron-right"></i>
-          </button>
+          <div class="pass-btns">
+
+            <button class="pass-btn" (click)="openPasswordModal('reset')">
+              <span>Reset Password</span>
+              <i class="fas fa-chevron-right"></i>
+            </button>
+  
+            <button class="pass-btn" (click)="openPasswordModal('reset')">
+              <span>Forgot Password</span>
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
