@@ -1,2 +1,6 @@
 <app-user-nav-bar></app-user-nav-bar>
-<app-settings></app-settings>
+<app-settings
+  [inputName]="(userDetails | async)?.name || ''"
+  [inputEmail]="(userDetails | async)?.email || ''"
+  [inputPhone]="(userDetails | async)?.phone || ''"
+></app-settings>

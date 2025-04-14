@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { User } from '../../models/auth-state.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectUser } from '../../../store/auth/selectors/auth.selectors';
 
 interface ProfileField {
   label: string;
@@ -20,6 +23,32 @@ interface ProfileField {
 export class SettingsComponent implements OnInit {
   faBell = faBell;
   notificationEnabled: boolean = true;
+  @Input() inputName!: string;
+  @Input() inputEmail!:string;
+  @Input() inputPhone!: string;
+
+
+
+
+  userDetails: Observable<User|null> = this.store.select(selectUser)
+
+
+  constructor(private store: Store){
+
+  }
+
+  ngOnInit() {
+    // Print entire store state
+    this.store.subscribe(state => console.log('Full Store State:', state));
+    
+    // Alternative for specific feature state
+    this.store.select(state => state).subscribe(fullState => {
+      console.log('Current Store:', JSON.stringify(fullState, null, 2));
+    });
+    this.loadPreferences();
+
+  }
+
   user = {
     avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
     name: 'John Doe',
@@ -64,10 +93,10 @@ export class SettingsComponent implements OnInit {
 
   currentTheme = 'light';
 
-  ngOnInit() {
-    // Load user preferences
-    this.loadPreferences();
-  }
+  // ngOnInit() {
+  //   // Load user preferences
+  //   this.loadPreferences();
+  // }
 
   toggleEdit(field: any) {
     field.editing = !field.editing;

@@ -14,6 +14,8 @@ export const AuthActions = createActionGroup({
       isVerified: boolean;
     }>(),
     'Navigate After Auth': props<{ role: string }>(),
+    'Set Loading': props<{ isLoading: boolean }>(),
+    'Set Error': props<{ error: string | null }>(),
 
     'Refresh Token': emptyProps(),
     'Refresh Token Success': props<{

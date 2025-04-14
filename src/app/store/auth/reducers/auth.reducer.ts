@@ -40,5 +40,19 @@ export const authReducer = createReducer(
       ...state,
       user: { id, email, name, password, phone, role, isVerified },
     })
-  )
+  ),
+  on(AuthActions.setAccessToken, (state, { accessToken }) => ({
+    ...state,
+    accessToken,
+    isLoading: false,
+    error: null,
+  })),
+  on(AuthActions.setLoading, (state, { isLoading }) => ({
+    ...state,
+    isLoading,
+  })),
+  on(AuthActions.setError, (state, { error }) => ({
+    ...state,
+    error,
+  }))
 );

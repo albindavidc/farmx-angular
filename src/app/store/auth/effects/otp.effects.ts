@@ -63,8 +63,9 @@ export class OtpEffects {
       this.actions$.pipe(
         ofType(AuthActions.navigateAfterAuth),
         tap(({ role }) => {
-          console.log(`Navigating to this ${role}/home`);
-          this.router.navigate([`${role}/home`]).then((success) => {
+          console.log(`Navigating to this /${role}/home`);
+          const navigationPath = `/${role}/home`;
+          this.router.navigate([`${navigationPath}`]).then((success) => {
             console.error(`Failed to navigate to the home`);
           });
         })

@@ -8,14 +8,31 @@ import { LoginComponent } from './modules/auth/login/login.component';
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
 import { UserNavBarComponent } from './shared/components/nav-bar/user-nav-bar/user-nav-bar.component';
 import { UserSettingsComponent } from './modules/user/user-settings/user-settings.component';
+import { authGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
   { path: 'auth/signup', component: SignupComponent },
   { path: 'auth/otp-verification', component: OtpVerificationComponent },
   { path: 'auth/login', component: LoginComponent },
-  { path: 'user/home', component: UserComponent },
-  { path: 'admin/dashboard', component: AdminComponent },
-  { path: 'farmer/home', component: FarmerComponent },
-  { path: 'user/settings', component: UserSettingsComponent },
+  {
+    path: 'user',
+    canActivate: [authGuard],
+    children: [
+      { path: 'home', component: UserComponent },
+      { path: 'settings', component: UserSettingsComponent },
+    ],
+  },
+  {
+    path: 'admin',
+    canActivate: [authGuard],
+    children: [{ path: 'dashboard', component: AdminComponent }],
+  },
+  {
+    path: 'farmer',
+    canActivate: [authGuard],
+    children: [{ path: 'home', component: FarmerComponent }],
+  },
+
+  { path: '**', redirectTo: '/auth/login' },
 ];

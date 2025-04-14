@@ -25,6 +25,16 @@ export class LoginEffects {
                   refreshToken: response.refreshToken,
                 },
               }),
+              AuthActions.setAccessToken({ accessToken: response.accessToken }),
+              AuthActions.setUser({
+                id: response.user.id,
+                email: response.user.email,
+                name: response.user.name,
+                password: '',
+                phone: response.user.phone,
+                role: response.user.role,
+                isVerified: response.user.isVerified,
+              }),
               AuthActions.navigateAfterAuth({ role: response.user.role }),
             ];
           })
