@@ -26,6 +26,7 @@ export class SettingsComponent implements OnInit {
   @Input() inputName!: string;
   @Input() inputEmail!:string;
   @Input() inputPhone!: string;
+  edit: boolean = false;
 
 
 

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { LoginActions } from '../actions/login.actions';
-import { map, mergeMap, switchMap } from 'rxjs';
+import { map, mergeMap, switchMap, tap } from 'rxjs';
 import { AuthActions } from '../actions/auth.actions';
 import { LoginService } from '../services/login.service';
 import { LoginResponse } from '../../../shared/models/login';
@@ -16,6 +16,7 @@ export class LoginEffects {
       ofType(LoginActions.loadLogin),
       mergeMap(({ request }) =>
         this.loginService.login(request).pipe(
+          tap((res) => localStorage.setItem('authToken', res.accessToken)),
           switchMap((response: LoginResponse) => {
             return [
               LoginActions.loginSuccess({
@@ -35,6 +36,10 @@ export class LoginEffects {
                 role: response.user.role,
                 isVerified: response.user.isVerified,
               }),
+              AuthActions.refreshTokenSuccess({
+                accessToken: response.accessToken,
+                refreshToken: response.refreshToken,
+              }),
               AuthActions.navigateAfterAuth({ role: response.user.role }),
             ];
           })
@@ -42,4 +47,5 @@ export class LoginEffects {
       )
     )
   );
+  
 }

@@ -22,18 +22,34 @@ export const loginReducer = createReducer(
     isLoading: true,
     error: null,
   })),
-  on(LoginActions.loginSuccess, (state, { response }) => ({
-    ...state,
-    user: response.user,
-    accessToken: response.accessToken,
-    refreshToken: response.refreshToken,
-    isLoading: false,
-    isLoggedIn: true,
-    error: null,
-  })),
+  on(LoginActions.loginSuccess, (state, { response }) => {
+    const newState = {
+      ...state,
+      isLoggedIn: true,
+      user: response.user,
+      accessToken: response.accessToken,
+      refreshToken: response.refreshToken,
+      error: null,
+      isLoading: false,
+    };
+    localStorage.setItem('authState', JSON.stringify(newState)); // Persist entire state
+    return newState;
+  }),
+
   on(LoginActions.loginFailure, (state, { error }) => ({
     ...state,
     isLoading: false,
     error,
-  }))
+  })),
+
+  on(LoginActions.autoLogin, (state) => {
+    const newState = { ...state, isLoading: true, error: null };
+    localStorage.setItem('authState', JSON.stringify(newState));
+    return newState;
+  }),
+
+  on(LoginActions.logout, (state) => {
+    localStorage.removeItem('authState');
+    return initialState;
+  })
 );

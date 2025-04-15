@@ -41,8 +41,8 @@
             </div>
           </div>
 
-          <div class="action-buttons">
-            <button class="btn-primary" (click)="saveProfile()">
+          <div class="action-buttons" >
+            <button class="btn-primary" [disabled]="edit ===false" (click)="saveProfile()">
               <span>Update Profile</span>
               <i class="fas fa-save"></i>
             </button>

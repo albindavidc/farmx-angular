@@ -26,6 +26,7 @@ export const authReducer = createReducer(
       ...state,
       accessToken,
       refreshToken,
+
       isLoading: false,
     })
   ),
@@ -44,6 +45,7 @@ export const authReducer = createReducer(
   on(AuthActions.setAccessToken, (state, { accessToken }) => ({
     ...state,
     accessToken,
+    isAuthenticated: true,
     isLoading: false,
     error: null,
   })),
