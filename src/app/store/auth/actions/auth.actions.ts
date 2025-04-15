@@ -12,14 +12,16 @@ export const AuthActions = createActionGroup({
       phone: string;
       role: 'user' | 'farmer' | 'admin';
       isVerified: boolean;
+      
     }>(),
     'Navigate After Auth': props<{ role: string }>(),
+    'Set Loading': props<{ isLoading: boolean }>(),
+    'Set Error': props<{ error: string | null }>(),
 
     'Refresh Token': emptyProps(),
-    'Refresh Token Success': props<{
-      accessToken: string;
-      refreshToken: string;
-    }>(),
+    'Refresh Token Success': props<{ accessToken: string }>(),
     'Refresh Token Failure': props<{ error: string }>(),
+
+    logout: emptyProps(),
   },
 });

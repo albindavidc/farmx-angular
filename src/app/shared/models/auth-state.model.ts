@@ -26,13 +26,13 @@ export interface OTPState {
 }
 
 export interface LoginState {
-  email: string;
+  email: string | null;
   isLoggedIn: boolean;
   user: User | null;
   error: string | null;
   isLoading: boolean;
-  accessToken: string;
-  refreshToken: string;
+  accessToken: string | null;
+  refreshToken: string | null;
 }
 
 export interface User {

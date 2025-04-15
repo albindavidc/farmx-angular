@@ -1,17 +1,28 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { OtpActions } from '../actions/otp.actions';
-import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { AuthActions } from '../actions/auth.actions';
 import { Router } from '@angular/router';
 import { OtpService } from '../services/otp.service';
 import { VerifyOtpResponse } from '../../../shared/models/otp.model';
+import { selectAccessToken } from '../selectors/auth.selectors';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class OtpEffects {
   private actions$ = inject(Actions);
   private otpService = inject(OtpService);
   private router = inject(Router);
+  private store = inject(Store);
 
   verifyOtp$ = createEffect(() =>
     this.actions$.pipe(
@@ -62,10 +73,22 @@ export class OtpEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.navigateAfterAuth),
-        tap(({ role }) => {
-          console.log(`Navigating to this ${role}/home`);
-          this.router.navigate([`${role}/home`]).then((success) => {
-            console.error(`Failed to navigate to the home`);
+        withLatestFrom(this.store.select(selectAccessToken)),
+        tap(([{ role }, accessToken]) => {
+          console.log(`Navigating to this /${role}/home`);
+
+          if (!accessToken) {
+            console.warn('No access token available');
+            return;
+          }
+
+          const navigationPath = `/${role}/home`;
+          this.router.navigate([`${navigationPath}`]).then((success) => {
+            if (!success) {
+              console.error(`Failed to navigate to the home`);
+            } else {
+              console.log(`Successfully navigated to the home`);
+            }
           });
         })
       ),
@@ -80,25 +103,6 @@ export class OtpEffects {
           map(() => OtpActions.resendOtpSuccess()),
           catchError((error) =>
             of(OtpActions.resendOtpFailure({ error: error.message }))
-          )
-        )
-      )
-    )
-  );
-
-  refreshToken$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.refreshToken),
-      mergeMap(() =>
-        this.otpService.refreshToken().pipe(
-          map((response) =>
-            AuthActions.refreshTokenSuccess({
-              accessToken: response.accessToken,
-              refreshToken: response.refreshToken,
-            })
-          ),
-          catchError((error) =>
-            of(AuthActions.refreshTokenFailure({ error: error.message }))
           )
         )
       )

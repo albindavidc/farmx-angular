@@ -20,15 +20,12 @@ export const authReducer = createReducer(
     isLoading: true,
     error: null,
   })),
-  on(
-    AuthActions.refreshTokenSuccess,
-    (state, { accessToken, refreshToken }) => ({
-      ...state,
-      accessToken,
-      refreshToken,
-      isLoading: false,
-    })
-  ),
+  on(AuthActions.refreshTokenSuccess, (state, { accessToken }) => ({
+    ...state,
+    accessToken,
+
+    isLoading: false,
+  })),
   on(AuthActions.refreshTokenFailure, (state, { error }) => ({
     ...state,
     isLoading: false,
@@ -40,5 +37,24 @@ export const authReducer = createReducer(
       ...state,
       user: { id, email, name, password, phone, role, isVerified },
     })
-  )
+  ),
+  on(AuthActions.setAccessToken, (state, { accessToken }) => ({
+    ...state,
+    accessToken,
+    isAuthenticated: true,
+    isLoading: false,
+    error: null,
+  })),
+  on(AuthActions.setLoading, (state, { isLoading }) => ({
+    ...state,
+    isLoading,
+  })),
+  on(AuthActions.setError, (state, { error }) => ({
+    ...state,
+    error,
+  })),
+  on(AuthActions.logout, (state) => {
+    localStorage.removeItem('authState');
+    return initialState;
+  })
 );

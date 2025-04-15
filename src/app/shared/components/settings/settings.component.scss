@@ -12,7 +12,6 @@ $font-weights: (
 $font-poppins: "Poppins", sans-serif;
 $font-lato: "Lato", sans-serif;
 
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -20,7 +19,7 @@ $font-lato: "Lato", sans-serif;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: var(--md-sys-color-background);
   color: var(--md-sys-color-on-background);
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -74,7 +73,6 @@ body {
   position: relative;
   z-index: 2;
 }
-
 
 .header-line {
   height: 5px;
@@ -132,13 +130,12 @@ body {
   border: 1px solid var(--md-sys-color-outline-variant);
   opacity: 0;
   transform: translateY(20px);
-  
 
   &:hover {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     transform: translateY(-5px);
   }
-  
+
   @for $i from 1 through 4 {
     &:nth-child(#{$i}) {
       animation: cardAppear 0.6s ease-out forwards;
@@ -153,9 +150,9 @@ body {
   color: var(--md-sys-color-primary);
   position: relative;
   padding-bottom: 0.5rem;
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -174,9 +171,8 @@ body {
   align-items: center;
 }
 
-.profile-details{
-  .form-field{
-
+.profile-details {
+  .form-field {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -200,10 +196,10 @@ body {
   overflow: hidden;
   transition: transform 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  
+
   &:hover {
     transform: scale(1.05);
-    
+
     .edit-overlay {
       opacity: 1;
     }
@@ -224,7 +220,7 @@ body {
   opacity: 0;
   transition: opacity 0.3s ease;
   cursor: pointer;
-  
+
   i {
     font-size: 1.5rem;
   }
@@ -235,7 +231,7 @@ body {
   margin-bottom: 1.5rem;
   position: relative;
   transition: all 0.3s ease;
-  
+
   &:hover {
     .form-field-label {
       color: var(--md-sys-color-primary);
@@ -262,19 +258,19 @@ body {
   min-height: 44px;
   display: flex;
   align-items: center;
-  
+
   &.editing {
     border-color: var(--md-sys-color-primary);
     box-shadow: 0 0 0 2px var(--md-sys-color-primary-container);
   }
-  
+
   input {
     width: 100%;
     background: transparent;
     border: none;
     outline: none;
     color: var(--md-sys-color-on-surface);
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 1rem;
   }
 }
@@ -295,13 +291,13 @@ body {
   color: var(--md-sys-color-on-primary-container);
   cursor: pointer;
   transition: all 0.3s ease;
-  
+
   &:hover {
     background: var(--md-sys-color-primary);
     color: var(--md-sys-color-on-primary);
     transform: translateY(-50%) scale(1.1);
   }
-  
+
   i {
     transition: transform 0.3s ease;
   }
@@ -314,7 +310,7 @@ body {
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   cursor: pointer;
   display: inline-flex;
@@ -322,14 +318,16 @@ body {
   gap: 0.5rem;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
+
   &:hover {
     background: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
+    border: 1px solid var(--md-sys-color-on-primary-container);
+
   }
-  
+
   &:active {
     transform: translateY(0);
   }
@@ -339,7 +337,7 @@ body {
   background: transparent;
   border: none;
   color: var(--md-sys-color-primary);
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   cursor: pointer;
   display: inline-flex;
@@ -347,19 +345,44 @@ body {
   gap: 0.25rem;
   transition: all 0.3s ease;
   padding: 0.5rem 0;
-  
+
   &:hover {
     color: var(--md-sys-color-primary-container);
-    
+
     i {
       transform: translateX(3px);
     }
   }
-  
+
   i {
     transition: transform 0.3s ease;
     font-size: 0.8rem;
   }
+}
+
+.pass-btn{
+  color: var(--md-sys-color-on-primary);
+  background-color: var(--md-sys-color-primary);
+
+  padding: 0.5rem 1rem;
+  margin-top: 3rem;
+  border-radius: 12px;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover{
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border: 1px solid var(--md-sys-color-on-primary-container);
+  }
+  
+}
+
+.pass-btns{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 // Toggle Switch (Enhanced)
@@ -369,27 +392,29 @@ body {
   width: 60px;
   height: 30px;
   cursor: pointer;
-  
+
   &.small {
     width: 50px;
     height: 25px;
-    
+
     .toggle-switch-handle {
       width: 21px;
       height: 21px;
     }
-    
-    input[type="checkbox"]:checked + .toggle-switch-background .toggle-switch-handle {
+
+    input[type="checkbox"]:checked
+      + .toggle-switch-background
+      .toggle-switch-handle {
       transform: translateX(25px);
     }
   }
-  
+
   input[type="checkbox"] {
     display: none;
-    
+
     &:checked + .toggle-switch-background {
       background-color: var(--md-sys-color-primary);
-      
+
       .toggle-switch-handle {
         transform: translateX(30px);
         background: var(--md-sys-color-on-primary);
@@ -440,7 +465,7 @@ body {
   align-items: center;
   padding: 1rem 0;
   border-bottom: 1px solid var(--md-sys-color-outline-variant);
-  
+
   &:last-child {
     border-bottom: none;
   }
@@ -450,7 +475,7 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  
+
   i {
     font-size: 1.25rem;
     color: var(--md-sys-color-primary);
@@ -462,13 +487,13 @@ body {
     align-items: center;
     justify-content: center;
   }
-  
+
   h4 {
     font-weight: 500;
     margin-bottom: 0.25rem;
     color: var(--md-sys-color-on-surface);
   }
-  
+
   p {
     font-size: 0.85rem;
     color: var(--md-sys-color-on-surface-variant);
@@ -478,7 +503,7 @@ body {
 .notification-icon {
   color: var(--md-sys-color-primary);
   background-color: var(--md-sys-color-primary-fixed);
-  padding: .75rem;
+  padding: 0.75rem;
   border-radius: 12px;
 }
 
@@ -494,11 +519,11 @@ body {
   cursor: pointer;
   text-align: center;
   transition: transform 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-5px);
   }
-  
+
   &.active {
     .theme-preview {
       box-shadow: 0 0 0 3px var(--md-sys-color-primary);
@@ -526,38 +551,42 @@ body {
 
 // Animations
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(20px);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes scaleIn {
-  from { 
+  from {
     opacity: 0;
     transform: scaleX(0);
   }
-  to { 
+  to {
     opacity: 1;
     transform: scaleX(1);
   }
 }
 
 @keyframes cardAppear {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(20px);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0);
   }
@@ -568,7 +597,7 @@ body {
   .settings {
     margin-left: 48px;
   }
-  
+
   .profile-section {
     flex-direction: column;
     align-items: flex-start;
@@ -581,12 +610,17 @@ body {
     margin-right: 24px;
     padding-right: 0;
   }
-  
+
   .heading {
     font-size: 2.5rem;
   }
-  
+
   .settings-grid {
     grid-template-columns: 1fr;
+  }
+  .profile-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

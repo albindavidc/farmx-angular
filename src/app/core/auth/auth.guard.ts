@@ -1,18 +1,44 @@
-import { CanActivateFn } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivateFn,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { selectAccessToken } from '../../store/auth/selectors/auth.selectors';
 import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
+import { map, Observable, take, withLatestFrom } from 'rxjs';
+import { TokenService } from '../services/token.service';
+import { AuthActions } from '../../store/auth/actions/auth.actions';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+): Observable<boolean | UrlTree> => {
   const store = inject(Store);
+  const router = inject(Router);
+  const tokenService = inject(TokenService);
 
   return store.select(selectAccessToken).pipe(
-    map((token) => {
-      if (!token) {
-        return false;
+    take(1),
+    withLatestFrom(store.select(selectAccessToken)),
+
+    map((accessToken) => {
+      if (accessToken && !tokenService.isAccessTokenExpired()) {
+        return true;
       }
-      return true;
+
+      if (tokenService.getRefreshToken()) {
+        store.dispatch(AuthActions.refreshToken());
+        return router.createUrlTree(['/'], {
+          queryParams: { redirectUrl: state.url },
+        });
+      }
+
+      return router.createUrlTree(['/auth/login'], {
+        queryParams: { redirectUrl: state.url },
+      });
     })
   );
 };

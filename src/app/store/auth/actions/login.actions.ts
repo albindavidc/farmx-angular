@@ -7,5 +7,6 @@ export const LoginActions = createActionGroup({
     'Load Login': props<{ request: LoginRequest }>(),
     'Login Success': props<{ response: LoginResponse }>(),
     'Login Failure': props<{ error: string }>(),
+
   },
 });
