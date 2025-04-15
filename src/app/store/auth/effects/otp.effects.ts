@@ -108,23 +108,4 @@ export class OtpEffects {
       )
     )
   );
-
-  refreshToken$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.refreshToken),
-      mergeMap(() =>
-        this.otpService.refreshToken().pipe(
-          map((response) =>
-            AuthActions.refreshTokenSuccess({
-              accessToken: response.accessToken,
-              refreshToken: response.refreshToken,
-            })
-          ),
-          catchError((error) =>
-            of(AuthActions.refreshTokenFailure({ error: error.message }))
-          )
-        )
-      )
-    )
-  );
 }

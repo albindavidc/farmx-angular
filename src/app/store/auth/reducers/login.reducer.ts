@@ -42,14 +42,5 @@ export const loginReducer = createReducer(
     error,
   })),
 
-  on(LoginActions.autoLogin, (state) => {
-    const newState = { ...state, isLoading: true, error: null };
-    localStorage.setItem('authState', JSON.stringify(newState));
-    return newState;
-  }),
 
-  on(LoginActions.logout, (state) => {
-    localStorage.removeItem('authState');
-    return initialState;
-  })
 );

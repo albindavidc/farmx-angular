@@ -8,7 +8,5 @@ export const LoginActions = createActionGroup({
     'Login Success': props<{ response: LoginResponse }>(),
     'Login Failure': props<{ error: string }>(),
 
-    'Auto Login': emptyProps(),
-    'logout': emptyProps()
   },
 });
