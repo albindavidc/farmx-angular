@@ -12,6 +12,7 @@ export const AuthActions = createActionGroup({
       phone: string;
       role: 'user' | 'farmer' | 'admin';
       isVerified: boolean;
+      
     }>(),
     'Navigate After Auth': props<{ role: string }>(),
     'Set Loading': props<{ isLoading: boolean }>(),
