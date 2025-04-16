@@ -23,6 +23,13 @@ export const roleGuard: CanActivateFn = (
   return store.select(selectUser).pipe(
     take(1),
     map((user) => {
+      if (!user) {
+        return router.createUrlTree([`/auth/login`]);
+      }
+      if (!requiredRoles) {
+        return false;
+      }
+
       if (user && requiredRoles.includes(user.role)) {
         return true;
       }

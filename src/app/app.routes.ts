@@ -5,10 +5,9 @@ import { UserComponent } from './modules/user/user.component';
 import { AdminComponent } from './modules/admin/admin.component';
 import { FarmerComponent } from './modules/farmer/farmer.component';
 import { LoginComponent } from './modules/auth/login/login.component';
-import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
-import { UserNavBarComponent } from './shared/components/nav-bar/user-nav-bar/user-nav-bar.component';
 import { UserSettingsComponent } from './modules/user/user-settings/user-settings.component';
 import { authGuard } from './core/auth/auth.guard';
+import { roleGuard } from './core/auth/role.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
@@ -17,21 +16,25 @@ export const routes: Routes = [
   { path: 'auth/login', component: LoginComponent },
   {
     path: 'user',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['user', 'farmer', 'admin'] },
     children: [
       { path: 'home', component: UserComponent },
       { path: 'settings', component: UserSettingsComponent },
     ],
   },
-  {
-    path: 'admin',
-    canActivate: [authGuard],
-    children: [{ path: 'dashboard', component: AdminComponent }],
-  },
+
   {
     path: 'farmer',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { role: ['farmer'] },
     children: [{ path: 'home', component: FarmerComponent }],
+  },
+  {
+    path: 'admin',
+    canActivate: [authGuard, roleGuard],
+    data: { role: ['admin'] },
+    children: [{ path: 'dashboard', component: AdminComponent }],
   },
 
   { path: '**', redirectTo: '/auth/login' },

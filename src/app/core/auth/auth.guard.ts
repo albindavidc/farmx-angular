@@ -22,7 +22,6 @@ export const authGuard: CanActivateFn = (
 
   return store.select(selectAccessToken).pipe(
     take(1),
-    withLatestFrom(store.select(selectAccessToken)),
 
     map((accessToken) => {
       if (accessToken && !tokenService.isAccessTokenExpired()) {
