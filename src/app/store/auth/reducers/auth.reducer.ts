@@ -31,13 +31,10 @@ export const authReducer = createReducer(
     isLoading: false,
     error,
   })),
-  on(
-    AuthActions.setUser,
-    (state, { id, email, name, password, phone, role, isVerified }) => ({
-      ...state,
-      user: { id, email, name, password, phone, role, isVerified },
-    })
-  ),
+  on(AuthActions.setUser, (state, { user }) => ({
+    ...state,
+    user,
+  })),
   on(AuthActions.setAccessToken, (state, { accessToken }) => ({
     ...state,
     accessToken,

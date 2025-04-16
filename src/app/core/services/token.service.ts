@@ -1,44 +1,63 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
+import { catchError, map, Observable, of } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
+import { response } from 'express';
+
+export interface TokenPayload {
+  id: string;
+  email: string;
+  name: string;
+  password: string;
+  phone: string;
+  role: 'user' | 'farmer' | 'admin';
+  isVerified: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class TokenService {
-  public readonly ACCESS_TOKEN_KEY = 'access_token';
-  public readonly REFRESH_TOKEN_KEY = 'refresh_token';
+  private readonly apiUrl = `${environment.apiURL}`;
 
-  getAccessToken(): string | null {
-    return localStorage.getItem(this.ACCESS_TOKEN_KEY);
+  constructor(private http: HttpClient) {}
+
+  checkAuthStatus(): Observable<{
+    isAuthenticated: boolean;
+    user: TokenPayload | null;
+  }> {
+    return this.http
+      .get<{ success: boolean; data: TokenPayload }>(`${this.apiUrl}/user`, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((response) => ({
+          isAuthenticated: response.success,
+          user: response.success ? response.data : null,
+        })),
+        catchError(() => of({ isAuthenticated: false, user: null }))
+      );
   }
 
-  getRefreshToken(): string | null {
-    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
+  refreshToken(): Observable<boolean> {
+    return this.http
+      .post<{ success: boolean }>(
+        `${this.apiUrl}/auth/refresh`,
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .pipe(
+        map((response) => response.success),
+        catchError(() => of(false))
+      );
   }
 
-  setToken(accessToken: string, refreshToken: string): void {
-    localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken);
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, refreshToken);
-  }
-
-  clearToken() {
-    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-  }
-
-  isAccessTokenExpired(): boolean {
-    const token = this.getAccessToken();
-    if (!token) return true;
-
-    const decode = jwtDecode(this.ACCESS_TOKEN_KEY);
-    return decode.exp ? decode.exp < Date.now() / 1000 : true;
-  }
-
-  decodeToken(token: string): any {
-    if (token) {
-      return jwtDecode(token);
-    } else {
-      return null;
-    }
+  logout(): Observable<void> {
+    return this.http
+      .post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true })
+      .pipe(map(() => void 0));
   }
 }
