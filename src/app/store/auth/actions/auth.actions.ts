@@ -5,14 +5,15 @@ export const AuthActions = createActionGroup({
   events: {
     'Set Access Token': props<{ accessToken: string }>(),
     'Set User': props<{
-      id: string;
-      email: string;
-      name: string;
-      password: string;
-      phone: string;
-      role: 'user' | 'farmer' | 'admin';
-      isVerified: boolean;
-      
+      user: {
+        id: string;
+        email: string ;
+        name: string;
+        password: string;
+        phone: string;
+        role: 'user' | 'farmer' | 'admin';
+        isVerified: boolean;
+      };
     }>(),
     'Navigate After Auth': props<{ role: string }>(),
     'Set Loading': props<{ isLoading: boolean }>(),
