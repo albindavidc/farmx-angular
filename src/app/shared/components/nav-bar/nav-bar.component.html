@@ -1,4 +1,16 @@
-<div class="main-nav">
+<div class="main-nav" [class.active]="isMenuOpen">
+  
+  <div
+  class="blur-overlay"
+  [class.active]="isMenuOpen"
+  (click)="closeMenu()"
+  ></div>
+  <button class="hamburger" (click)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  
   <div class="nav">
     <svg-icon
       src="/assets/logo.svg"
@@ -8,35 +20,61 @@
       [applyClass]="true"
     ></svg-icon>
 
-    <button class="hamburger" aria-label="Toggle navigation">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+    <div
+      class="nav-close-button"
+      (click)="closeMenu()"
+      role="button"
+      aria-label="Close navigation menu"
+    >
+      <mat-icon class="material-icons">close</mat-icon>
+    </div>
+
     <div class="menu">
-      <a href="#" class="menu-item" data-selected="false">
-        <app-fa-wrapper class="material-icons" icon="bell"></app-fa-wrapper>
+      <a
+        routerLink="/articles"
+        class="menu-item"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        <mat-icon class="material-icons">article</mat-icon>
         <span class="label">Articles</span>
       </a>
-      <a href="#" class="menu-item" data-selected="false">
-        <app-fa-wrapper class="material-icons" icon="bell"></app-fa-wrapper>
+      <a
+        routerLink="/chat"
+        class="menu-item"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        <mat-icon class="material-icons">chat</mat-icon>
         <span class="label">Chat</span>
       </a>
-      <a href="#" class="menu-item" data-selected="false">
-        <app-fa-wrapper class="material-icons" icon="bell"></app-fa-wrapper>
+      <a
+        routerLink="/community"
+        class="menu-item"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        <mat-icon class="material-icons">groups</mat-icon>
         <span class="label">Community</span>
       </a>
     </div>
-    <div>
-      <a href="#" class="menu-item bottom-item" data-selected="false">
-        <app-fa-wrapper class="material-icons" icon="bell"></app-fa-wrapper>
-        <span>Notification</span>
+    <div class="bottom-menu">
+      <a
+        routerLink="/notification"
+        class="menu-item bottom-item"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        <mat-icon class="material-icons">notifications</mat-icon>
+        <span class="label">Notification</span>
       </a>
+
       <a
         class="menu-item bottom-item"
         [routerLink]="route"
         routerLinkActive="active"
         [attr.data-selected]="shareSelect"
+        (click)="closeMenu()"
       >
         <app-fa-wrapper class="material-icons" icon="gear"></app-fa-wrapper>
         <span class="label">Settings</span>
