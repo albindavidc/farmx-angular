@@ -19,6 +19,11 @@ export const authGuard: CanActivateFn = (
   const router = inject(Router);
   const tokenService = inject(TokenService);
 
+  const isAuthRoute =
+    state.url.startsWith('/auth/login') ||
+    state.url.startsWith('/auth/signup') ||
+    state.url.startsWith('auth/otp-verification');
+
   return tokenService.checkAuthStatus().pipe(
     switchMap(({ isAuthenticated, user }) => {
       console.log(
@@ -35,6 +40,14 @@ export const authGuard: CanActivateFn = (
           isVerified: user.isVerified || false,
         };
         store.dispatch(AuthActions.setUser({ user: authUser }));
+
+        if (isAuthRoute) {
+          return of(router.createUrlTree([`/${user.role}/home`]));
+        }
+
+        return of(true);
+      }
+      if (isAuthRoute) {
         return of(true);
       }
 
@@ -54,7 +67,7 @@ export const authGuard: CanActivateFn = (
                     isVerified: user.isVerified || false,
                   };
                   store.dispatch(AuthActions.setUser({ user: authUser }));
-                  return of(true);
+                  return of(router.createUrlTree([`/${user.role}/home`]));
                 }
                 return of(
                   router.createUrlTree(['/auth/login'], {
