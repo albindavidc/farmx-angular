@@ -27,14 +27,14 @@ export const routes: Routes = [
   {
     path: 'farmer',
     canActivate: [authGuard, roleGuard],
-    data: { role: ['farmer'] },
+    data: { roles: ['farmer'] },
     children: [{ path: 'home', component: FarmerComponent }],
   },
   {
     path: 'admin',
     canActivate: [authGuard, roleGuard],
-    data: { role: ['admin'] },
-    children: [{ path: 'dashboard', component: AdminComponent }],
+    data: { roles: ['admin'] },
+    children: [{ path: 'home', component: AdminComponent }],
   },
 
   { path: '**', redirectTo: '/auth/login' },

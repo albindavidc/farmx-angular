@@ -35,17 +35,15 @@ export class OtpService {
     return this.http.post<void>(`${this.apiURL}/resend-otp`, request);
   }
 
-  refreshToken(refreshToken: string): Observable<{ accessToken: string }> {
-    return this.http.post<{ accessToken: string }>(
-      `${this.apiURL}/refresh-token`,
-      { refreshToken }
-      // { withCredentials: true }
-    );
-  }
+  // refreshToken(refreshToken: string): Observable<{ accessToken: string }> {
+  //   return this.http.post<{ accessToken: string }>(
+  //     `${this.apiURL}/refresh-access-token`,
+  //     { refreshToken },
+  //     { withCredentials: true }
+  //   );
+  // }
 
-  logout(): Observable<void> {
-    return this.http
-      .post<void>(`${this.apiURL}/logout`, {})
-      .pipe(tap(() => this.tokenService.clearToken()));
-  }
+  // logout(): Observable<void> {
+  //   return this.http.post<void>(`${this.apiURL}/logout`, {});
+  // }
 }

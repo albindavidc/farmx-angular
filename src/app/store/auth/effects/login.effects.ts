@@ -26,6 +26,7 @@ export class LoginEffects {
 
   private otpService = inject(OtpService);
   private router = inject(Router);
+  private authService = inject(TokenService);
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -33,10 +34,10 @@ export class LoginEffects {
       mergeMap(({ request }) =>
         this.loginService.login(request).pipe(
           switchMap((response: LoginResponse) => {
-            this.tokenService.setToken(
-              response.accessToken,
-              response.refreshToken
-            );
+            // this.tokenService.setToken(
+            //   response.accessToken,
+            //   response.refreshToken
+            // );
             return [
               LoginActions.loginSuccess({
                 response: {
@@ -77,27 +78,12 @@ export class LoginEffects {
     this.actions$.pipe(
       ofType(AuthActions.refreshToken),
       exhaustMap(() => {
-        const refreshToken = this.tokenService.getRefreshToken();
-        if (!refreshToken) {
-          return of(
-            AuthActions.refreshTokenFailure({
-              error: 'No refresh token in the localstorage. error from effects',
-            })
-          );
-        }
-        return this.otpService.refreshToken(refreshToken).pipe(
+        return this.authService.refreshToken().pipe(
           map((response) => {
-            localStorage.setItem('access_token', response.accessToken);
-
-            return AuthActions.refreshTokenSuccess({
-              accessToken: response.accessToken,
-            });
+            return AuthActions.refreshTokenSuccess();
           }),
           catchError((error) => {
-            this.tokenService.clearToken();
-            return of(
-              AuthActions.refreshTokenFailure({ error: error.message })
-            );
+            return of(AuthActions.refreshTokenFailure());
           })
         );
       })
@@ -109,7 +95,6 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(AuthActions.logout),
         tap(() => {
-          this.tokenService.clearToken();
           this.router.navigate(['/login']);
         })
       ),

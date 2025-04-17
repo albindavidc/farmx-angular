@@ -20,16 +20,13 @@ export const authReducer = createReducer(
     isLoading: true,
     error: null,
   })),
-  on(AuthActions.refreshTokenSuccess, (state, { accessToken }) => ({
+  on(AuthActions.refreshTokenSuccess, (state) => ({
     ...state,
-    accessToken,
-
     isLoading: false,
   })),
-  on(AuthActions.refreshTokenFailure, (state, { error }) => ({
+  on(AuthActions.refreshTokenFailure, (state) => ({
     ...state,
     isLoading: false,
-    error,
   })),
   on(AuthActions.setUser, (state, { user }) => ({
     ...state,
