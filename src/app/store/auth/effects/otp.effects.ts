@@ -42,13 +42,7 @@ export class OtpEffects {
               }),
               AuthActions.setAccessToken({ accessToken: response.accessToken }),
               AuthActions.setUser({
-                id: response.user.id,
-                email: response.user.email,
-                name: response.user.name,
-                password: '',
-                phone: response.user.phone,
-                role: response.user.role,
-                isVerified: response.user.isVerified,
+                user: response.user,
               }),
               AuthActions.navigateAfterAuth({
                 role: response.user.role.toLowerCase(),
@@ -73,14 +67,13 @@ export class OtpEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.navigateAfterAuth),
-        withLatestFrom(this.store.select(selectAccessToken)),
-        tap(([{ role }, accessToken]) => {
+        tap(({ role }) => {
           console.log(`Navigating to this /${role}/home`);
 
-          if (!accessToken) {
-            console.warn('No access token available');
-            return;
-          }
+          // if (!accessToken) {
+          //   console.warn('No access token available');
+          //   return;
+          // }
 
           const navigationPath = `/${role}/home`;
           this.router.navigate([`${navigationPath}`]).then((success) => {

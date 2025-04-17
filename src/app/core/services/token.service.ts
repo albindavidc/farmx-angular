@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { jwtDecode } from 'jwt-decode';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
-import { response } from 'express';
 
 export interface TokenPayload {
   id: string;
@@ -42,8 +40,8 @@ export class TokenService {
 
   refreshToken(): Observable<boolean> {
     return this.http
-      .post<{ success: boolean }>(
-        `${this.apiUrl}/auth/refresh`,
+      .post<{ success: boolean; accessToken?: string }>(
+        `${this.apiUrl}/auth/refresh-access-token`,
         {},
         {
           withCredentials: true,
@@ -51,7 +49,10 @@ export class TokenService {
       )
       .pipe(
         map((response) => response.success),
-        catchError(() => of(false))
+        catchError((error) => {
+          console.error(`Refresh token failed: ${error}`);
+          return of(false);
+        })
       );
   }
 

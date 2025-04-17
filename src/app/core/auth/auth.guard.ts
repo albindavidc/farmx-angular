@@ -21,6 +21,9 @@ export const authGuard: CanActivateFn = (
 
   return tokenService.checkAuthStatus().pipe(
     switchMap(({ isAuthenticated, user }) => {
+      console.log(
+        `${isAuthenticated} && ${user} these are the information in the front-end`
+      );
       if (isAuthenticated && user) {
         const authUser = {
           id: user.id,
@@ -36,20 +39,42 @@ export const authGuard: CanActivateFn = (
       }
 
       return tokenService.refreshToken().pipe(
-        map((refreshed) => {
+        switchMap((refreshed) => {
           if (refreshed) {
-            return router.createUrlTree(['/'], {
-              queryParams: { redirectUrl: state.url },
-            });
+            return tokenService.checkAuthStatus().pipe(
+              switchMap(({ isAuthenticated, user }) => {
+                if (isAuthenticated && user) {
+                  const authUser = {
+                    id: user.id,
+                    email: user.email || '',
+                    name: user.name,
+                    password: '',
+                    phone: user.phone,
+                    role: user.role,
+                    isVerified: user.isVerified || false,
+                  };
+                  store.dispatch(AuthActions.setUser({ user: authUser }));
+                  return of(true);
+                }
+                return of(
+                  router.createUrlTree(['/auth/login'], {
+                    queryParams: { redirectUrl: state.url },
+                  })
+                );
+              })
+            );
           }
 
-          return router.createUrlTree(['/auth/login'], {
-            queryParams: { redirectUrl: state.url },
-          });
+          return of(
+            router.createUrlTree(['/auth/login'], {
+              queryParams: { redirectUrl: state.url },
+            })
+          );
         })
       );
     }),
-    catchError(() => {
+    catchError((error) => {
+      console.error(`Auth guard error`, error);
       return of(router.createUrlTree(['/auth/login']));
     })
   );
