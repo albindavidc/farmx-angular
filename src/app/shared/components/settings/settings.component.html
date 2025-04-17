@@ -17,35 +17,40 @@
       <div class="card-content">
         <div class="profile-section">
           <div class="profile-pic-container">
-            <div
-              class="profile-pic"
-              [style.backgroundImage]="'url(' + user.avatar + ')'"
-            >
+            <div class="profile-pic" [style.backgroundImage]="getUserPhoto()">
+              <div >
+                <mat-icon *ngIf="!avatarUrl" class="account-profile-icon">account_circle</mat-icon>
+              </div>
               <div class="edit-overlay">
-                <i class="fas fa-camera"></i>
+                <mat-icon>photo_camera</mat-icon>
               </div>
             </div>
           </div>
           <div class="profile-details">
             <div class="form-field">
               <label class="form-field-label">Name</label>
-              <p [textContent]="inputName"></p>
+              <input type="text" name="name" id="name" [(ngModel)]="inputName" class="form-field-value" [disabled]="!isEditing">
             </div>
             <div class="form-field">
               <label class="form-field-label">Email</label>
-              <p [textContent]="inputEmail"></p>
+              <input type="text" name="email" id="email" [(ngModel)]="inputEmail" class="form-field-value" [disabled]="!isEditing">
             </div>
             <div class="form-field">
               <label class="form-field-label">Phone</label>
-              <p [textContent]="inputPhone"></p>
+              <input type="text" name="phone" id="phone" [(ngModel)]="inputPhone" class="form-field-value" [disabled]="!isEditing">
             </div>
           </div>
 
-          <div class="action-buttons" >
-            <button class="btn-primary" [disabled]="edit ===false" (click)="saveProfile()">
-              <span>Update Profile</span>
-              <i class="fas fa-save"></i>
+          <div class="action-buttons">
+
+            <button
+              class="btn-primary"
+              [disabled]="!isEditing"
+              (click)="saveProfile()"
+            >
+              Update Profile
             </button>
+            <mat-icon class="btn-primary-icon" (click)="editProfile()">edit</mat-icon>
           </div>
         </div>
       </div>
@@ -61,12 +66,11 @@
           <p class="form-field-value">•••••••••••</p>
 
           <div class="pass-btns">
-
             <button class="pass-btn" (click)="openPasswordModal('reset')">
               <span>Reset Password</span>
               <i class="fas fa-chevron-right"></i>
             </button>
-  
+
             <button class="pass-btn" (click)="openPasswordModal('reset')">
               <span>Forgot Password</span>
               <i class="fas fa-chevron-right"></i>
@@ -83,7 +87,12 @@
       <div class="notification-settings">
         <div class="notification-item">
           <div class="notification-info">
-            <fa-icon class="notification-icon " [icon]="faBell" [size]="'lg'" aria-hidden="true" ></fa-icon>
+            <fa-icon
+              class="notification-icon"
+              [icon]="faBell"
+              [size]="'lg'"
+              aria-hidden="true"
+            ></fa-icon>
             <div>
               <h4>Notifications</h4>
               <p>Control your notifications on your application.</p>
