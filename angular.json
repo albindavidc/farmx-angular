@@ -44,7 +44,9 @@
             ],
             "styles": [
               "src/styles/material-theme.scss",
-              "src/styles/styles.scss"
+              "src/styles/styles.scss",
+              "node_modules/filepond/dist/filepond.min.css",
+              "node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
             ],
             "scripts": []
           },

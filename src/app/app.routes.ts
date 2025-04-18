@@ -11,13 +11,13 @@ import { roleGuard } from './core/auth/role.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
-  { path: 'auth/signup', component: SignupComponent, canActivate: [authGuard] },
+  { path: 'auth/signup', component: SignupComponent},
   {
     path: 'auth/otp-verification',
     component: OtpVerificationComponent,
-    canActivate: [authGuard],
+    
   },
-  { path: 'auth/login', component: LoginComponent, canActivate: [authGuard] },
+  { path: 'auth/login', component: LoginComponent},
   {
     path: 'user',
     canActivate: [authGuard, roleGuard],

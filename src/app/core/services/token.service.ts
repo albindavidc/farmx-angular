@@ -26,7 +26,7 @@ export class TokenService {
     user: TokenPayload | null;
   }> {
     return this.http
-      .get<{ success: boolean; data: TokenPayload }>(`${this.apiUrl}/user`, {
+      .get<{ success: boolean; data: TokenPayload }>(`${this.apiUrl}/auth/user`, {
         withCredentials: true,
       })
       .pipe(

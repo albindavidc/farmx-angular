@@ -12,11 +12,40 @@ $font-weights: (
 $font-poppins: "Poppins", sans-serif;
 $font-lato: "Lato", sans-serif;
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* FilePond */
+.filepond--root {
+  --filepond-primary-color: var(--md-sys-color-primary);
+  --filepond-secondary-color: var(--md-sys-color-surface-variant);
+  --filepond-error-color: var(--md-sys-color-error);
+  --filepond-success-color: var(--md-sys-color-success-color);
 }
+
+.filepond--panel-root {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.filepond--drop-label {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.filepond--label-action {
+  color: var(--md-sys-color-primary);
+  text-decoration-color: var(--md-sys-color-primary);
+}
+
+.filepond--credits {
+  display: none; /* Optional: hide FilePond logo */
+}
+
+/* Use ::ng-deep for component style penetration */
+::ng-deep .custom-filepond .filepond--panel-root {
+  background: var(--md-sys-color-surface-variant) !important;
+}
+::ng-deep .custom-filepond .filepond--drop-label {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Main Website */
 
 body {
   font-family: "Poppins", sans-serif;
@@ -226,7 +255,6 @@ body {
   }
 }
 
-
 // Form Fields
 .form-field {
   margin-bottom: 1.5rem;
@@ -335,7 +363,6 @@ body {
 .btn-primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-
 }
 
 .btn-text {
