@@ -17,9 +17,13 @@
       <div class="card-content">
         <div class="profile-section">
           <div class="profile-pic-container">
-            <div class="profile-pic" [style.backgroundImage]="getUserPhoto()">
-              <div >
-                <mat-icon *ngIf="!avatarUrl" class="account-profile-icon">account_circle</mat-icon>
+            <div
+              class="profile-pic"
+              [style.backgroundImage]="getUserPhoto()"
+              (click)="onOpenModal()"
+            >
+              <div *ngIf="!avatarUrl">
+                <mat-icon class="account-profile-icon">account_circle</mat-icon>
               </div>
               <div class="edit-overlay">
                 <mat-icon>photo_camera</mat-icon>
@@ -29,20 +33,40 @@
           <div class="profile-details">
             <div class="form-field">
               <label class="form-field-label">Name</label>
-              <input type="text" name="name" id="name" [(ngModel)]="inputName" class="form-field-value" [disabled]="!isEditing">
+              <input
+                type="text"
+                name="name"
+                id="name"
+                [(ngModel)]="inputName"
+                class="form-field-value"
+                [disabled]="!isEditing"
+              />
             </div>
             <div class="form-field">
               <label class="form-field-label">Email</label>
-              <input type="text" name="email" id="email" [(ngModel)]="inputEmail" class="form-field-value" [disabled]="!isEditing">
+              <input
+                type="text"
+                name="email"
+                id="email"
+                [(ngModel)]="inputEmail"
+                class="form-field-value"
+                [disabled]="!isEditing"
+              />
             </div>
             <div class="form-field">
               <label class="form-field-label">Phone</label>
-              <input type="text" name="phone" id="phone" [(ngModel)]="inputPhone" class="form-field-value" [disabled]="!isEditing">
+              <input
+                type="text"
+                name="phone"
+                id="phone"
+                [(ngModel)]="inputPhone"
+                class="form-field-value"
+                [disabled]="!isEditing"
+              />
             </div>
           </div>
 
           <div class="action-buttons">
-
             <button
               class="btn-primary"
               [disabled]="!isEditing"
@@ -50,7 +74,9 @@
             >
               Update Profile
             </button>
-            <mat-icon class="btn-primary-icon" (click)="editProfile()">edit</mat-icon>
+            <mat-icon class="btn-primary-icon" (click)="editProfile()"
+              >edit</mat-icon
+            >
           </div>
         </div>
       </div>
@@ -106,6 +132,44 @@
           </label>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  *ngIf="showModal"
+  class="fixed inset-0 bg-[rgb(from_var(--md-sys-color-scrim)_r_g_b/0.8)] flex items-center justify-center z-50"
+>
+  <div class="bg-[var(--md-sys-color-surface)] rounded-lg p-9 w-full max-w-md">
+    <h3
+      class="text-xl font-semibold text-[var(--md-sys-color-on-surface)] mb-5"
+    >
+      Uplaod New Photo
+    </h3>
+
+    <file-pond
+      [options]="pondOptions"
+      (onaddfile)="onFileAdded($event)"
+      (onprocessfile)="onFileProcessed($event)"
+      class="filepond--root custom-filepond"
+    ></file-pond>
+
+    <div class="mt-10 flex justify-end">
+      <button
+        class="px-4 py-2 bg-[var(--md-sys-color-surface-variant)] text-[var(--md-sys-color-on-surface-variant)] rounded-lg mr-2 hover:bg-[var(--md-sys-color-surface-variant)]/80 hover:cursor-pointer"
+        (click)="onCloseModal()"
+      >
+        Cancel
+      </button>
+      <button
+        class="px-2 py-2 bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] rounded-lg hover:bg-[var(--md-sys-color-on-primary-container)] cursor-pointer"
+        type="button"
+        (click)="uploadFile()"
+        [disabled]="!selectedFile"
+      >
+        Upload
+      </button>
     </div>
   </div>
 </div>
