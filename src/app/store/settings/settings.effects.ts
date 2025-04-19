@@ -2,16 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { response } from 'express';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
 import { SettingsActions } from './settings.actions';
 import { SettingsService } from './settings.service';
-import { profile } from 'console';
+import { error, profile } from 'console';
 
 @Injectable()
 export class SettingsEffects {
   settingsService = inject(SettingsService);
+
   constructor(private actions$: Actions, private http: HttpClient) {}
 
+  /* Profile Section */
   uploadProfilePhoto$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SettingsActions.uploadProfilePhoto),
@@ -78,6 +80,31 @@ export class SettingsEffects {
           map((profile) => SettingsActions.updateProfileSuccess({ profile })),
           catchError((error) =>
             of(SettingsActions.updateProfileFailure({ error: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  /* Security Section */
+  validateOldPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SettingsActions.validateOldPassword),
+      switchMap((action) =>
+        this.settingsService.validateOldPassword(action.oldPassword).pipe(
+          map((response) =>
+            response.success
+              ? SettingsActions.validateOldPasswordSuccess({ isValid: true })
+              : SettingsActions.validateOldPasswordFailure({
+                  error: response.error || 'Invalid password',
+                })
+          ),
+          catchError((error) =>
+            of(
+              SettingsActions.validateOldPasswordFailure({
+                error: error.message,
+              })
+            )
           )
         )
       )

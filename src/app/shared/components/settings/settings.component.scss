@@ -255,6 +255,13 @@ body {
   }
 }
 
+/* Security Section */
+.security-section{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 // Form Fields
 .form-field {
   margin-bottom: 1.5rem;
@@ -287,6 +294,7 @@ body {
   min-height: 44px;
   display: flex;
   align-items: center;
+  width: 100%;
 
   &.editing {
     border-color: var(--md-sys-color-primary);

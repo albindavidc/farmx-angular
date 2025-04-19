@@ -9,6 +9,8 @@ export interface SettingsState {
   profile: User | null;
   loading: boolean;
   error: string | null;
+
+  isOldPasswordValid: boolean;
 }
 
 export const initialState: SettingsState = {
@@ -16,10 +18,14 @@ export const initialState: SettingsState = {
   profile: null,
   loading: false,
   error: null,
+
+  isOldPasswordValid: false,
 };
 
 export const settingsReducer = createReducer(
   initialState,
+
+  /* Profile Reducers */
   on(SettingsActions.getProfilePhotoSuccess, (state, { photoUrl }) => ({
     ...state,
     photoUrl,
@@ -43,5 +49,22 @@ export const settingsReducer = createReducer(
     ...state,
     error,
     loading: false,
+  })),
+
+  /* Security Reducers */
+  on(SettingsActions.validateOldPassword, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(SettingsActions.validateOldPasswordSuccess, (state, { isValid }) => ({
+    ...state,
+    isOldPasswordValid: isValid,
+    loading: false,
+  })),
+  on(SettingsActions.validateOldPasswordFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   }))
 );

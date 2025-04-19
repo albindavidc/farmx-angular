@@ -95,15 +95,74 @@
 
       <div class="security-actions">
         <div class="form-field">
-          <label class="form-field-label">Password</label>
-          <p class="form-field-value">•••••••••••</p>
+          <div class="security-section">
+            <div *ngIf="!isChangingPassword">
+              <label class="form-field-label">Password</label>
+              <p class="form-field-value">•••••••••••</p>
+            </div>
 
-          <div class="pass-btns">
-            <button class="pass-btn" (click)="openPasswordModal('reset')">
-              <span>Reset Password</span>
+            <!-- Old Password Form -->
+            <form
+              *ngIf="showOldPasswordForm && !showChangePasswordForm"
+              (formGroup)="(oldPasswordForm)"
+              (ngSubmit)="checkOldPassword()"
+            >
+              <div class="form-field">
+                <label for="" class="form-field-label">Old Password</label>
+                <input type="text" class="form-field-value" formControlName="oldPassword"/>
+              </div>
+
+              <div>
+                <p>{{ oldPasswordError$ | async }}</p>
+              </div>
+
+              <div class="flex justify-center items-center mx-auto pt-6">
+                <button type="button" class="btn-primary">
+                  Change Password
+                </button>
+              </div>
+            </form>
+
+            <!-- Change Password Form -->
+            <form
+              *ngIf="showChangePasswordForm && showOldPasswordForm"
+              (formGroup)="(createNewPasswordForm)"
+              (ngSubmit)="resetPassword()"
+            >
+              <div class="form-field">
+                <label for="" class="form-field-label">New Password</label>
+                <input
+                  type="text"
+                  class="form-field-value"
+                  formControlName="newPassword"
+                />
+              </div>
+              <div class="form-field">
+                <label for="" class="form-field-label">Confirm Password</label>
+                <input
+                  type="text"
+                  class="form-field-value"
+                  formControlName="confirmPassword"
+                />
+              </div>
+              <div class="flex justify-center items-center mx-auto pt-6">
+                <button type="button" class="btn-primary">
+                  Change Password
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Change & Forget Button -->
+          <div class="pass-btns" *ngIf="!isChangingPassword">
+            <button
+              class="pass-btn"
+              (click)="openPasswordModal('reset')"
+              (click)="toggleOldPasswordForm()"
+            >
+              <span>Change Password</span>
               <i class="fas fa-chevron-right"></i>
             </button>
-
             <button class="pass-btn" (click)="openPasswordModal('reset')">
               <span>Forgot Password</span>
               <i class="fas fa-chevron-right"></i>

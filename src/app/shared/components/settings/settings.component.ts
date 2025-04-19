@@ -73,6 +73,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
   selectedFile: File | null = null;
   croppedImage: string | null = null;
 
+  /* Changing Password */
+  oldPasswordForm!: FormGroup;
+  showOldPasswordForm: boolean = false;
+  isChangingPassword: boolean = false;
+  oldPasswordError$!: Observable<string | null>;
+  oldPasswordLoading$!: Observable<string | null>;
+
+  /* Create New Password */
+  createNewPasswordForm!: FormGroup;
+  showChangePasswordForm: boolean = false;
+  isValidAccount: boolean = true;
+
   constructor(private store: Store, private fb: FormBuilder) {
     this.profilePhotoUrl$ = this.store.select(selectProfilePhotoUrl);
     this.error$ = this.store.select(selectPhotoError);
@@ -85,6 +97,28 @@ export class SettingsComponent implements OnInit, OnDestroy {
         [Validators.pattern(/^[0-9]{10}$/)],
       ],
     });
+
+    this.oldPasswordForm = this.fb.group({
+      oldPassword: ['', Validators.required],
+    });
+  }
+
+  checkOldPassword() {
+    if (this.isValidAccount) {
+      this.showOldPasswordForm = false;
+      this.showChangePasswordForm = true;
+      this.isChangingPassword = false;
+    }
+  }
+
+  resetPassword() {
+    this.showChangePasswordForm = false;
+  }
+
+  toggleOldPasswordForm() {
+    this.showOldPasswordForm = true;
+    this.showChangePasswordForm = false;
+    this.isChangingPassword = true;
   }
 
   private reloadPhoto() {
