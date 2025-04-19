@@ -1,4 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { User } from '../../shared/models/auth-state.model';
 
 export const SettingsActions = createActionGroup({
   source: 'Settings',
@@ -10,5 +11,9 @@ export const SettingsActions = createActionGroup({
     'Get Profile Photo': props<{ userId: string | number }>(),
     'Get Profile Photo Success': props<{ photoUrl: string | null }>(),
     'Get Profile Photo Failure': props<{ error: string }>(),
+
+    'Update Profile': props<{ updates: Partial<User> }>(),
+    'Update Profile Success': props<{ profile: User }>(),
+    'Update Profile Failure': props<{ error: string }>(),
   },
 });

@@ -17,68 +17,73 @@
       <div class="card-content">
         <div class="profile-section">
           <div class="profile-pic-container">
-            <div
-              class="profile-pic"
-              (click)="onOpenModal()"
-            >
+            <div class="profile-pic">
               <div *ngIf="!(profilePhotoUrl$ | async)">
                 <mat-icon class="account-profile-icon">account_circle</mat-icon>
               </div>
-              <div *ngIf="profilePhotoUrl$ | async">
-                <img [src]="profilePhotoUrl$ | async" alt="Profile Photo" />
-              </div>
-              <div class="edit-overlay">
-                <mat-icon>photo_camera</mat-icon>
+              <div (click)="onOpenModal()">
+                <div *ngIf="profilePhotoUrl$ | async">
+                  <img [src]="profilePhotoUrl$ | async" alt="Profile Photo" />
+                </div>
+                <div class="edit-overlay">
+                  <mat-icon>photo_camera</mat-icon>
+                </div>
               </div>
             </div>
           </div>
           <div class="profile-details">
-            <div class="form-field">
-              <label class="form-field-label">Name</label>
-              <input
-                type="text"
-                name="name"
-                id="name"
-                [(ngModel)]="inputName"
-                class="form-field-value"
-                [disabled]="!isEditing"
-              />
-            </div>
-            <div class="form-field">
-              <label class="form-field-label">Email</label>
-              <input
-                type="text"
-                name="email"
-                id="email"
-                [(ngModel)]="inputEmail"
-                class="form-field-value"
-                [disabled]="!isEditing"
-              />
-            </div>
-            <div class="form-field">
-              <label class="form-field-label">Phone</label>
-              <input
-                type="text"
-                name="phone"
-                id="phone"
-                [(ngModel)]="inputPhone"
-                class="form-field-value"
-                [disabled]="!isEditing"
-              />
-            </div>
-          </div>
-
-          <div class="action-buttons">
-            <button
-              class="btn-primary"
-              [disabled]="!isEditing"
-              (click)="saveProfile()"
-            >
-              Update Profile
-            </button>
-            <mat-icon class="btn-primary-icon" (click)="editProfile()"
-              >edit</mat-icon
-            >
+            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+              <div class="form-field">
+                <label class="form-field-label">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  formControlName="name"
+                  [(ngModel)]="inputName"
+                  class="form-field-value"
+                  [disabled]="!isEditing"
+                />
+              </div>
+              <div class="form-field">
+                <label class="form-field-label">Email</label>
+                <input
+                  type="text"
+                  name="email"
+                  id="email"
+                  formControlName="email"
+                  [(ngModel)]="inputEmail"
+                  class="form-field-value"
+                  [disabled]="!isEditing"
+                />
+              </div>
+              <div class="form-field">
+                <label class="form-field-label">Phone</label>
+                <input
+                  type="text"
+                  name="phone"
+                  id="phone"
+                  formControlName="phone"
+                  [(ngModel)]="inputPhone"
+                  class="form-field-value"
+                  [disabled]="!isEditing"
+                />
+              </div>
+              <div class="action-buttons">
+                <button
+                  type="button"
+                  class="btn-primary"
+                  [disabled]="!isEditing"
+                  (click)="saveProfile()"
+                  (click)="toggleEdit()"
+                >
+                  {{ (loading$ | async) ? "Updating..." : "Update Profile" }}
+                </button>
+                <mat-icon class="btn-primary-icon" (click)="editProfile()"
+                  >edit</mat-icon
+                >
+              </div>
+            </form>
           </div>
         </div>
       </div>

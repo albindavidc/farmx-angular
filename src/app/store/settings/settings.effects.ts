@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { response } from 'express';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { SettingsActions } from './settings.actions';
+import { SettingsService } from './settings.service';
+import { profile } from 'console';
 
 @Injectable()
 export class SettingsEffects {
+  settingsService = inject(SettingsService);
   constructor(private actions$: Actions, private http: HttpClient) {}
 
   uploadProfilePhoto$ = createEffect(() =>
@@ -64,6 +67,20 @@ export class SettingsEffects {
     this.actions$.pipe(
       ofType(SettingsActions.uploadProfilePhotoSuccess),
       map(({ userId }) => SettingsActions.getProfilePhoto({ userId }))
+    )
+  );
+
+  updateProfile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SettingsActions.updateProfile),
+      exhaustMap(({ updates }) =>
+        this.settingsService.updateProfile(updates).pipe(
+          map((profile) => SettingsActions.updateProfileSuccess({ profile })),
+          catchError((error) =>
+            of(SettingsActions.updateProfileFailure({ error: error.message }))
+          )
+        )
+      )
     )
   );
 }
