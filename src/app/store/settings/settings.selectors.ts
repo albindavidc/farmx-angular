@@ -35,3 +35,8 @@ export const selectisOldPasswordValid = createSelector(
   selectSettingsFeature,
   (state) => state.isOldPasswordValid
 );
+
+export const selectChangePasswordState = createSelector(
+  selectSettingsFeature,
+  (state) => state.success
+)

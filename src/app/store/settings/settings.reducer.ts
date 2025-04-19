@@ -9,6 +9,7 @@ export interface SettingsState {
   profile: User | null;
   loading: boolean;
   error: string | null;
+  success: boolean;
 
   isOldPasswordValid: boolean;
 }
@@ -18,6 +19,7 @@ export const initialState: SettingsState = {
   profile: null,
   loading: false,
   error: null,
+  success: false,
 
   isOldPasswordValid: false,
 };
@@ -65,6 +67,14 @@ export const settingsReducer = createReducer(
   on(SettingsActions.validateOldPasswordFailure, (state, { error }) => ({
     ...state,
     loading: false,
+    error,
+  })),
+  on(SettingsActions.changePasswordSuccess, (state, { success }) => ({
+    ...state,
+    success,
+  })),
+  on(SettingsActions.changePasswordFailure, (state, { error }) => ({
+    ...state,
     error,
   }))
 );

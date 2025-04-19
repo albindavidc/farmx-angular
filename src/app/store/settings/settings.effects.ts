@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { response } from 'express';
-import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
+import { catchError, exhaustMap, map, of, switchMap, tap } from 'rxjs';
 import { SettingsActions } from './settings.actions';
 import { SettingsService } from './settings.service';
 import { error, profile } from 'console';
@@ -92,11 +92,12 @@ export class SettingsEffects {
       ofType(SettingsActions.validateOldPassword),
       switchMap((action) =>
         this.settingsService.validateOldPassword(action.oldPassword).pipe(
+          tap((response) => console.log('the response is success' + response)),
           map((response) =>
             response.success
               ? SettingsActions.validateOldPasswordSuccess({ isValid: true })
               : SettingsActions.validateOldPasswordFailure({
-                  error: response.error || 'Invalid password',
+                  error: 'Invalid password',
                 })
           ),
           catchError((error) =>
@@ -107,6 +108,34 @@ export class SettingsEffects {
             )
           )
         )
+      )
+    )
+  );
+
+  changePassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SettingsActions.changePassword),
+      exhaustMap((action) =>
+        this.settingsService
+          .changePassword(action.newPassword, action.confirmPassword)
+          .pipe(
+            map((response) =>
+              response.success
+                ? SettingsActions.changePasswordSuccess({
+                    success: response.success,
+                  })
+                : SettingsActions.changePasswordFailure({
+                    error: 'Password Not Changed',
+                  })
+            ),
+            catchError((error) =>
+              of(
+                SettingsActions.changePasswordFailure({
+                  error: error.message,
+                })
+              )
+            )
+          )
       )
     )
   );

@@ -21,12 +21,21 @@ export class SettingsService {
   }
 
   /* Security Section */
-  validateOldPassword(
-    oldPassword: string
-  ): Observable<{ success: boolean; error: string }> {
-    return this.http.post<{ success: boolean; error: string }>(
+  validateOldPassword(oldPassword: string): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(
       `${this.apiurl}/settings/validate-old-password`,
-      oldPassword,
+      { oldPassword },
+      { withCredentials: true }
+    );
+  }
+
+  changePassword(
+    newPassword: string,
+    confirmPassword: string
+  ): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(
+      `${this.apiurl}/settings/change-password`,
+      { newPassword, confirmPassword },
       { withCredentials: true }
     );
   }
