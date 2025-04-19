@@ -15,5 +15,16 @@ export const SettingsActions = createActionGroup({
     'Update Profile': props<{ updates: Partial<User> }>(),
     'Update Profile Success': props<{ profile: User }>(),
     'Update Profile Failure': props<{ error: string }>(),
+
+    'Validate Old Password': props<{ oldPassword: string }>(),
+    'Validate Old Password Success': props<{ isValid: boolean }>(),
+    'Validate Old Password Failure': props<{ error: string }>(),
+
+    'Change Password': props<{
+      newPassword: string;
+      confirmPassword: string;
+    }>(),
+    'Change Password Success': props<{ success: boolean }>(),
+    'Change Password Failure': props<{ error: string }>(),
   },
 });

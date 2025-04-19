@@ -4,6 +4,7 @@ import { SettingsState } from './settings.reducer';
 export const selectSettingsFeature =
   createFeatureSelector<SettingsState>('settings');
 
+/* Profile Selectors */
 export const selectProfilePhotoUrl = createSelector(
   selectSettingsFeature,
   (state) => state.photoUrl
@@ -28,3 +29,14 @@ export const selectProfileError = createSelector(
   selectSettingsFeature,
   (state) => state.error
 );
+
+/* Security Selectors */
+export const selectisOldPasswordValid = createSelector(
+  selectSettingsFeature,
+  (state) => state.isOldPasswordValid
+);
+
+export const selectChangePasswordState = createSelector(
+  selectSettingsFeature,
+  (state) => state.success
+)

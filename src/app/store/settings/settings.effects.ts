@@ -2,16 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { response } from 'express';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { catchError, exhaustMap, map, of, switchMap, tap } from 'rxjs';
 import { SettingsActions } from './settings.actions';
 import { SettingsService } from './settings.service';
-import { profile } from 'console';
+import { error, profile } from 'console';
 
 @Injectable()
 export class SettingsEffects {
   settingsService = inject(SettingsService);
+
   constructor(private actions$: Actions, private http: HttpClient) {}
 
+  /* Profile Section */
   uploadProfilePhoto$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SettingsActions.uploadProfilePhoto),
@@ -80,6 +82,60 @@ export class SettingsEffects {
             of(SettingsActions.updateProfileFailure({ error: error.message }))
           )
         )
+      )
+    )
+  );
+
+  /* Security Section */
+  validateOldPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SettingsActions.validateOldPassword),
+      switchMap((action) =>
+        this.settingsService.validateOldPassword(action.oldPassword).pipe(
+          tap((response) => console.log('the response is success' + response)),
+          map((response) =>
+            response.success
+              ? SettingsActions.validateOldPasswordSuccess({ isValid: true })
+              : SettingsActions.validateOldPasswordFailure({
+                  error: 'Invalid password',
+                })
+          ),
+          catchError((error) =>
+            of(
+              SettingsActions.validateOldPasswordFailure({
+                error: error.message,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  changePassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SettingsActions.changePassword),
+      exhaustMap((action) =>
+        this.settingsService
+          .changePassword(action.newPassword, action.confirmPassword)
+          .pipe(
+            map((response) =>
+              response.success
+                ? SettingsActions.changePasswordSuccess({
+                    success: response.success,
+                  })
+                : SettingsActions.changePasswordFailure({
+                    error: 'Password Not Changed',
+                  })
+            ),
+            catchError((error) =>
+              of(
+                SettingsActions.changePasswordFailure({
+                  error: error.message,
+                })
+              )
+            )
+          )
       )
     )
   );

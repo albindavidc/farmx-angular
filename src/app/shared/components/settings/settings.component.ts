@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Inject,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,7 +16,7 @@ import {
 } from '@angular/forms';
 import { User } from '../../models/auth-state.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faBell } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faL } from '@fortawesome/free-solid-svg-icons';
 import { filter, Observable, of, Subject, take, takeUntil, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectUser } from '../../../store/auth/selectors/auth.selectors';
@@ -26,10 +33,14 @@ import { response } from 'express';
 import { UserActions } from '../../../store/user/user.actions';
 import { AuthActions } from '../../../store/auth/actions/auth.actions';
 import {
+  selectChangePasswordState,
+  selectisOldPasswordValid,
   selectPhotoError,
   selectProfileLoading,
   selectProfilePhotoUrl,
 } from '../../../store/settings/settings.selectors';
+import { Router, RouterModule } from '@angular/router';
+import { Actions, ofType } from '@ngrx/effects';
 
 registerPlugin(
   FilePondPluginFileValidateType,
@@ -43,6 +54,7 @@ registerPlugin(
     FontAwesomeModule,
     MatIconModule,
     FilePondModule,
+    RouterModule,
 
     CommonModule,
     FormsModule,
@@ -73,18 +85,91 @@ export class SettingsComponent implements OnInit, OnDestroy {
   selectedFile: File | null = null;
   croppedImage: string | null = null;
 
-  constructor(private store: Store, private fb: FormBuilder) {
+  /* Changing Password */
+  oldPasswordForm: FormGroup;
+  showOldPasswordForm: boolean = false;
+  isChangingPassword: boolean = false;
+  oldPasswordError$!: Observable<string | null>;
+  oldPasswordLoading$!: Observable<string | null>;
+
+  /* Create New Password */
+  changePasswordForm: FormGroup;
+  showChangePasswordForm: boolean = false;
+  isValidAccount$: Observable<boolean> = of(false);
+  isSuccessfullyChanged$: Observable<boolean>;
+
+  constructor(
+    private store: Store,
+    private fb: FormBuilder,
+    private actions$: Actions
+  ) {
     this.profilePhotoUrl$ = this.store.select(selectProfilePhotoUrl);
     this.error$ = this.store.select(selectPhotoError);
 
     this.profileForm = this.fb.group({
-      name: [{ value: '', disabled: !this.isEditing }],
-      email: [{ value: '', disabled: !this.isEditing }, Validators.email],
+      name: [{ value: '', disabled: true }],
+      email: [{ value: '', disabled: true }, Validators.email],
       phone: [
-        { value: '', disabled: !this.isEditing },
+        { value: '', disabled: true },
         [Validators.pattern(/^[0-9]{10}$/)],
       ],
     });
+
+    this.oldPasswordForm = this.fb.group({
+      oldPassword: ['', [Validators.required]],
+    });
+
+    this.changePasswordForm = this.fb.group({
+      newPassword: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]],
+    });
+
+    this.isValidAccount$ = this.store.select(selectisOldPasswordValid);
+    this.isSuccessfullyChanged$ = this.store.select(selectChangePasswordState);
+  }
+
+  /* Check Password */
+  checkOldPassword() {
+    if (this.oldPasswordForm.valid) {
+      this.store.dispatch(
+        SettingsActions.validateOldPassword({
+          oldPassword: this.oldPasswordForm.get('oldPassword')?.value,
+        })
+      );
+    }
+
+    this.isValidAccount$.pipe(take(1)).subscribe((isValid) => {
+      if (isValid) {
+        this.showOldPasswordForm = false;
+        this.showChangePasswordForm = true;
+        this.isChangingPassword = true;
+      }
+    });
+  }
+
+  changePassword() {
+    if (this.changePasswordForm.valid) {
+      this.store.dispatch(
+        SettingsActions.changePassword({
+          newPassword: this.changePasswordForm.get('newPassword')?.value,
+          confirmPassword:
+            this.changePasswordForm.get('confirmPassword')?.value,
+        })
+      );
+    }
+
+    this.actions$
+      .pipe(ofType(SettingsActions.changePasswordSuccess), take(1))
+      .subscribe(() => {
+        this.showChangePasswordForm = false;
+        this.isChangingPassword = false;
+      });
+  }
+
+  toggleOldPasswordForm() {
+    this.showOldPasswordForm = true;
+    this.showChangePasswordForm = false;
+    this.isChangingPassword = true;
   }
 
   private reloadPhoto() {
@@ -101,6 +186,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
       });
   }
 
+  /* Navigate back */
+  navigateBack() {
+    this.showOldPasswordForm = false;
+    this.showChangePasswordForm = false;
+    this.isChangingPassword = false;
+  }
+
   ngOnInit() {
     this.userDetails$
       .pipe(
@@ -115,6 +207,19 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .subscribe();
 
     this.reloadPhoto();
+
+    this.userDetails$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((user) => !!user)
+      )
+      .subscribe((user) => {
+        this.profileForm.patchValue({
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+        });
+      });
   }
 
   private getUserId(): string {
