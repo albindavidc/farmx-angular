@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { User } from '../../models/auth-state.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
-import { Observable } from 'rxjs';
+import { filter, Observable, of, Subject, take, takeUntil, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectUser } from '../../../store/auth/selectors/auth.selectors';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SettingsActions } from '../../../store/settings/settings.actions';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
+import { response } from 'express';
+import { UserActions } from '../../../store/user/user.actions';
+import { AuthActions } from '../../../store/auth/actions/auth.actions';
+import {
+  selectPhotoError,
+  selectProfilePhotoUrl,
+} from '../../../store/settings/settings.selectors';
 
 registerPlugin(
   FilePondPluginFileValidateType,
@@ -35,7 +42,7 @@ registerPlugin(
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
   faBell = faBell;
   notificationEnabled: boolean = true;
   @Input() inputName!: string;
@@ -43,18 +50,62 @@ export class SettingsComponent implements OnInit {
   @Input() inputPhone!: string;
 
   isEditing: boolean = false;
-  userDetails: Observable<User | null> = this.store.select(selectUser);
-  avatarUrl: string | null = null;
+  userDetails$: Observable<User | null> = this.store.select(selectUser);
+  profilePhotoUrl$: Observable<string | null> = this.store.select(
+    selectProfilePhotoUrl
+  );
+  error$: Observable<string | null>;
+  private destroy$ = new Subject<void>();
 
-    /* Modal Setup */
-    showModal = false;
-    selectedFile: File | null = null;
-    croppedImage: string | null = null;
+  /* Modal Setup */
+  showModal = false;
+  selectedFile: File | null = null;
+  croppedImage: string | null = null;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+    this.profilePhotoUrl$ = this.store.select(selectProfilePhotoUrl);
+    this.error$ = this.store.select(selectPhotoError);
+  }
+
+  private reloadPhoto() {
+    this.userDetails$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((user) => !!user),
+        take(1)
+      )
+      .subscribe((user) => {
+        this.store.dispatch(
+          SettingsActions.getProfilePhoto({ userId: user.id })
+        );
+      });
+  }
 
   ngOnInit() {
-    this.avatarUrl = this.getUserPhoto();
+    this.userDetails$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((user) => !!user),
+        tap((user) => {
+          this.store.dispatch(
+            SettingsActions.getProfilePhoto({ userId: user.id })
+          );
+        })
+      )
+      .subscribe();
+
+    this.reloadPhoto();
+  }
+
+  private getUserId(): string {
+    let userId = '';
+    this.userDetails$
+      .pipe(
+        take(1),
+        filter((user) => !!user)
+      )
+      .subscribe((user) => (userId = user.id));
+    return userId;
   }
 
   editProfile() {
@@ -65,16 +116,11 @@ export class SettingsComponent implements OnInit {
     field.editing = !field.editing;
   }
 
-  getUserPhoto(): string | null {
-    return this.avatarUrl;
-  }
   saveProfile() {}
 
   openPasswordModal(type: string) {
     // Modal logic
   }
-
-
 
   /* FilePond Configuration */
   processFunction = (
@@ -90,20 +136,15 @@ export class SettingsComponent implements OnInit {
     load(file.name);
   };
 
-  pondOptions = {
-    class: 'my-filepond',
+  pondOptions: FilePondOptions = {
+    name: 'file',
+    instantUpload: true,
     allowMultiple: false,
     maxFiles: 1,
     acceptedFileTypes: ['image/jpeg', 'image/png', 'image/gif'],
     allowImagePreview: true,
     allowImageCrop: true,
-    allowImageTransform: true,
     imageCropAspectRatio: '1:1',
-    imageResizeTargetWidth: 500,
-    imageResizeTargetHeight: 500,
-    imageResizeMode: 'cover',
-    allowWebcam: true,
-    allowCamera: true,
     stylePanelAspectRatio: '1',
     allowBrowse: true,
     allowDrop: true,
@@ -113,7 +154,26 @@ export class SettingsComponent implements OnInit {
     dropOnPage: true,
     dropOnElement: true,
     server: {
-      process: this.processFunction.bind(this),
+      process: {
+        url: `http://localhost:3000/settings/profile-photo-upload`,
+        method: 'POST',
+        withCredentials: true,
+        onload: (response): string | number => {
+          const fileUrl = JSON.parse(response).fileUrl;
+          const userId = this.getUserId();
+          this.store.dispatch(
+            SettingsActions.uploadProfilePhotoSuccess({ userId })
+          );
+
+          this.showModal = false;
+          this.selectedFile = null;
+          
+          return `success  ${fileUrl}`;
+        },
+        onerror: (response) => {
+          console.log('Upload failed', response);
+        },
+      },
     },
   };
 
@@ -134,12 +194,12 @@ export class SettingsComponent implements OnInit {
     console.log('File Processed: ', file);
   }
 
-  uploadFile() {
-    if (this.selectedFile) {
-      const formData = new FormData();
-      formData.append('profilePhoto', this.selectedFile);
-      this.store.dispatch(SettingsActions.uploadProfilePhoto({ formData }));
-      this.onCloseModal();
-    }
+  logout() {
+    this.store.dispatch(AuthActions.logout());
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

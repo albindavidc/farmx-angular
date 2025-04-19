@@ -19,11 +19,13 @@
           <div class="profile-pic-container">
             <div
               class="profile-pic"
-              [style.backgroundImage]="getUserPhoto()"
               (click)="onOpenModal()"
             >
-              <div *ngIf="!avatarUrl">
+              <div *ngIf="!(profilePhotoUrl$ | async)">
                 <mat-icon class="account-profile-icon">account_circle</mat-icon>
+              </div>
+              <div *ngIf="profilePhotoUrl$ | async">
+                <img [src]="profilePhotoUrl$ | async" alt="Profile Photo" />
               </div>
               <div class="edit-overlay">
                 <mat-icon>photo_camera</mat-icon>
@@ -132,6 +134,10 @@
           </label>
         </div>
       </div>
+
+      <div>
+        <button (click)="logout()" class="pass-btn">Logout</button>
+      </div>
     </div>
   </div>
 </div>
@@ -161,14 +167,6 @@
         (click)="onCloseModal()"
       >
         Cancel
-      </button>
-      <button
-        class="px-2 py-2 bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] rounded-lg hover:bg-[var(--md-sys-color-on-primary-container)] cursor-pointer"
-        type="button"
-        (click)="uploadFile()"
-        [disabled]="!selectedFile"
-      >
-        Upload
       </button>
     </div>
   </div>

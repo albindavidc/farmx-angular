@@ -16,7 +16,8 @@ export class SettingsEffects {
         this.http
           .post<{ photoUrl: string }>(
             'http://localhost:3000/settings/profile-photo-upload',
-            action.formData
+            action.formData,
+            { withCredentials: true }
           )
           .pipe(
             map((response) => ({
@@ -32,6 +33,37 @@ export class SettingsEffects {
             )
           )
       )
+    )
+  );
+
+  getProfilePhoto$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SettingsActions.getProfilePhoto),
+      exhaustMap((action) =>
+        this.http
+          .get('http://localhost:3000/settings/get-profile-photo', {
+            responseType: 'blob',
+            withCredentials: true,
+          })
+          .pipe(
+            map((response) => {
+              const url = URL.createObjectURL(response);
+              return SettingsActions.getProfilePhotoSuccess({ photoUrl: url });
+            }),
+            catchError((error) =>
+              of(
+                SettingsActions.getProfilePhotoFailure({ error: error.message })
+              )
+            )
+          )
+      )
+    )
+  );
+
+  autoReloadAfterUpload$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SettingsActions.uploadProfilePhotoSuccess),
+      map(({ userId }) => SettingsActions.getProfilePhoto({ userId }))
     )
   );
 }
