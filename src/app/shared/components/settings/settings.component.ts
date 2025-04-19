@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { User } from '../../models/auth-state.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
@@ -21,6 +27,7 @@ import { UserActions } from '../../../store/user/user.actions';
 import { AuthActions } from '../../../store/auth/actions/auth.actions';
 import {
   selectPhotoError,
+  selectProfileLoading,
   selectProfilePhotoUrl,
 } from '../../../store/settings/settings.selectors';
 
@@ -33,11 +40,13 @@ registerPlugin(
 @Component({
   selector: 'app-settings',
   imports: [
-    CommonModule,
-    FormsModule,
     FontAwesomeModule,
     MatIconModule,
     FilePondModule,
+
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
@@ -50,21 +59,32 @@ export class SettingsComponent implements OnInit, OnDestroy {
   @Input() inputPhone!: string;
 
   isEditing: boolean = false;
+  loading$ = this.store.select(selectProfileLoading);
   userDetails$: Observable<User | null> = this.store.select(selectUser);
   profilePhotoUrl$: Observable<string | null> = this.store.select(
     selectProfilePhotoUrl
   );
   error$: Observable<string | null>;
   private destroy$ = new Subject<void>();
+  profileForm: FormGroup;
 
   /* Modal Setup */
   showModal = false;
   selectedFile: File | null = null;
   croppedImage: string | null = null;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private fb: FormBuilder) {
     this.profilePhotoUrl$ = this.store.select(selectProfilePhotoUrl);
     this.error$ = this.store.select(selectPhotoError);
+
+    this.profileForm = this.fb.group({
+      name: [{ value: '', disabled: !this.isEditing }],
+      email: [{ value: '', disabled: !this.isEditing }, Validators.email],
+      phone: [
+        { value: '', disabled: !this.isEditing },
+        [Validators.pattern(/^[0-9]{10}$/)],
+      ],
+    });
   }
 
   private reloadPhoto() {
@@ -110,13 +130,29 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   editProfile() {
     this.isEditing = true;
+    if (this.isEditing === true) {
+      this.profileForm.enable();
+    }
   }
 
-  toggleEdit(field: any) {
-    field.editing = !field.editing;
+  toggleEdit() {
+    this.isEditing = !this.isEditing;
+    if (this.isEditing === true) {
+      this.profileForm.enable();
+    } else {
+      this.profileForm.disable();
+    }
   }
 
-  saveProfile() {}
+  saveProfile() {
+    if (this.profileForm.valid) {
+      this.store.dispatch(
+        SettingsActions.updateProfile({
+          updates: this.profileForm.value,
+        })
+      );
+    }
+  }
 
   openPasswordModal(type: string) {
     // Modal logic
@@ -167,7 +203,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
           this.showModal = false;
           this.selectedFile = null;
-          
+
           return `success  ${fileUrl}`;
         },
         onerror: (response) => {

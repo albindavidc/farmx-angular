@@ -13,3 +13,18 @@ export const selectPhotoError = createSelector(
   selectSettingsFeature,
   (state) => state.error
 );
+
+export const selectProfileLoading = createSelector(
+  selectSettingsFeature,
+  (state) => state.loading
+);
+
+export const selectProfile = createSelector(
+  selectSettingsFeature,
+  (state) => state.profile
+);
+
+export const selectProfileError = createSelector(
+  selectSettingsFeature,
+  (state) => state.error
+);
