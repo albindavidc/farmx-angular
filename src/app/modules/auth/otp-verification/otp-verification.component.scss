@@ -22,7 +22,7 @@ $font-lato: "Lato", sans-serif;
 }
 
 /* Container for the OTP verification */
-.auth-container {  
+.auth-container {
   max-width: 800px;
   width: 100%;
   margin: 4rem;
@@ -171,8 +171,11 @@ $font-lato: "Lato", sans-serif;
   button {
     background: none;
     border: none;
-    color: var(--md-sys-color-primary);
+    border-radius: 10px;
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
     font-size: 0.875rem;
+    padding: .5rem;
     font-weight: 500;
     cursor: pointer;
     transition: color 0.2s ease;
@@ -193,7 +196,7 @@ $font-lato: "Lato", sans-serif;
 
     span {
       margin-left: 0.25rem;
-      color: var(--md-sys-color-on-surface-variant);
+      color: var(--md-sys-color-on-primary);
     }
   }
 }

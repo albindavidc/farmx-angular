@@ -38,6 +38,7 @@ export class LoginEffects {
             //   response.accessToken,
             //   response.refreshToken
             // );
+            console.log('We are going to redirect to the signup', response.user)
             return [
               LoginActions.loginSuccess({
                 response: {
@@ -46,20 +47,13 @@ export class LoginEffects {
                   refreshToken: response.refreshToken,
                 },
               }),
-              // AuthActions.setAccessToken({ accessToken: response.accessToken }),
-              // AuthActions.setUser({
-              //   id: response.user.id,
-              //   email: response.user.email,
-              //   name: response.user.name,
-              //   password: '',
-              //   phone: response.user.phone,
-              //   role: response.user.role,
-              //   isVerified: response.user.isVerified,
-              // }),
-              // AuthActions.refreshTokenSuccess({
-              //   accessToken: response.accessToken,
-              // }),
-              AuthActions.navigateAfterAuth({ role: response.user.role }),
+              AuthActions.setAccessToken({ accessToken: response.accessToken }),
+              AuthActions.setUser({
+                user: response.user,
+              }),
+              AuthActions.refreshTokenSuccess(),
+              AuthActions.navigateAfterAuth({ role: response.user.role.toLowerCase() }),
+              
             ];
           }),
           catchError((error: HttpErrorResponse) =>

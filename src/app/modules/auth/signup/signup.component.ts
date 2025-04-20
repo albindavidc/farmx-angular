@@ -51,20 +51,22 @@ export class SignupComponent {
   faStar = faStar;
   faQuoteLeft = faQuoteLeftAlt;
   isBrowser = isPlatformBrowser(inject(PLATFORM_ID)); // Check if running in browser
-  role: string = 'user';
+  // role: string = 'user';
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
+
+  roles: string[] = ['user', 'farmer'];
 
   constructor(
     private fb: FormBuilder,
     private store: Store,
-    private router: Router
   ) {
     this.signupForm = this.fb.group(
       {
         name: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+        role: ['', [Validators.required]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', Validators.required],
       },
@@ -74,6 +76,8 @@ export class SignupComponent {
     this.isLoading$ = this.store.select(selectSignupLoading);
     this.error$ = this.store.select(selectSignupError);
     this.isRegistered$ = this.store.select(selectIsRegistered);
+
+    console.log(this.signupForm.value.role)
   }
 
   passwordMatchValidator(form: FormGroup) {
@@ -88,7 +92,7 @@ export class SignupComponent {
         name: this.signupForm.value.name.trim(),
         email: this.signupForm.value.email.trim(),
         phone: this.signupForm.value.phone.trim(),
-        role: this.role,
+        role: this.signupForm.value.role.trim(),
         password: this.signupForm.value.password,
       };
       this.store.dispatch(SignupActions.signup({ userData }));
