@@ -13,8 +13,8 @@ export interface VerifyOtpResponse {
 
 export interface ResendOtpRequest {
   email: string;
-  verificationType: 'email' | 'phone';
-  reason: 'signup' | 'login' | 'password-reset';
+  verificationType?: 'email' | 'phone';
+  reason?: 'signup' | 'login' | 'password-reset';
 }
 
 export interface SendOtpResponse {
