@@ -102,6 +102,22 @@
       </div>
 
       <div class="form-field">
+        <label for="role">Select Role</label>
+        <select
+          name="role"
+          id="role"
+          formControlName="role"
+          aria-required="true"
+          [attr.aria-invalid]="
+            signupForm.get('role')?.invalid && signupForm.get('role')?.touched
+          "
+        >
+          <option value="" disabled selected>Select a role</option>
+          <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+        </select>
+      </div>
+
+      <div class="form-field">
         <label for="password">Password</label>
         <div class="password-input">
           <input

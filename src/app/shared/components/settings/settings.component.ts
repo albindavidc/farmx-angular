@@ -220,6 +220,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
           phone: user.phone,
         });
       });
+      
   }
 
   private getUserId(): string {

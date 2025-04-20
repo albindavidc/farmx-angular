@@ -256,7 +256,7 @@ body {
 }
 
 /* Security Section */
-.security-section{
+.security-section {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -468,12 +468,12 @@ body {
 .toggle-switch {
   position: relative;
   display: inline-block;
-  width: 60px;
+  width: 50px;
   height: 30px;
   cursor: pointer;
 
   &.small {
-    width: 50px;
+    width: 57px;
     height: 25px;
 
     .toggle-switch-handle {
@@ -524,17 +524,6 @@ body {
   border-radius: 50%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out, background-color 0.3s ease;
-}
-
-.toggle-container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.toggle-label {
-  font-weight: 500;
-  color: var(--md-sys-color-on-surface-variant);
 }
 
 // Notification Items

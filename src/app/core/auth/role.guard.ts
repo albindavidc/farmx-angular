@@ -20,8 +20,6 @@ export const roleGuard: CanActivateFn = (
   const router = inject(Router);
   const tokenService = inject(TokenService);
 
-  const requiredRoles = (route.data['roles'] as string[]) || undefined;
-
   return tokenService.checkAuthStatus().pipe(
     switchMap(({ isAuthenticated, user }) => {
       if (isAuthenticated && user) {
