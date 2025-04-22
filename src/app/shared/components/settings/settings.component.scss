@@ -69,7 +69,7 @@ body {
   position: relative;
   overflow: hidden;
   max-width: 100%;
-  
+
   margin: 0 auto;
   margin-bottom: 2.5rem;
   padding: 0 1.5rem;
@@ -82,12 +82,10 @@ body {
   border-radius: 24px;
 }
 
-
-
 .heading {
   font: $font-poppins;
   font-weight: map.get($font-weights, black);
-  font-size: 3rem; 
+  font-size: 3rem;
   color: var(--md-sys-color-primary);
 
   position: relative;
@@ -98,7 +96,7 @@ body {
   animation-delay: 0.1s;
 
   @media (max-width: 768px) {
-    font-size: 2rem; 
+    font-size: 2rem;
   }
 }
 
