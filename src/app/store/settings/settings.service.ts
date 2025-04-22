@@ -39,4 +39,31 @@ export class SettingsService {
       { withCredentials: true }
     );
   }
+
+  forgotPasswordGenerateOtp(email: string): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(
+      `${this.apiurl}/settings/send-otp`,
+      { email },
+      { withCredentials: true }
+    );
+  }
+
+  forgotPasswordValidateOtp(
+    email: string,
+    otp: string
+  ): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(
+      `${this.apiurl}/settings/verify-otp`,
+      { email, otp },
+      { withCredentials: true }
+    );
+  }
+
+  forgotPasswordResendOtp(email: string): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(
+      `${this.apiurl}/settings/resend-otp`,
+      { email },
+      { withCredentials: true }
+    );
+  }
 }

@@ -162,19 +162,48 @@
                 </button>
               </div>
             </form>
+
+            <!-- Frogot Password Form -->
+            <form
+              *ngIf="showForgotPasswordForm"
+              [formGroup]="forgotPasswordForm"
+              (ngSubmit)="forgotPassword()"
+            >
+              <div class="form-field">
+                <label for="otp" class="form-field-label">Enter Otp</label>
+                <input
+                  type="string"
+                  class="form-field-value"
+                  formControlName="otp"
+                  placeholder="Enter otp send to your email"
+                />
+              </div>
+              <div class="flex mx-auto pt-6 justify-between">
+                <button
+                  type="button"
+                  class="btn-primary"
+                  style="opacity: 80%"
+                  (click)="navigateBack()"
+                >
+                  Cancel
+                </button>
+                <button type="button" class="btn-primary" (click)="resendOtp()">
+                  Resend Otp
+                </button>
+                <button type="submit" class="btn-primary">
+                  Change Password
+                </button>
+              </div>
+            </form>
           </div>
 
           <!-- Change & Forget Button -->
           <div class="pass-btns" *ngIf="!isChangingPassword">
-            <button
-              class="pass-btn"
-              (click)="openPasswordModal('reset')"
-              (click)="toggleOldPasswordForm()"
-            >
+            <button class="pass-btn" (click)="toggleOldPasswordForm()">
               <span>Change Password</span>
               <i class="fas fa-chevron-right"></i>
             </button>
-            <button class="pass-btn" (click)="openPasswordModal('reset')">
+            <button class="pass-btn" (click)="forgotPasswordGenerateOtp()">
               <span>Forgot Password</span>
               <i class="fas fa-chevron-right"></i>
             </button>

@@ -139,4 +139,89 @@ export class SettingsEffects {
       )
     )
   );
+
+  forgotPasswordGenerateOtp$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SettingsActions.forgotPasswordGenerateOtp),
+      exhaustMap((action) =>
+        this.settingsService.forgotPasswordGenerateOtp(action.email).pipe(
+          map((response) => {
+            if (response.success) {
+              return SettingsActions.forgotPasswordGenerateOtpSuccess({
+                success: response.success,
+              });
+            }
+
+            return SettingsActions.forgotPasswordGenerateOtpFailure({
+              error: 'Otp Generation failed',
+            });
+          }),
+          catchError((error) =>
+            of(
+              SettingsActions.forgotPasswordGenerateOtpFailure({
+                error: error.message,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  forgotPasswordValidateOtp$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SettingsActions.forgotPasswordValidateOtp),
+      exhaustMap((action) =>
+        this.settingsService
+          .forgotPasswordValidateOtp(action.email, action.otp)
+          .pipe(
+            map((response) => {
+              if (response.success) {
+                return SettingsActions.forgotPasswordValidateOtpSuccess({
+                  success: response.success,
+                });
+              }
+              return SettingsActions.forgotPasswordValidateOtpFailure({
+                error: 'Otp Validation Failed',
+              });
+            }),
+            catchError((error) =>
+              of(
+                SettingsActions.forgotPasswordValidateOtpFailure({
+                  error: error.message,
+                })
+              )
+            )
+          )
+      )
+    )
+  );
+
+  forgotPasswordResendOtp$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SettingsActions.forgotPasswordResendOtp),
+      exhaustMap((action) =>
+        this.settingsService.forgotPasswordResendOtp(action.email).pipe(
+          map((response) => {
+            if (response.success) {
+              return SettingsActions.forgotPasswordResendOtpSuccess({
+                success: response.success,
+              });
+            }
+
+            return SettingsActions.forgotPasswordResendOtpFailure({
+              error: 'Resend otp failed',
+            });
+          }),
+          catchError((error) =>
+            of(
+              SettingsActions.forgotPasswordResendOtpFailure({
+                error: error.message,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 }
