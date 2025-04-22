@@ -1,78 +1,71 @@
 <div class="settings">
   <!-- Animated Header Section -->
   <header class="settings-header">
-    <div class="header-content">
-      <h1 class="heading">
-        <span class="heading-text">Settings</span>
-        <span class="heading-underline"></span>
-      </h1>
-      <div class="header-line"></div>
-    </div>
+    <h1 class="heading">Settings</h1>
   </header>
 
   <!-- Main Content Grid -->
   <div class="settings-grid">
+    
     <!-- Profile Card -->
-    <div class="settings-card profile-card">
-      <div class="card-content">
-        <div class="profile-section">
-          <div class="profile-pic-container">
-            <div class="profile-pic">
-              <div *ngIf="!(profilePhotoUrl$ | async)">
-                <mat-icon class="account-profile-icon">account_circle</mat-icon>
+    <div class="settings-card">
+      <div class="profile-section">
+        <div class="profile-pic-container">
+          <div class="profile-pic">
+            <div *ngIf="!(profilePhotoUrl$ | async)">
+              <mat-icon class="account-profile-icon">account_circle</mat-icon>
+            </div>
+            <div (click)="onOpenModal()">
+              <div *ngIf="profilePhotoUrl$ | async">
+                <img [src]="profilePhotoUrl$ | async" alt="Profile Photo" />
               </div>
-              <div (click)="onOpenModal()">
-                <div *ngIf="profilePhotoUrl$ | async">
-                  <img [src]="profilePhotoUrl$ | async" alt="Profile Photo" />
-                </div>
-                <div class="edit-overlay">
-                  <mat-icon>photo_camera</mat-icon>
-                </div>
+              <div class="edit-overlay">
+                <mat-icon>photo_camera</mat-icon>
               </div>
             </div>
           </div>
-          <div class="profile-details">
-            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
-              <div class="form-field">
-                <label class="form-field-label">Name</label>
-                <input
-                  type="text"
-                  formControlName="name"
-                  class="form-field-value"
-                />
-              </div>
-              <div class="form-field">
-                <label class="form-field-label">Email</label>
-                <input
-                  type="text"
-                  formControlName="email"
-                  class="form-field-value"
-                />
-              </div>
-              <div class="form-field">
-                <label class="form-field-label">Phone</label>
-                <input
-                  type="text"
-                  formControlName="phone"
-                  class="form-field-value"
-                />
-              </div>
-              <div class="action-buttons">
-                <button
-                  type="button"
-                  [disabled]="!isEditing"
-                  class="btn-primary"
-                  (click)="saveProfile()"
-                  (click)="toggleEdit()"
-                >
-                  {{ (loading$ | async) ? "Updating..." : "Update Profile" }}
-                </button>
-                <mat-icon class="btn-primary-icon" (click)="editProfile()"
-                  >edit</mat-icon
-                >
-              </div>
-            </form>
-          </div>
+        </div>
+        <div class="profile-details">
+          <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+            <div class="form-field">
+              <label class="form-field-label">Name</label>
+              <input
+                type="text"
+                formControlName="name"
+                class="form-field-value"
+              />
+            </div>
+            <div class="form-field">
+              <label class="form-field-label">Email</label>
+              <input
+                type="text"
+                formControlName="email"
+                class="form-field-value"
+              />
+            </div>
+            <div class="form-field">
+              <label class="form-field-label">Phone</label>
+              <input
+                type="text"
+                formControlName="phone"
+                class="form-field-value"
+              />
+            </div>
+            <div class="action-buttons">
+              <button
+                type="button"
+                [disabled]="!isEditing"
+                class="btn-primary"
+                (click)="saveProfile()"
+                (click)="toggleEdit()"
+              >
+                {{ (loading$ | async) ? "Updating..." : "Update Profile" }}
+              </button>
+              <mat-icon class="btn-primary-icon" (click)="editProfile()"
+                >edit</mat-icon
+              >
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -81,133 +74,125 @@
     <div class="settings-card security-card">
       <h3 class="card-title">Security</h3>
 
-      <div class="security-actions">
-        <div class="form-field">
-          <div class="security-section">
-            <div *ngIf="!isChangingPassword">
-              <label class="form-field-label">Password</label>
-              <p class="form-field-value">•••••••••••</p>
+      <div class="form-field">
+        <div class="security-section">
+          <div *ngIf="!isChangingPassword">
+            <label class="form-field-label">Password</label>
+            <p class="form-field-value">•••••••••••</p>
+          </div>
+
+          <!-- Old Password Form -->
+          <form
+            *ngIf="showOldPasswordForm && !showChangePasswordForm"
+            [formGroup]="oldPasswordForm"
+            (ngSubmit)="checkOldPassword()"
+          >
+            <div class="form-field">
+              <label for="" class="form-field-label">Old Password</label>
+              <input
+                type="password"
+                class="form-field-value"
+                formControlName="oldPassword"
+              />
             </div>
 
-            <!-- Old Password Form -->
-            <form
-              *ngIf="showOldPasswordForm && !showChangePasswordForm"
-              [formGroup]="oldPasswordForm"
-              (ngSubmit)="checkOldPassword()"
+            <div
+              *ngIf="oldPasswordError$ | async as error"
+              class="error-message"
             >
-              <div class="form-field">
-                <label for="" class="form-field-label">Old Password</label>
-                <input
-                  type="password"
-                  class="form-field-value"
-                  formControlName="oldPassword"
-                />
-              </div>
+              <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+            </div>
 
-              <div
-                *ngIf="oldPasswordError$ | async as error"
-                class="error-message"
+            <div class="flex mx-auto pt-6 justify-between">
+              <button
+                type="button"
+                (click)="navigateBack()"
+                class="btn-primary"
+                style="opacity: 80%"
               >
-                <p class="text-red-500 text-sm mt-1">{{ error }}</p>
-              </div>
+                Cancel
+              </button>
+              <button type="submit" class="btn-primary">Change Password</button>
+            </div>
+          </form>
 
-              <div class="flex mx-auto pt-6 justify-between">
-                <button
-                  type="button"
-                  (click)="navigateBack()"
-                  class="btn-primary"
-                  style="opacity: 80%"
-                >
-                  Cancel
-                </button>
-                <button type="submit" class="btn-primary">
-                  Change Password
-                </button>
-              </div>
-            </form>
+          <!-- Change Password Form -->
+          <form
+            *ngIf="showChangePasswordForm && !showOldPasswordForm"
+            [formGroup]="changePasswordForm"
+            (ngSubmit)="changePassword()"
+          >
+            <div class="form-field">
+              <label for="" class="form-field-label">New Password</label>
+              <input
+                type="text"
+                class="form-field-value"
+                formControlName="newPassword"
+              />
+            </div>
+            <div class="form-field">
+              <label for="" class="form-field-label">Confirm Password</label>
+              <input
+                type="text"
+                class="form-field-value"
+                formControlName="confirmPassword"
+              />
+            </div>
+            <div class="flex mx-auto pt-6 justify-between">
+              <button
+                type="button"
+                class="btn-primary"
+                style="opacity: 80%"
+                (click)="navigateBack()"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn-primary">Change Password</button>
+            </div>
+          </form>
 
-            <!-- Change Password Form -->
-            <form
-              *ngIf="showChangePasswordForm && !showOldPasswordForm"
-              [formGroup]="changePasswordForm"
-              (ngSubmit)="changePassword()"
-            >
-              <div class="form-field">
-                <label for="" class="form-field-label">New Password</label>
-                <input
-                  type="text"
-                  class="form-field-value"
-                  formControlName="newPassword"
-                />
-              </div>
-              <div class="form-field">
-                <label for="" class="form-field-label">Confirm Password</label>
-                <input
-                  type="text"
-                  class="form-field-value"
-                  formControlName="confirmPassword"
-                />
-              </div>
-              <div class="flex mx-auto pt-6 justify-between">
-                <button
-                  type="button"
-                  class="btn-primary"
-                  style="opacity: 80%"
-                  (click)="navigateBack()"
-                >
-                  Cancel
-                </button>
-                <button type="submit" class="btn-primary">
-                  Change Password
-                </button>
-              </div>
-            </form>
+          <!-- Frogot Password Form -->
+          <form
+            *ngIf="showForgotPasswordForm"
+            [formGroup]="forgotPasswordForm"
+            (ngSubmit)="forgotPassword()"
+          >
+            <div class="form-field">
+              <label for="otp" class="form-field-label">Enter Otp</label>
+              <input
+                type="string"
+                class="form-field-value"
+                formControlName="otp"
+                placeholder="Enter otp send to your email"
+              />
+            </div>
+            <div class="flex mx-auto pt-6 justify-between">
+              <button
+                type="button"
+                class="btn-primary"
+                style="opacity: 80%"
+                (click)="navigateBack()"
+              >
+                Cancel
+              </button>
+              <button type="button" class="btn-primary" (click)="resendOtp()">
+                Resend Otp
+              </button>
+              <button type="submit" class="btn-primary">Change Password</button>
+            </div>
+          </form>
+        </div>
 
-            <!-- Frogot Password Form -->
-            <form
-              *ngIf="showForgotPasswordForm"
-              [formGroup]="forgotPasswordForm"
-              (ngSubmit)="forgotPassword()"
-            >
-              <div class="form-field">
-                <label for="otp" class="form-field-label">Enter Otp</label>
-                <input
-                  type="string"
-                  class="form-field-value"
-                  formControlName="otp"
-                  placeholder="Enter otp send to your email"
-                />
-              </div>
-              <div class="flex mx-auto pt-6 justify-between">
-                <button
-                  type="button"
-                  class="btn-primary"
-                  style="opacity: 80%"
-                  (click)="navigateBack()"
-                >
-                  Cancel
-                </button>
-                <button type="button" class="btn-primary" (click)="resendOtp()">
-                  Resend Otp
-                </button>
-                <button type="submit" class="btn-primary">
-                  Change Password
-                </button>
-              </div>
-            </form>
-          </div>
-
-          <!-- Change & Forget Button -->
-          <div class="pass-btns" *ngIf="!isChangingPassword">
-            <button class="pass-btn" (click)="toggleOldPasswordForm()">
-              <span>Change Password</span>
-              <i class="fas fa-chevron-right"></i>
-            </button>
-            <button class="pass-btn" (click)="forgotPasswordGenerateOtp()">
-              <span>Forgot Password</span>
-              <i class="fas fa-chevron-right"></i>
-            </button>
-          </div>
+        <!-- Change & Forget Button -->
+        <div class="pass-btns" *ngIf="!isChangingPassword">
+          <button class="pass-btn" (click)="toggleOldPasswordForm()">
+            <span>Change Password</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <button class="pass-btn" (click)="forgotPasswordGenerateOtp()">
+            <span>Forgot Password</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
       </div>
     </div>
