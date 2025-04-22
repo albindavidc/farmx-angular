@@ -35,8 +35,10 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+
   padding: 1rem 0;
-  border: 2px solid var(--md-sys-color-primary);
+
+  border: 1px solid var(--md-sys-color-primary);
   border-radius: 20px;
   background: var(--md-sys-color-surface-container-low);
   overflow-y: auto;
@@ -168,7 +170,7 @@
   width: 94%;
 }
 
-.bottom-menu{
+.bottom-menu {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -216,13 +218,13 @@
 /* Selected/Active State */
 .menu-item[data-selected="true"],
 .menu-item.active {
-  background: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-primary);
 }
 
 .menu-item[data-selected="true"] .material-icons,
 .menu-item.active .material-icons {
-  color: var(--md-sys-color-on-primary);
+  color: var(--md-sys-color-primary);
 }
 
 /* Bottom Item (Settings) */
@@ -346,26 +348,26 @@
     height: 40px;
   }
 
-/* Blur Overlay */
-.blur-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.1); /* Semi-transparent overlay */
-  backdrop-filter: blur(10px); /* Blurs content behind */
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
-  z-index: 50; /* Below .nav (z-index: 1000) but above content */
-  transition: opacity 0.3s ease;
-  opacity: 0;
-}
+  /* Blur Overlay */
+  .blur-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.1); /* Semi-transparent overlay */
+    backdrop-filter: blur(10px); /* Blurs content behind */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    z-index: 50; /* Below .nav (z-index: 1000) but above content */
+    transition: opacity 0.3s ease;
+    opacity: 0;
+  }
 
-.blur-overlay.active {
-  display: block;
-  opacity: 1;
-}
+  .blur-overlay.active {
+    display: block;
+    opacity: 1;
+  }
 }
 
 /* Ensure body padding to avoid overlap */
