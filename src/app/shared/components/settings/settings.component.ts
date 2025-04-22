@@ -17,7 +17,16 @@ import {
 import { User } from '../../models/auth-state.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBell, faL } from '@fortawesome/free-solid-svg-icons';
-import { filter, Observable, of, Subject, take, takeUntil, tap } from 'rxjs';
+import {
+  filter,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectUser } from '../../../store/auth/selectors/auth.selectors';
 import { MatIconModule } from '@angular/material/icon';
@@ -29,7 +38,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SettingsActions } from '../../../store/settings/settings.actions';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
-import { response } from 'express';
+import e, { response } from 'express';
 import { UserActions } from '../../../store/user/user.actions';
 import { AuthActions } from '../../../store/auth/actions/auth.actions';
 import {
@@ -98,6 +107,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
   isValidAccount$: Observable<boolean> = of(false);
   isSuccessfullyChanged$: Observable<boolean>;
 
+  /* Forgot Password */
+  showForgotPasswordForm: boolean = false;
+  forgotPasswordForm: FormGroup;
+
   constructor(
     private store: Store,
     private fb: FormBuilder,
@@ -122,6 +135,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.changePasswordForm = this.fb.group({
       newPassword: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]],
+    });
+
+    this.forgotPasswordForm = this.fb.group({
+      otp: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
     });
 
     this.isValidAccount$ = this.store.select(selectisOldPasswordValid);
@@ -172,6 +189,84 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.isChangingPassword = true;
   }
 
+  /* Forgot Password */
+  forgotPasswordGenerateOtp() {
+    this.userDetails$
+      .pipe(
+        take(1),
+        filter((user) => !!user),
+        switchMap((user) => {
+          this.store.dispatch(
+            SettingsActions.forgotPasswordGenerateOtp({ email: user.email })
+          );
+          return this.actions$.pipe(
+            ofType(SettingsActions.forgotPasswordGenerateOtpSuccess),
+            take(1)
+          );
+        })
+      )
+      .subscribe(() => {
+        this.showForgotPasswordForm = true;
+        this.isChangingPassword = true;
+      });
+  }
+
+  resendOtp() {
+    this.userDetails$
+      .pipe(
+        take(1),
+        filter((user) => !!user),
+        switchMap((user) => {
+          this.store.dispatch(
+            SettingsActions.forgotPasswordResendOtp({ email: user.email })
+          );
+          return this.actions$.pipe(
+            ofType(SettingsActions.forgotPasswordResendOtpSuccess),
+            take(1)
+          );
+        })
+      )
+      .subscribe();
+  }
+
+  forgotPassword() {
+    if (this.forgotPasswordForm.valid) {
+      this.userDetails$
+        .pipe(
+          take(1),
+          filter((user) => !!user),
+          switchMap((user) => {
+            this.store.dispatch(
+              SettingsActions.forgotPasswordValidateOtp({
+                email: user.email,
+                otp: this.forgotPasswordForm.value.otp,
+              })
+            );
+            return this.actions$.pipe(
+              ofType(SettingsActions.forgotPasswordValidateOtpSuccess),
+              take(1)
+            );
+          })
+        )
+        .subscribe(() => {
+          this.showForgotPasswordForm = false;
+          this.showChangePasswordForm = true;
+          this.isChangingPassword = true;
+        });
+    } else {
+      console.log('form is not valid');
+    }
+  }
+
+  /* Navigate back */
+  navigateBack() {
+    this.showOldPasswordForm = false;
+    this.showChangePasswordForm = false;
+    this.showForgotPasswordForm = false;
+    this.isChangingPassword = false;
+  }
+
+  /* Profile Section */
   private reloadPhoto() {
     this.userDetails$
       .pipe(
@@ -184,13 +279,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
           SettingsActions.getProfilePhoto({ userId: user.id })
         );
       });
-  }
-
-  /* Navigate back */
-  navigateBack() {
-    this.showOldPasswordForm = false;
-    this.showChangePasswordForm = false;
-    this.isChangingPassword = false;
   }
 
   ngOnInit() {
@@ -220,7 +308,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
           phone: user.phone,
         });
       });
-      
   }
 
   private getUserId(): string {
@@ -258,10 +345,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
         })
       );
     }
-  }
-
-  openPasswordModal(type: string) {
-    // Modal logic
   }
 
   /* FilePond Configuration */
@@ -336,6 +419,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     console.log('File Processed: ', file);
   }
 
+  /* Destroying sessions */
   logout() {
     this.store.dispatch(AuthActions.logout());
   }
