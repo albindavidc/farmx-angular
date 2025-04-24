@@ -1,16 +1,15 @@
 <div class="main-nav" [class.active]="isMenuOpen">
-  
   <div
-  class="blur-overlay"
-  [class.active]="isMenuOpen"
-  (click)="closeMenu()"
+    class="blur-overlay"
+    [class.active]="isMenuOpen"
+    (click)="closeMenu()"
   ></div>
   <button class="hamburger" (click)="toggleMenu()">
     <span></span>
     <span></span>
     <span></span>
   </button>
-  
+
   <div class="nav">
     <svg-icon
       src="/assets/logo.svg"
@@ -31,6 +30,18 @@
 
     <div class="menu">
       <a
+        *ngFor="let item of menuItems"
+        [routerLink]="item.route"
+        class="menu-item"
+        [attr.data-selected]="item.selectEl"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        <mat-icon class="material-icons"> {{ item.icon }} </mat-icon>
+        <span class="label"> {{ item.label }} </span>
+      </a>
+
+      <!-- <a
         routerLink="/articles"
         class="menu-item"
         routerLinkActive="active"
@@ -49,15 +60,17 @@
         <span class="label">Chat</span>
       </a>
       <a
-        routerLink="/community"
+        [routerLink]="communityRoute"
         class="menu-item"
         routerLinkActive="active"
+        [attr.data-selected]="shareSelect"
         (click)="closeMenu()"
       >
         <mat-icon class="material-icons">groups</mat-icon>
         <span class="label">Community</span>
-      </a>
+      </a> -->
     </div>
+
     <div class="bottom-menu">
       <a
         routerLink="/notification"
@@ -71,9 +84,9 @@
 
       <a
         class="menu-item bottom-item"
-        [routerLink]="route"
+        [routerLink]="settingsRoute"
         routerLinkActive="active"
-        [attr.data-selected]="shareSelect"
+        [attr.data-selected]="selectEl"
         (click)="closeMenu()"
       >
         <app-fa-wrapper class="material-icons" icon="gear"></app-fa-wrapper>

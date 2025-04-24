@@ -224,4 +224,15 @@ export class SettingsEffects {
       )
     )
   );
+
+  /* Global Logger */
+  logAllActions$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        tap((action) => {
+          console.log('[🔥 Action fired]:', action);
+        })
+      ),
+    { dispatch: false }
+  );
 }

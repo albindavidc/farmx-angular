@@ -22,6 +22,7 @@ export const authReducer = createReducer(
   })),
   on(AuthActions.refreshTokenSuccess, (state) => ({
     ...state,
+    isAuthenticated: true,
     isLoading: false,
   })),
   on(AuthActions.refreshTokenFailure, (state) => ({
@@ -30,6 +31,7 @@ export const authReducer = createReducer(
   })),
   on(AuthActions.setUser, (state, { user }) => ({
     ...state,
+    isAuthenticated: true,
     user,
   })),
   on(AuthActions.setAccessToken, (state, { accessToken }) => ({
@@ -50,5 +52,10 @@ export const authReducer = createReducer(
   on(AuthActions.logout, (state) => {
     localStorage.removeItem('authState');
     return initialState;
-  })
+  }),
+  on(AuthActions.checkAuthStatusSuccess, (state, { data }) => ({
+    ...state,
+    isAuthenticated: true,
+    user: data,
+  }))
 );

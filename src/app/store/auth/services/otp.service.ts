@@ -9,7 +9,7 @@ import {
   VerifyOtpRequest,
   VerifyOtpResponse,
 } from '../../../shared/models/otp.model';
-import { TokenService } from '../../../core/services/token.service';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,20 +19,27 @@ export class OtpService {
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 
   sendOtp(email: string): Observable<SendOtpResponse> {
-    return this.http.post<SendOtpResponse>(`${this.apiURL}/send-otp`, {
-      email,
-    });
+    return this.http.post<SendOtpResponse>(
+      `${this.apiURL}/send-otp`,
+      {
+        email,
+      },
+      { withCredentials: true }
+    );
   }
 
   verifyOtp(request: VerifyOtpRequest): Observable<VerifyOtpResponse> {
     return this.http.post<VerifyOtpResponse>(
       `${this.apiURL}/verify-otp`,
-      request
+      request,
+      { withCredentials: true }
     );
   }
 
   resendOtp(request: ResendOtpRequest): Observable<void> {
-    return this.http.post<void>(`${this.apiURL}/resend-otp`, request);
+    return this.http.post<void>(`${this.apiURL}/resend-otp`, request, {
+      withCredentials: true,
+    });
   }
 
   // refreshToken(refreshToken: string): Observable<{ accessToken: string }> {

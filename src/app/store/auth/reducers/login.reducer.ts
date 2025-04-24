@@ -5,6 +5,7 @@ import { LoginState } from '../../../shared/models/auth-state.model';
 export const loginFeatureKey = 'login';
 
 export const initialState: LoginState = {
+  isAuthenticated: false,
   email: '',
   isLoggedIn: false,
   error: null,
@@ -22,25 +23,18 @@ export const loginReducer = createReducer(
     isLoading: true,
     error: null,
   })),
-  on(LoginActions.loginSuccess, (state, { response }) => {
-    const newState = {
-      ...state,
-      isLoggedIn: true,
-      user: response.user,
-      accessToken: response.accessToken,
-      refreshToken: response.refreshToken,
-      error: null,
-      isLoading: false,
-    };
-    localStorage.setItem('authState', JSON.stringify(newState)); // Persist entire state
-    return newState;
-  }),
+  on(LoginActions.loginSuccess, (state, { response }) => ({
+    ...state,
+    isAuthenticated: true,
+    isLoggedIn: true,
+    user: response.data,
+    error: null,
+    isLoading: false,
+  })),
 
   on(LoginActions.loginFailure, (state, { error }) => ({
     ...state,
     isLoading: false,
     error,
-  })),
-
-
+  }))
 );

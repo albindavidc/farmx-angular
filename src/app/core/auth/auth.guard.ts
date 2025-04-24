@@ -7,9 +7,23 @@ import {
 } from '@angular/router';
 import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
-import { TokenService } from '../services/token.service';
+import {
+  catchError,
+  filter,
+  map,
+  Observable,
+  of,
+  skip,
+  switchMap,
+  take,
+  timeout,
+} from 'rxjs';
+import { TokenService } from '../../store/auth/services/token.service';
 import { AuthActions } from '../../store/auth/actions/auth.actions';
+import {
+  selectIsAuthenticated,
+  selectUser,
+} from '../../store/auth/selectors/auth.selectors';
 
 export const authGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
@@ -17,78 +31,57 @@ export const authGuard: CanActivateFn = (
 ): Observable<boolean | UrlTree> => {
   const store = inject(Store);
   const router = inject(Router);
-  const tokenService = inject(TokenService);
 
   const isAuthRoute =
     state.url.startsWith('/auth/login') ||
     state.url.startsWith('/auth/signup') ||
     state.url.startsWith('auth/otp-verification');
 
-  return tokenService.checkAuthStatus().pipe(
-    switchMap(({ isAuthenticated, user }) => {
-      console.log(
-        `${isAuthenticated} && ${user} these are the information in the front-end`
-      );
-      if (isAuthenticated && user) {
-        const authUser = {
-          id: user.id,
-          email: user.email || '',
-          name: user.name,
-          password: '',
-          phone: user.phone,
-          role: user.role,
-          isVerified: user.isVerified || false,
-        };
-        store.dispatch(AuthActions.setUser({ user: authUser }));
-
-        if (isAuthRoute) {
-          return of(router.createUrlTree([`/${user.role}/home`]));
-        }
-
-        return of(true);
+  return store.select(selectIsAuthenticated).pipe(
+    take(1),
+    map((isAuthenticated) => {
+      if (isAuthenticated) {
+        return store.select(selectUser).pipe(
+          take(1),
+          map((user) => {
+            if (!user) return true;
+            if (user) {
+              if (isAuthRoute) {
+                console.log('navigating to the user', user, user.role)
+                return router.createUrlTree([`/${user.role}/home`]);
+              }
+            }
+            return true;
+            // store.dispatch(AuthActions.checkAuthStatus());
+            // return false;
+          })
+        );
       }
-      if (isAuthRoute) {
-        return of(true);
-      }
+      return true;
 
-      return tokenService.refreshToken().pipe(
-        switchMap((refreshed) => {
-          if (refreshed) {
-            return tokenService.checkAuthStatus().pipe(
-              switchMap(({ isAuthenticated, user }) => {
-                if (isAuthenticated && user) {
-                  const authUser = {
-                    id: user.id,
-                    email: user.email || '',
-                    name: user.name,
-                    password: '',
-                    phone: user.phone,
-                    role: user.role,
-                    isVerified: user.isVerified || false,
-                  };
-                  store.dispatch(AuthActions.setUser({ user: authUser }));
-                  return of(router.createUrlTree([`/${user.role}/home`]));
-                }
-                return of(
-                  router.createUrlTree(['/auth/login'], {
-                    queryParams: { redirectUrl: state.url },
-                  })
-                );
-              })
-            );
-          }
+      // /* If the user is not authenticated */
+      // if (isAuthRoute) {
+      //   return of(true);
+      // }
 
-          return of(
-            router.createUrlTree(['/auth/login'], {
-              queryParams: { redirectUrl: state.url },
-            })
-          );
-        })
-      );
+      // /* Refresh for non auth routes */
+      // store.dispatch(AuthActions.refreshToken());
+
+      // return store.select(selectIsAuthenticated).pipe(
+      //   take(2),
+      //   map((isAuthenticated) => isAuthenticated),
+      //   filter((isAuthenticated) => isAuthenticated === true),
+      //   timeout(3000),
+      //   map(() => true),
+      //   catchError(() => {
+      //     return of(
+      //       router.createUrlTree(['/auth/login'], {
+      //         queryParams: { redirectUrl: state.url },
+      //       })
+      //     );
+      //   })
+      // );
     }),
-    catchError((error) => {
-      console.error(`Auth guard error`, error);
-      return of(router.createUrlTree(['/auth/login']));
-    })
+    switchMap((result) => (typeof result === 'boolean' ? of(result) : result))
   );
 };

@@ -1,0 +1,13 @@
+<div class="message-input">
+  <mat-icon class="material-icons">add_a_photo</mat-icon>
+
+  <textarea
+    #autoResizeTextarea
+    id="auto-resize-textarea"
+    placeholder="Enter Message"
+    (input)="onTextareaInput()"
+    rows="1"
+  ></textarea>
+
+  <mat-icon class="material-icons">send</mat-icon>
+</div>

@@ -1,0 +1,32 @@
+<div class="community-container">
+  <div class="community-search-container">
+    <div class="community-header">
+      <h6>Communities</h6>
+      <button type="button">Create Community</button>
+    </div>
+    <div class="community-search">
+      <p>Search for your communities</p>
+      <mat-icon class="material-icon">search</mat-icon>
+    </div>
+    <div class="community-list">
+      <a *ngFor="let item of communityList">
+        <img src="" alt="" />
+        <div>
+          <p>Community Name</p>
+          <p>Community description</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="community-message-container">
+    <div class="community-message-header">
+      <img src="" alt="" />
+      <h6>name of the community</h6>
+      <p>description of the community</p>
+    </div>
+    <div class="community-message-body"></div>
+
+    <app-message-input></app-message-input>
+  </div>
+</div>
