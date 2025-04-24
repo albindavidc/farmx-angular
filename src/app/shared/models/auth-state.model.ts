@@ -33,6 +33,7 @@ export interface LoginState {
   isLoading: boolean;
   accessToken: string | null;
   refreshToken: string | null;
+  isAuthenticated: boolean,
 }
 
 export interface User {

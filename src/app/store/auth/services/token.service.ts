@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../../environments/environment.development';
 
 export interface TokenPayload {
   id: string;
@@ -22,25 +22,26 @@ export class TokenService {
   constructor(private http: HttpClient) {}
 
   checkAuthStatus(): Observable<{
-    isAuthenticated: boolean;
-    user: TokenPayload | null;
+    data: TokenPayload | null;
   }> {
     return this.http
-      .get<{ success: boolean; data: TokenPayload }>(`${this.apiUrl}/auth/user`, {
-        withCredentials: true,
-      })
+      .get<{ data: TokenPayload | null }>(
+        `${this.apiUrl}/auth/user`,
+        {
+          withCredentials: true,
+        }
+      )
       .pipe(
         map((response) => ({
-          isAuthenticated: response.success,
-          user: response.success ? response.data : null,
+          data: response ? response.data : null,
         })),
-        catchError(() => of({ isAuthenticated: false, user: null }))
+        catchError(() => of( {data: null} ))
       );
   }
 
-  refreshToken(): Observable<boolean> {
+  refreshToken(): Observable<{ accessToken: string }> {
     return this.http
-      .post<{ success: boolean; accessToken?: string }>(
+      .post<{ accessToken: string }>(
         `${this.apiUrl}/auth/refresh-access-token`,
         {},
         {
@@ -48,10 +49,9 @@ export class TokenService {
         }
       )
       .pipe(
-        map((response) => response.success),
         catchError((error) => {
           console.error(`Refresh token failed: ${error}`);
-          return of(false);
+          return of({ accessToken: '' });
         })
       );
   }

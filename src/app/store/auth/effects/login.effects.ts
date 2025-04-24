@@ -13,7 +13,7 @@ import {
 import { AuthActions } from '../actions/auth.actions';
 import { LoginService } from '../services/login.service';
 import { LoginResponse } from '../../../shared/models/login';
-import { TokenService } from '../../../core/services/token.service';
+import { TokenService } from '../services/token.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OtpService } from '../services/otp.service';
 import { Router } from '@angular/router';
@@ -38,28 +38,25 @@ export class LoginEffects {
             //   response.accessToken,
             //   response.refreshToken
             // );
-            console.log('We are going to redirect to the signup', response.user)
+            console.log('We are going to redirect to the home', response.data);
             return [
               LoginActions.loginSuccess({
                 response: {
-                  user: response.user,
-                  accessToken: response.accessToken,
-                  refreshToken: response.refreshToken,
+                  data: response.data,
                 },
               }),
-              AuthActions.setAccessToken({ accessToken: response.accessToken }),
               AuthActions.setUser({
-                user: response.user,
+                user: response.data,
               }),
-              AuthActions.refreshTokenSuccess(),
-              AuthActions.navigateAfterAuth({ role: response.user.role.toLowerCase() }),
-              
+              AuthActions.navigateAfterAuth({
+                role: response.data.role.toLowerCase(),
+              }),
             ];
           }),
           catchError((error: HttpErrorResponse) =>
             of(
               LoginActions.loginFailure({
-                error: error.error.message || 'Login failed',
+                error: 'Login failed',
               })
             )
           )
@@ -74,13 +71,49 @@ export class LoginEffects {
       exhaustMap(() => {
         return this.authService.refreshToken().pipe(
           map((response) => {
-            return AuthActions.refreshTokenSuccess();
+            AuthActions.setAccessToken({ accessToken: response.accessToken });
+
+            return AuthActions.refreshTokenSuccess({
+              accessToken: response.accessToken,
+            });
           }),
           catchError((error) => {
             return of(AuthActions.refreshTokenFailure());
           })
         );
       })
+    )
+  );
+
+  checkAuthStatus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.checkAuthStatus),
+      switchMap(() =>
+        this.tokenService.checkAuthStatus().pipe(
+          map((response) => {
+            console.log(
+              'this is the user in the check auth status',
+              response.data
+            );
+            if (response.data) {
+              AuthActions.setUser({ user: response.data });
+              return AuthActions.checkAuthStatusSuccess({
+                data: response.data,
+              });
+            }
+            return AuthActions.checkAuthStatusFailure({
+              error: 'Error in checking the status of the user',
+            });
+          }),
+          catchError(() =>
+            of(
+              AuthActions.checkAuthStatusFailure({
+                error: 'Error while checking the user status',
+              })
+            )
+          )
+        )
+      )
     )
   );
 

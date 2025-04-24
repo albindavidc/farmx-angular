@@ -42,6 +42,7 @@
     "filepond-plugin-image-resize": "^2.0.10",
     "filepond-plugin-image-transform": "^3.8.7",
     "jwt-decode": "^4.0.0",
+    "ngx-cookie-service": "^19.1.2",
     "ngx-filepond": "^7.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

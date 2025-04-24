@@ -13,6 +13,6 @@ export class LoginService {
   constructor(private http: HttpClient) {}
 
   login(payload: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, payload);
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, payload, {withCredentials: true},);
   }
 }

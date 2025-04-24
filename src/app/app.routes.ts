@@ -13,12 +13,13 @@ import { FarmerCommunityComponent } from './modules/farmer/farmer-community/farm
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
-  { path: 'auth/signup', component: SignupComponent },
+  { path: 'auth/signup', component: SignupComponent , canActivate: [authGuard]},
   {
     path: 'auth/otp-verification',
     component: OtpVerificationComponent,
+    canActivate: [authGuard]
   },
-  { path: 'auth/login', component: LoginComponent },
+  { path: 'auth/login', component: LoginComponent, canActivate: [authGuard] },
   {
     path: 'user',
     canActivate: [authGuard, roleGuard],
