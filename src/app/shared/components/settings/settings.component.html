@@ -6,7 +6,6 @@
 
   <!-- Main Content Grid -->
   <div class="settings-grid">
-    
     <!-- Profile Card -->
     <div class="settings-card">
       <div class="profile-section">
@@ -215,12 +214,19 @@
               <p>Control your notifications on your application.</p>
             </div>
           </div>
-          <label class="toggle-switch small">
-            <input type="checkbox" [(ngModel)]="notificationEnabled" />
-            <div class="toggle-switch-background">
-              <div class="toggle-switch-handle"></div>
+
+          <!-- Toggle Button -->
+          <div class="checkbox-wrapper-5">
+            <div class="check">
+              <input
+                checked=""
+                id="check-5"
+                type="checkbox"
+                [(ngModel)]="notificationEnabled"
+              />
+              <label for="check-5"></label>
             </div>
-          </label>
+          </div>
         </div>
       </div>
 

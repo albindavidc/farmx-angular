@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -9,6 +9,7 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class MessageInputComponent implements AfterViewInit {
   @ViewChild('autoResizeTextarea') textareaEl!: ElementRef;
+  @Input() 
 
   ngAfterViewInit(): void {
     this.adjustTextareaHeight();
