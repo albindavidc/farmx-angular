@@ -1,3 +1,4 @@
+@use "@angular/material" as mat;
 @use "sass:map";
 
 $font-weights: (
@@ -16,6 +17,34 @@ $breakpoints: (
   medium: 900px,
   large: 1200px,
 );
+
+/* Contianer keyframes */
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container-transform {
+  /* Initial state - before animation */
+  opacity: 0;
+  transform: translateY(20px);
+
+  /* Animation for entrance */
+  animation: cardAppear 0.7s ease-out forwards;
+
+  /* Different delays for children */
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: 0.2s * $i;
+    }
+  }
+}
 
 .community-form-container {
   background-color: var(--md-sys-color-surface);
@@ -91,7 +120,7 @@ $breakpoints: (
     margin-top: 100px;
   }
 
-  @media (min-width: map-get($breakpoints, small)) and (max-width: map-get($breakpoints, medium)) {
+  @media (min-width: map.get($breakpoints, small)) and (max-width: map.get($breakpoints, medium)) {
     margin-top: 100px;
 
     .form-field {
@@ -275,12 +304,15 @@ $breakpoints: (
     color: var(--md-sys-color-on-surface-variant);
   }
   button.mat-icon-button .mat-warn .mat-icon {
-    color: var(--md-sys-color-error);
+    color: var(--md-sys-color-error) !important;
   }
 
   /* Error messages */
-  .mat-error {
-    color: var(--md-sys-color-error);
+  .mat-error
+    .mat-mdc-error
+    .mat-mdc-form-field-error
+    .filled-error-label-text-color {
+    color: var(--md-sys-color-error) !important;
   }
 
   /* Mat checkbox */
