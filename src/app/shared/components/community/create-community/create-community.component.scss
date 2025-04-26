@@ -1,0 +1,420 @@
+@use "@angular/material" as mat;
+@use "sass:map";
+
+$font-weights: (
+  thin: 100,
+  light: 300,
+  regular: 500,
+  bold: 700,
+  black: 900,
+);
+
+$font-poppins: "Poppins", sans-serif;
+$font-lato: "Lato", sans-serif;
+
+$breakpoints: (
+  small: 600px,
+  medium: 900px,
+  large: 1200px,
+);
+
+/* Contianer keyframes */
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container-transform {
+  /* Initial state - before animation */
+  opacity: 0;
+  transform: translateY(20px);
+
+  /* Animation for entrance */
+  animation: cardAppear 0.7s ease-out forwards;
+
+  /* Different delays for children */
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: 0.2s * $i;
+    }
+  }
+}
+
+.community-form-container {
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  max-width: 800px;
+  padding: 24px;
+  margin-left: auto;
+  margin-right: auto;
+
+  margin-top: 84px;
+  margin-bottom: 84px;
+  border-radius: 2rem;
+
+  h1 {
+    margin-bottom: 24px;
+
+    color: var(--md-sys-color-primary);
+    font-family: $font-poppins;
+    font-size: 24px;
+    font-weight: map.get($font-weights, regular);
+  }
+
+  .form-field {
+    margin-bottom: 20px;
+
+    .full-width {
+      width: 100%;
+    }
+  }
+
+  .image-upload {
+    label {
+      display: block;
+
+      margin-bottom: 12px;
+
+      font-size: 16px;
+      color: var(--md-sys-color-primary);
+    }
+
+    .image-preview-container {
+      position: relative;
+
+      display: inline-block;
+
+      margin-bottom: 12px;
+
+      img {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 2rem;
+      }
+
+      button {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background-color: var(--md-sys-color-surface);
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+
+    margin-top: 24px;
+  }
+
+  @media (max-width: map.get($breakpoints, small)) {
+    padding: 2rem;
+    margin-top: 100px;
+  }
+
+  @media (min-width: map.get($breakpoints, small)) and (max-width: map.get($breakpoints, medium)) {
+    margin-top: 100px;
+
+    .form-field {
+      margin-bottom: 2rem;
+    }
+
+    .form-actions {
+      gap: 16px;
+    }
+  }
+
+  @media (min-width: map.get($breakpoints, medium)) and (max-width: map.get($breakpoints, large)) {
+    h1 {
+      font-size: 28px;
+    }
+  }
+}
+
+.stroked-button {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+
+  /* Typography */
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: 0.00625em;
+  text-transform: uppercase;
+
+  /* Visual Style */
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 1rem;
+  background-color: transparent;
+  color: var(--md-sys-color-primary);
+  cursor: pointer;
+
+  /* Transition */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-property: background-color, border-color, color, box-shadow;
+
+  /* Interaction States */
+  &:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--md-sys-color-primary) 8%,
+      transparent
+    );
+    border-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary-container);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--md-sys-color-background),
+      0 0 0 4px var(--md-sys-color-primary);
+  }
+
+  &:active {
+    background-color: color-mix(
+      in srgb,
+      var(--md-sys-color-primary) 12%,
+      transparent
+    );
+    transform: translateY(1px);
+  }
+
+  /* Disabled State */
+  &:disabled {
+    border-color: var(--md-sys-color-outline-variant);
+    color: var(--md-sys-color-on-surface-variant);
+    background-color: transparent;
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Icon Styles */
+  .button-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    font-size: 1.125rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Alternative Filled Variant */
+.stroked-button.filled {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: transparent;
+
+  &:hover {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+  }
+
+  &:disabled {
+    background-color: color-mix(
+      in srgb,
+      var(--md-sys-color-primary) 12%,
+      transparent
+    );
+    color: color-mix(in srgb, var(--md-sys-color-on-primary));
+  }
+}
+
+/* Elevated Variant */
+.stroked-button.elevated {
+  border: none;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  background-color: var(--md-sys-color-surface-container-low);
+
+  &:hover {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 6px 0 rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface-container);
+  }
+}
+
+/* Apply custom variables to material components */
+
+:host ::ng-deep {
+  /* Button styles */
+  .mat-mdc-button .mat-primary,
+  .mat-mdc-raised-button .mat-primary,
+  .mat-mdc-unelevated-button .mat-primary,
+  .mat-mdc-outlined-button .mat-primary {
+    --mdc-filled-button-container-color: var(--md-sys-color-primary);
+    --mdc-filled-button-label-text-color: var(--md-sys-color-on-primary);
+    --mdc-outlined-button-label-text-color: var(--md-sys-color-primary);
+    --mdc-outlined-button-outline-color: var(--md-sys-color-outline);
+    --mat-fab-foreground-color: var(--md-sys-color-on-primary);
+    --mat-fab-background-color: var(--md-sys-color-primary);
+  }
+
+  /* Form field and input styles */
+  .mat-mdc-form-field {
+    --mdc-filled-text-field-caret-color: var(--md-sys-color-primary);
+    --mdc-filled-text-field-focus-active-indicator-color: var(
+      --md-sys-color-primary
+    );
+    --mdc-filled-text-field-focus-label-text-color: var(--md-sys-color-primary);
+    --mdc-outlined-text-field-caret-color: var(--md-sys-color-primary);
+    --mdc-outlined-text-field-focus-outline-color: var(--md-sys-color-primary);
+    --mdc-outlined-text-field-focus-label-text-color: var(
+      --md-sys-color-primary
+    );
+    --mdc-outlined-text-field-label-text-color: var(
+      --md-sys-color-on-surface-variant
+    );
+    --mat-form-field-focus-color: var(--md-sys-color-primary);
+  }
+
+  /* Chips styles */
+  .mat-mdc-chip {
+    --mdc-chip-elevated-container-color: var(--md-sys-color-surface-container);
+    --mdc-chip-with-trailing-icon-trailing-icon-color: var(
+      --md-sys-color-on-surface-variant
+    );
+    --mdc-chip-with-trailing-icon-hover-trailing-icon-color: var(
+      --md-sys-color-on-surface
+    );
+    --mdc-chip-label-text-color: var(--md-sys-color-on-surface);
+  }
+
+  /* Card styles */
+  .mat-mdc-card {
+    --mdc-elevated-card-container-color: var(--md-sys-color-surface);
+    --mdc-outlined-card-container-color: var(--md-sys-color-surface);
+    --mdc-outlined-card-outline-color: var(--md-sys-color-outline-variant);
+  }
+
+  /* Icon styles */
+  .mat-icon {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  button.mat-icon-button .mat-warn .mat-icon {
+    color: var(--md-sys-color-error) !important;
+  }
+
+  /* Error messages */
+  .mat-error
+    .mat-mdc-error
+    .mat-mdc-form-field-error
+    .filled-error-label-text-color {
+    color: var(--md-sys-color-error) !important;
+  }
+
+  /* Mat checkbox */
+  .mat-mdc-checkbox {
+    --mdc-checkbox-selected-checkmark-color: var(--md-sys-color-on-primary);
+    --mdc-checkbox-selected-focus-icon-color: var(--md-sys-color-primary);
+    --mdc-checkbox-selected-hover-icon-color: var(--md-sys-color-primary);
+    --mdc-checkbox-selected-icon-color: var(--md-sys-color-primary);
+    --mdc-checkbox-selected-pressed-icon-color: var(--md-sys-color-primary);
+  }
+
+  .mat-mdc-button .mat-primary {
+    --mdc-filled-button-container-color: var(--md-sys-color-primary) !important;
+    --mdc-filled-button-label-text-color: var(
+      --md-sys-color-on-primary
+    ) !important;
+    background-color: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+  }
+
+  .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+    --mdc-filled-text-field-container-color: var(
+      --md-sys-color-surface-container
+    ) !important;
+    --mdc-filled-text-field-label-text-color: var(
+      --md-sys-color-on-surface-variant
+    ) !important;
+  }
+
+  /* Target button label and icon colors for all button types */
+  .mat-mdc-button .mdc-button__label .mat-mdc-button__label,
+  .mat-mdc-button .mat-icon,
+  .mat-mdc-unelevated-button .mdc-button__label,
+  .mat-mdc-unelevated-button .mat-icon,
+  .mat-mdc-outlined-button .mdc-button__label,
+  .mat-mdc-outlined-button .mat-icon {
+    color: var(
+      --md-sys-color-primary
+    ) !important; /* This ensures they inherit from the parent button color */
+  }
+
+  .mat-mdc-raised-button:not(:disabled) {
+    color: var(--md-sys-color-primary) !important;
+    background-color: var(--md-sys-color-surface);
+  }
+
+  /* Primary raised buttons */
+  .mat-mdc-raised-button .mat-primary {
+    --mdc-protected-button-container-color: var(
+      --md-sys-color-primary
+    ) !important;
+    background-color: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+  }
+
+  /* Primary unelevated buttons */
+  .mat-mdc-unelevated-button .mat-primary {
+    --mdc-filled-button-container-color: var(--md-sys-color-primary) !important;
+    background-color: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+  }
+
+  /* Primary flat buttons */
+  .mat-mdc-button .mat-primary {
+    color: var(--md-sys-color-primary) !important;
+  }
+
+  /* Primary outlined buttons */
+  .mat-mdc-outlined-button .mat-primary {
+    --mdc-outlined-button-outline-color: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-primary) !important;
+    border-color: var(--md-sys-color-primary) !important;
+  }
+
+  /* Additional specificity for the label elements */
+  .mat-mdc-raised-button .mat-primary .mdc-button__label,
+  .mat-mdc-unelevated-button.mat-primary .mdc-button__label {
+    color: var(--md-sys-color-on-primary) !important;
+  }
+
+  .mat-mdc-button .mat-primary .mdc-button__label,
+  .mat-mdc-outlined-button .mat-primary .mdc-button__label {
+    color: var(--md-sys-color-primary) !important;
+  }
+
+  /* Handle icons within buttons */
+  .mat-mdc-raised-button .mat-primary .mat-icon,
+  .mat-mdc-unelevated-button .mat-primary .mat-icon {
+    color: var(--md-sys-color-on-primary) !important;
+  }
+
+  .mat-mdc-button .mat-primary .mat-icon,
+  .mat-mdc-outlined-button .mat-primary .mat-icon {
+    color: var(--md-sys-color-primary) !important;
+  }
+
+  /* Handle the ripple */
+  .mat-mdc-button .mat-ripple-element,
+  .mat-mdc-raised-button .mat-ripple-element,
+  .mat-mdc-unelevated-button .mat-ripple-element,
+  .mat-mdc-outlined-button .mat-ripple-element {
+    background-color: var(--md-sys-color-primary) !important;
+    opacity: 0.1;
+  }
+}

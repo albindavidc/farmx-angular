@@ -8,13 +8,11 @@ import {
   of,
   switchMap,
   tap,
-  withLatestFrom,
 } from 'rxjs';
 import { AuthActions } from '../actions/auth.actions';
 import { Router } from '@angular/router';
 import { OtpService } from '../services/otp.service';
 import { VerifyOtpResponse } from '../../../shared/models/otp.model';
-import { selectAccessToken } from '../selectors/auth.selectors';
 import { Store } from '@ngrx/store';
 
 @Injectable()
@@ -22,7 +20,6 @@ export class OtpEffects {
   private actions$ = inject(Actions);
   private otpService = inject(OtpService);
   private router = inject(Router);
-  private store = inject(Store);
 
   verifyOtp$ = createEffect(() =>
     this.actions$.pipe(
