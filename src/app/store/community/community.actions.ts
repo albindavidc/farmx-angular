@@ -1,9 +1,16 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { Community } from '../../shared/models/community.model';
+import {
+  Community,
+  createCommunityRequest,
+} from '../../shared/models/community.model';
 
 export const CommunityActions = createActionGroup({
   source: 'Community',
   events: {
+    'Create Community': props<{ request: createCommunityRequest }>(),
+    'Create Community Success': props<{ community: Community }>(),
+    'Create Community Failure': props<{ error: string }>(),
+
     'Load Communities': emptyProps(),
     'Load Communities Success': props<{ communities: Community[] }>(),
     'Load Communities Failure': props<{ error: string }>(),

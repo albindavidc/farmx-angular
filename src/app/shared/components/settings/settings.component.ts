@@ -47,6 +47,7 @@ import {
   selectPhotoError,
   selectProfileLoading,
   selectProfilePhotoUrl,
+  
 } from '../../../store/settings/settings.selectors';
 import { Router, RouterModule } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
