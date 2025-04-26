@@ -13,6 +13,6 @@ export interface Community {
 export interface createCommunityRequest{
   name: string;
   description: string;
-  image?: File;
   categories?: string[];
+  image?: File;
 }

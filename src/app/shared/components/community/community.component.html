@@ -2,7 +2,13 @@
   <div class="community-search-container">
     <div class="community-header">
       <h6>Communities</h6>
-      <button mat-button type="button">Create</button>
+      <button
+        mat-button
+        type="button"
+        [routerLink]="'/' + userRole + '/create-community'"
+      >
+        Create
+      </button>
     </div>
     <div class="community-search">
       <p>Search for your communities</p>
