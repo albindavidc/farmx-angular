@@ -11,13 +11,22 @@ $font-weights: (
 $font-poppins: "Poppins", sans-serif;
 $font-lato: "Lato", sans-serif;
 
+$breakpoints: (
+  small: 600px,
+  medium: 900px,
+  large: 1200px,
+);
+
 .community-form-container {
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
   max-width: 800px;
-  margin: 0 auto;
   padding: 24px;
+  margin-left: auto;
+  margin-right: auto;
 
+  margin-top: 84px;
+  margin-bottom: 84px;
   border-radius: 2rem;
 
   h1 {
@@ -57,7 +66,7 @@ $font-lato: "Lato", sans-serif;
       img {
         max-width: 100%;
         max-height: 200px;
-        border-radius: 4px;
+        border-radius: 2rem;
       }
 
       button {
@@ -77,8 +86,134 @@ $font-lato: "Lato", sans-serif;
     margin-top: 24px;
   }
 
-  @media (min-width: 700px) {
-    margin-top: 80px;
+  @media (max-width: map.get($breakpoints, small)) {
+    padding: 2rem;
+    margin-top: 100px;
+  }
+
+  @media (min-width: map-get($breakpoints, small)) and (max-width: map-get($breakpoints, medium)) {
+    margin-top: 100px;
+
+    .form-field {
+      margin-bottom: 2rem;
+    }
+
+    .form-actions {
+      gap: 16px;
+    }
+  }
+
+  @media (min-width: map.get($breakpoints, medium)) and (max-width: map.get($breakpoints, large)) {
+    h1 {
+      font-size: 28px;
+    }
+  }
+}
+
+.stroked-button {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+
+  /* Typography */
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: 0.00625em;
+  text-transform: uppercase;
+
+  /* Visual Style */
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 1rem;
+  background-color: transparent;
+  color: var(--md-sys-color-primary);
+  cursor: pointer;
+
+  /* Transition */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-property: background-color, border-color, color, box-shadow;
+
+  /* Interaction States */
+  &:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--md-sys-color-primary) 8%,
+      transparent
+    );
+    border-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary-container);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--md-sys-color-background),
+      0 0 0 4px var(--md-sys-color-primary);
+  }
+
+  &:active {
+    background-color: color-mix(
+      in srgb,
+      var(--md-sys-color-primary) 12%,
+      transparent
+    );
+    transform: translateY(1px);
+  }
+
+  /* Disabled State */
+  &:disabled {
+    border-color: var(--md-sys-color-outline-variant);
+    color: var(--md-sys-color-on-surface-variant);
+    background-color: transparent;
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Icon Styles */
+  .button-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    font-size: 1.125rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Alternative Filled Variant */
+.stroked-button.filled {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: transparent;
+
+  &:hover {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+  }
+
+  &:disabled {
+    background-color: color-mix(
+      in srgb,
+      var(--md-sys-color-primary) 12%,
+      transparent
+    );
+    color: color-mix(in srgb, var(--md-sys-color-on-primary));
+  }
+}
+
+/* Elevated Variant */
+.stroked-button.elevated {
+  border: none;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  background-color: var(--md-sys-color-surface-container-low);
+
+  &:hover {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 6px 0 rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface-container);
   }
 }
 
@@ -188,11 +323,10 @@ $font-lato: "Lato", sans-serif;
   }
 
   .mat-mdc-raised-button:not(:disabled) {
-    color: var(
-      --md-sys-color-primary
-    ) !important; /* This ensures they inherit from the parent button color */
+    color: var(--md-sys-color-primary) !important;
     background-color: var(--md-sys-color-surface);
   }
+
   /* Primary raised buttons */
   .mat-mdc-raised-button .mat-primary {
     --mdc-protected-button-container-color: var(

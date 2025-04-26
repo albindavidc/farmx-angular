@@ -93,7 +93,7 @@
             </div>
             <button
               type="button"
-              mat-stroked-button
+              class="stroked-button"
               (click)="fileInput.click()"
               *ngIf="!imagePreview"
             >
@@ -112,12 +112,12 @@
           </div>
 
           <div class="form-actions">
-            <button type="button" mat-stroked-button routerLink="community">
+            <button type="button" class="stroked-button elevated" routerLink="community">
               Cancel
             </button>
             <button
               type="submit"
-              mat-raised-button
+              class="stroked-button filled"
               color="primary"
               [disabled]="createCommunityForm.invalid"
             >

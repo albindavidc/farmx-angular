@@ -41,7 +41,7 @@ export class CommunityEffects {
       this.actions$.pipe(
         ofType(CommunityActions.createCommunitySuccess),
         tap(({ community }) => {
-          this.router.navigate(['/communities', community.id]);
+          this.router.navigate(['/community', community.id]);
         })
       ),
     { dispatch: false }
