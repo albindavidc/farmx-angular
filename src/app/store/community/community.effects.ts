@@ -3,7 +3,15 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { CommunityService } from './community.service';
 import { CommunityActions } from './community.actions';
-import { catchError, map, mergeMap, of, tap } from 'rxjs';
+import {
+  catchError,
+  exhaustMap,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 
 @Injectable()
 export class CommunityEffects {
@@ -45,5 +53,67 @@ export class CommunityEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  loadCommunities$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CommunityActions.loadCommunities),
+      mergeMap(() =>
+        this.communityService.getCommunities().pipe(
+          map((communities) =>
+            CommunityActions.loadCommunitiesSuccess({ communities })
+          ),
+          catchError((error) =>
+            of(CommunityActions.loadCommunitiesFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  loadCommunity$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CommunityActions.loadCommunity),
+      switchMap(({ communityId }) =>
+        this.communityService.getCommunity(communityId).pipe(
+          map((community) =>
+            CommunityActions.loadCommunitySuccess({ community })
+          ),
+          catchError((error) =>
+            of(CommunityActions.loadCommunityFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  joinCommunity$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CommunityActions.joinCommunity),
+      exhaustMap(({ communityId }) =>
+        this.communityService.joinCommunity(communityId).pipe(
+          map((communityId) =>
+            CommunityActions.joinCommunitySuccess(communityId)
+          ),
+          catchError((error) =>
+            of(CommunityActions.joinCommunityFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  leaveCommunity$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CommunityActions.leaveCommunity),
+      exhaustMap(({ communityId }) =>
+        this.communityService.leaveCommunity(communityId).pipe(
+          map((success) => CommunityActions.leaveCommunitySuccess(success)),
+          catchError((error) =>
+            of(CommunityActions.leaveCommunityFailure(error))
+          )
+        )
+      )
+    )
   );
 }

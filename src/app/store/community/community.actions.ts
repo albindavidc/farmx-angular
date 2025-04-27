@@ -18,5 +18,13 @@ export const CommunityActions = createActionGroup({
     'Load Community': props<{ communityId: string }>(),
     'Load Community Success': props<{ community: Community }>(),
     'Load Community Failure': props<{ error: string }>(),
+
+    'Join Community': props<{ communityId: string }>(),
+    'Join Community Success': props<{ communityId: string }>(),
+    'Join Community Failure': props<{ error: string }>(),
+
+    'Leave Community': props<{ communityId: string }>(),
+    'Leave Community Success': props<{ success: boolean }>(),
+    'Leave Community Failure': props<{ error: string }>(),
   },
 });

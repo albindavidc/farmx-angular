@@ -71,4 +71,32 @@ export class CommunityService {
       )
       .pipe(map((response) => response.imageUrl));
   }
+
+  getCommunities(): Observable<Community[]> {
+    return this.http.get<Community[]>(this.apiUrl, { withCredentials: true });
+  }
+
+  getCommunity(id: string): Observable<Community> {
+    return this.http.get<Community>(`${this.apiUrl}/${id}`, {
+      withCredentials: true,
+    });
+  }
+
+  joinCommunity(id: string): Observable<{ communityId: string }> {
+    return this.http.post<{ communityId: string }>(
+      `${this.apiUrl}/${id}/members`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  leaveCommunity(id: string): Observable<{ success: boolean }> {
+    return this.http.delete<{ success: boolean }>(
+      `${this.apiUrl}/${id}/members`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
 }
