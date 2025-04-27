@@ -9,7 +9,8 @@ export interface CommunityState {
   currentCommunity: Community | null;
   isLoading: boolean;
   error: any;
-  joinedCommunity: string;
+  joinedCommunity: boolean;
+  leaveCommunity: boolean;
 }
 
 export const initialState: CommunityState = {
@@ -17,7 +18,8 @@ export const initialState: CommunityState = {
   currentCommunity: null,
   isLoading: false,
   error: null,
-  joinedCommunity: '',
+  joinedCommunity: false,
+  leaveCommunity: false,
 };
 
 export const reducer = createReducer(
@@ -61,10 +63,10 @@ export const reducer = createReducer(
     isLoading: true,
     error: null,
   })),
-  on(CommunityActions.joinCommunitySuccess, (state, { communityId }) => ({
+  on(CommunityActions.joinCommunitySuccess, (state, { success }) => ({
     ...state,
     isLoading: false,
-    joinedCommunity: communityId,
+    joinedCommunity: success,
     error: null,
   })),
   on(CommunityActions.joinCommunityFailure, (state, { error }) => ({
@@ -78,10 +80,10 @@ export const reducer = createReducer(
     isLoading: true,
     error: null,
   })),
-  on(CommunityActions.leaveCommunitySuccess, (state, success) => ({
+  on(CommunityActions.leaveCommunitySuccess, (state, { success }) => ({
     ...state,
     isLoading: false,
-    success,
+    leaveCommunity: success,
     error: null,
   })),
   on(CommunityActions.leaveCommunityFailure, (state, { error }) => ({

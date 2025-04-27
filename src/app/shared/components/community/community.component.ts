@@ -9,15 +9,17 @@ import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectUser } from '../../../store/auth/selectors/auth.selectors';
 import { ofType } from '@ngrx/effects';
+import { CommunitiesListComponent } from './communities-list/communities-list/communities-list.component';
 
 @Component({
   selector: 'app-community',
   imports: [
     CommonModule,
-    MatIcon,
+
     MessageInputComponent,
     MatButtonModule,
     RouterModule,
+    CommunitiesListComponent,
   ],
   templateUrl: './community.component.html',
   styleUrl: './community.component.scss',
@@ -33,14 +35,12 @@ export class CommunityComponent implements OnInit {
       filter((user) => !!user),
       map((user) => user.role)
     );
-
   }
-  
+
   ngOnInit(): void {
     this.userDetails.subscribe((role) => {
       this.userRole = role;
     });
     console.log(this.userRole, 'this is the front the front-end');
   }
-
 }

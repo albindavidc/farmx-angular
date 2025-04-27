@@ -82,8 +82,8 @@ export class CommunityService {
     });
   }
 
-  joinCommunity(id: string): Observable<{ communityId: string }> {
-    return this.http.post<{ communityId: string }>(
+  joinCommunity(id: string): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(
       `${this.apiUrl}/${id}/members`,
       {
         withCredentials: true,

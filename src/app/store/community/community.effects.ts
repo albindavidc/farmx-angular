@@ -92,8 +92,8 @@ export class CommunityEffects {
       ofType(CommunityActions.joinCommunity),
       exhaustMap(({ communityId }) =>
         this.communityService.joinCommunity(communityId).pipe(
-          map((communityId) =>
-            CommunityActions.joinCommunitySuccess(communityId)
+          map((success) =>
+            CommunityActions.joinCommunitySuccess(success)
           ),
           catchError((error) =>
             of(CommunityActions.joinCommunityFailure({ error }))
