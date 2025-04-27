@@ -1,0 +1,212 @@
+/* Fonts */
+$font-weights: (
+  thin: 100,
+  light: 300,
+  regular: 400,
+  bold: 700,
+  black: 900,
+);
+
+$font-poppins: "Poppins", sans-serif;
+$font-lato: "Lato", sans-serif;
+
+.community-header {
+  margin-top: 2rem;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-evenly;
+
+  h6 {
+    font: $font-poppins;
+    font-weight: light;
+    font-size: 24px;
+    color: var(--md-sys-color-primary);
+  }
+
+  button {
+    border: 1px solid var(--md-sys-color-primary);
+    border-radius: 2rem;
+
+    padding: 0.5rem;
+  }
+}
+
+.communities-container {
+  padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+  height: 85vh; /* Set height to viewport height */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Hide overflow on container */
+
+  h1 {
+    margin-bottom: 24px;
+    font-size: 24px;
+    padding-left: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 16px;
+    flex-shrink: 0; /* Prevent header from shrinking */
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    flex-shrink: 0;
+  }
+
+  .no-communities {
+    text-align: center;
+    padding: 40px;
+    color: #757575;
+    flex-shrink: 0;
+  }
+
+  .communities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 4px; /* Small padding for scrollbar comfort */
+    flex: 1; /* Take remaining space */
+
+    .community-item {
+      display: flex;
+      padding: 16px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      transition: box-shadow 0.3s ease;
+
+      &:hover {
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .community-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 16px;
+        flex-shrink: 0;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .avatar-placeholder {
+          width: 100%;
+          height: 100%;
+          background-color: #e0e0e0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          mat-icon {
+            font-size: 32px;
+            width: 32px;
+            height: 32px;
+            color: #757575;
+          }
+        }
+      }
+
+      .community-content {
+        flex: 1;
+
+        .community-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 8px;
+
+          h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+          }
+
+          .members {
+            display: flex;
+            align-items: center;
+            color: #757575;
+            font-size: 14px;
+
+            mat-icon {
+              font-size: 16px;
+              width: 16px;
+              height: 16px;
+              margin-right: 4px;
+            }
+          }
+        }
+
+        .description {
+          color: #616161;
+          margin-bottom: 12px;
+          font-size: 14px;
+          line-height: 1.5;
+        }
+
+        .categories {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4px;
+          margin-bottom: 12px;
+
+          .category-tag {
+            font-size: 12px;
+            padding: 2px 8px;
+            background-color: #f0f0f0;
+            border-radius: 12px;
+            color: #616161;
+          }
+        }
+
+        .community-actions {
+          display: flex;
+          gap: 8px;
+
+          button {
+            mat-icon {
+              font-size: 16px;
+              width: 16px;
+              height: 16px;
+              margin-right: 4px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* Custom scrollbar styling for better UX */
+  .communities-list::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .communities-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .communities-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+  }
+
+  .communities-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+}
+
+/* Add these styles if the communities list is inside another container that might limit its height */
+:host {
+  display: block;
+  height: 100%;
+}

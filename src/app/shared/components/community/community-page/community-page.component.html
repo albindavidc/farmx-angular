@@ -1,0 +1,52 @@
+<!-- File: community/pages/community-page/community-page.component.html -->
+<div class="community-container" *ngIf="communityId">
+  <div *ngIf="loading$ | async" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div *ngIf="community$ | async as community" class="community-header">
+    <div class="community-image" *ngIf="community.imageUrl">
+      <img [src]="community.imageUrl" alt="{{ community.name }}" />
+    </div>
+
+    <div class="community-info">
+      <h1>{{ community.name }}</h1>
+      <p class="description">{{ community.description }}</p>
+
+      <div class="community-meta">
+        <span class="members">
+          <mat-icon>person</mat-icon> {{ community.memberCount }} members
+        </span>
+
+        <div *ngIf="community.categories?.length" class="categories">
+          <span
+            *ngFor="let category of community.categories"
+            class="category-tag"
+          >
+            {{ category }}
+          </span>
+        </div>
+      </div>
+
+      <div class="join-actions">
+        <ng-container *ngIf="isCommunityJoined() | async; else joinBlock">
+          <button mat-raised-button color="warn" (click)="leaveCommunity()">
+            <mat-icon>exit_to_app</mat-icon> Leave Community
+          </button>
+        </ng-container>
+
+        <ng-template #joinBlock>
+          <button mat-raised-button color="primary" (click)="joinCommunity()">
+            <mat-icon>add</mat-icon> Join Community
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div class="community-content">
+    <!-- <app-message-input [communityId]="communityId"></app-message-input> -->
+
+    <!-- <app-posts-list></app-posts-list> -->
+  </div>
+</div>

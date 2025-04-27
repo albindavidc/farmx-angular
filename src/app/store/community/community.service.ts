@@ -6,6 +6,13 @@ import { selectUser } from '../auth/selectors/auth.selectors';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
 import { User } from '../../shared/models/auth-state.model';
+import { response } from 'express';
+
+export interface ApiResponse<T> {
+  message: string;
+  success: string;
+  data: T;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -73,18 +80,24 @@ export class CommunityService {
   }
 
   getCommunities(): Observable<Community[]> {
-    return this.http.get<Community[]>(this.apiUrl, { withCredentials: true });
+    return this.http
+      .get<ApiResponse<Community[]>>(`${this.apiUrl}/community`, {
+        withCredentials: true,
+      })
+      .pipe(map((response) => response.data));
   }
 
   getCommunity(id: string): Observable<Community> {
-    return this.http.get<Community>(`${this.apiUrl}/${id}`, {
-      withCredentials: true,
-    });
+    return this.http
+      .get<ApiResponse<Community>>(`${this.apiUrl}/community/${id}`, {
+        withCredentials: true,
+      })
+      .pipe(map((response) => response.data));
   }
 
   joinCommunity(id: string): Observable<{ success: boolean }> {
     return this.http.post<{ success: boolean }>(
-      `${this.apiUrl}/${id}/members`,
+      `${this.apiUrl}/community/${id}/members`,
       {
         withCredentials: true,
       }
@@ -93,7 +106,7 @@ export class CommunityService {
 
   leaveCommunity(id: string): Observable<{ success: boolean }> {
     return this.http.delete<{ success: boolean }>(
-      `${this.apiUrl}/${id}/members`,
+      `${this.apiUrl}/community/${id}/members`,
       {
         withCredentials: true,
       }

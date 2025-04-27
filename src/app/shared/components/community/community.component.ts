@@ -9,7 +9,8 @@ import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectUser } from '../../../store/auth/selectors/auth.selectors';
 import { ofType } from '@ngrx/effects';
-import { CommunitiesListComponent } from './communities-list/communities-list/communities-list.component';
+import { CommunitiesListComponent } from './communities-list/communities-list.component';
+import { CommunityPageComponent } from './community-page/community-page.component';
 
 @Component({
   selector: 'app-community',
@@ -19,7 +20,9 @@ import { CommunitiesListComponent } from './communities-list/communities-list/co
     MessageInputComponent,
     MatButtonModule,
     RouterModule,
+
     CommunitiesListComponent,
+    CommunityPageComponent,
   ],
   templateUrl: './community.component.html',
   styleUrl: './community.component.scss',

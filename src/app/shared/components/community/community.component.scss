@@ -31,28 +31,8 @@ $font-lato: "Lato", sans-serif;
   background-color: var(--md-sys-color-surface);
 }
 
-.community-header {
-  margin-top: 2rem;
 
-  display: flex;
 
-  align-items: center;
-  justify-content: space-evenly;
-
-  h6 {
-    font: $font-poppins;
-    font-weight: light;
-    font-size: 24px;
-    color: var(--md-sys-color-primary);
-  }
-
-  button {
-    border: 1px solid var(--md-sys-color-primary);
-    border-radius: 2rem;
-
-    padding: 0.5rem;
-  }
-}
 
 .community-search {
   max-width: 100%;

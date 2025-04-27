@@ -1,17 +1,5 @@
 <div class="community-container">
   <div class="community-search-container">
-    <div class="community-header">
-      <h6>Communities</h6>
-      <button
-        mat-button
-        type="button"
-        [routerLink]="'/' + userRole + '/create-community'"
-      >
-        Create
-      </button>
-    </div>
-
-
 
 
     <!-- <div class="community-search">
@@ -31,10 +19,11 @@
     <app-communities-list></app-communities-list>
   </div>
 
-
-
-
   <div class="community-message-container">
+
+    <app-community-page></app-community-page>
+
+
     <div class="community-message-header">
       <img src="" alt="" />
       <h6>name of the community</h6>

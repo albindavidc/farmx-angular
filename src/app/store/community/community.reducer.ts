@@ -22,7 +22,7 @@ export const initialState: CommunityState = {
   leaveCommunity: false,
 };
 
-export const reducer = createReducer(
+export const communityReducer = createReducer(
   initialState,
   on(CommunityActions.loadCommunities, (state) => ({
     ...state,

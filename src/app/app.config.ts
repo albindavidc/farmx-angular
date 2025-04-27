@@ -26,6 +26,7 @@ import { loginReducer } from './store/auth/reducers/login.reducer';
 import { SettingsEffects } from './store/settings/settings.effects';
 import { settingsReducer } from './store/settings/settings.reducer';
 import { CommunityEffects } from './store/community/community.effects';
+import { communityReducer } from './store/community/community.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -42,13 +43,17 @@ export const appConfig: ApplicationConfig = {
       SignupEffects,
       OtpEffects,
       LoginEffects,
+
       SettingsEffects,
       CommunityEffects,
     ]),
+
     provideState('signup', signupReducer),
     provideState('otp', otpReducer),
     provideState('auth', authReducer),
     provideState('login', loginReducer),
+
     provideState('settings', settingsReducer),
+    provideState('community', communityReducer),
   ],
 };
