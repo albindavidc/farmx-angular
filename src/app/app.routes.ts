@@ -11,6 +11,8 @@ import { roleGuard } from './core/auth/role.guard';
 import { FarmerSettingsComponent } from './modules/farmer/farmer-settings/farmer-settings.component';
 import { FarmerCommunityComponent } from './modules/farmer/farmer-community/farmer-community.component';
 import { CreateCommunityComponent } from './shared/components/community/create-community/create-community.component';
+import { CommunityPageComponent } from './shared/components/community/community-page/community-page.component';
+import { CommunityComponent } from './shared/components/community/community.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
@@ -40,6 +42,7 @@ export const routes: Routes = [
       { path: 'settings', component: FarmerSettingsComponent },
       { path: 'community', component: FarmerCommunityComponent },
       { path: 'create-community', component: CreateCommunityComponent },
+      { path: 'community/:id', component: FarmerCommunityComponent },
     ],
   },
   {

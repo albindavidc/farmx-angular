@@ -23,18 +23,22 @@
   </div>
 
   <div class="communities-list">
-    <div
-      *ngFor="let community of communities$ | async"
-      class="community-item"
-    >
+    <div *ngFor="let community of communities$ | async" class="community-item">
       <div class="community-avatar">
-        <img *ngIf="community.imageUrl" [src]="community.imageUrl" alt="{{ community.name }}" />
+        <img
+          *ngIf="community.imageUrl"
+          [src]="community.imageUrl"
+          alt="{{ community.name }}"
+        />
         <div class="avatar-placeholder" *ngIf="!community.imageUrl">
           <mat-icon>people</mat-icon>
         </div>
       </div>
 
-      <div class="community-content">
+      <div
+        class="community-content"
+        [routerLink]="['/', userRole, 'community', community.id]"
+      >
         <div class="community-header">
           <h2>{{ community.name }}</h2>
           <span class="members">
@@ -54,15 +58,7 @@
         </div>
 
         <div class="community-actions">
-          <button
-            mat-button
-            color="primary"
-            [routerLink]="['/communities', community.id]"
-          >
-            <mat-icon>visibility</mat-icon> View
-          </button>
-
-          <ng-container *ngIf="isUserLoggedIn$ | async">
+          <ng-container *ngIf="userRole === 'user'">
             <ng-container *ngIf="isCommunityJoined() | async; else joinBlock">
               <button
                 mat-button

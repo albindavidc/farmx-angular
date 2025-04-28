@@ -17,7 +17,6 @@ import { CommunityPageComponent } from './community-page/community-page.componen
   imports: [
     CommonModule,
 
-    MessageInputComponent,
     MatButtonModule,
     RouterModule,
 

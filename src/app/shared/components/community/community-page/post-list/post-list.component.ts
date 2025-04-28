@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -12,13 +12,25 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
 import { Post } from '../../../../models/post.model';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subject } from 'rxjs';
+import {
+  map,
+  Observable,
+  Subject,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { CommunityPostActions } from '../../../../../store/community/post/community-post.actions';
-import { selectCommunityPosts } from '../../../../../store/community/post/community-post.selectors';
+import {
+  selectCommunityPostLoading,
+  selectCommunityPosts,
+} from '../../../../../store/community/post/community-post.selectors';
 import { selectCommunityLoading } from '../../../../../store/community/community.selectors';
 import { MatDialog } from '@angular/material/dialog';
 import { UserRole } from '../../../../models/user-role';
 import { selectUser } from '../../../../../store/auth/selectors/auth.selectors';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-post-list',
@@ -34,9 +46,10 @@ import { selectUser } from '../../../../../store/auth/selectors/auth.selectors';
   styleUrl: './post-list.component.scss',
 })
 export class PostListComponent implements OnInit, OnDestroy {
-  posts$ = this.store.select(selectCommunityPosts);
-  loading$ = this.store.select(selectCommunityLoading);
+  @Input() communityId!: string;
+  loading$ = this.store.select(selectCommunityPostLoading);
   UserRole = UserRole;
+  posts$: Observable<Post[]>;
 
   editForm: FormGroup;
   editingPostId: string | null = null;
@@ -49,14 +62,63 @@ export class PostListComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     private fb: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private actions$: Actions
   ) {
     this.editForm = this.fb.group({
       text: ['', [Validators.required, Validators.maxLength(500)]],
     });
+
+    this.posts$ = this.store.select(selectCommunityPosts);
+
+    this.posts$.pipe(takeUntil(this.destroy$)).subscribe((posts) => {
+      console.log('Current posts in store:', posts);
+      console.log('Number of posts:', posts ? posts.length : 0);
+      console.log('Post details:', JSON.stringify(posts, null, 2));
+    });
+
+    // Also log action dispatches
+    this.actions$
+      .pipe(
+        ofType(
+          CommunityPostActions.loadPosts,
+          CommunityPostActions.loadPostsSuccess,
+          CommunityPostActions.loadPostsFailure
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((action) => {
+        console.log('Post action dispatched:', action.type, action);
+      });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.communityId) {
+      this.store.dispatch(
+        CommunityPostActions.loadPosts({ communityId: this.communityId })
+      );
+
+      this.actions$
+        .pipe(
+          ofType(CommunityPostActions.loadPostsSuccess),
+          take(1),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => {
+          this.posts$ = this.store.select(selectCommunityPosts).pipe(
+            tap((posts) => {
+              console.log(
+                `Loaded ${posts?.length || 0} posts for community ${
+                  this.communityId
+                }`
+              );
+            })
+          );
+        });
+    } else {
+      console.error('Community ID is not defined');
+    }
+  }
 
   canEdit(post: Post): Observable<boolean> {
     return this.store.select(selectUser).pipe(

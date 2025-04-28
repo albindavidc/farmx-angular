@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
+import { UserRole } from '../../../shared/models/user-role';
 
 export interface TokenPayload {
   id: string;
@@ -9,7 +10,7 @@ export interface TokenPayload {
   name: string;
   password: string;
   phone: string;
-  role: 'user' | 'farmer' | 'admin';
+  role: UserRole;
   isVerified: boolean;
 }
 
@@ -25,17 +26,14 @@ export class TokenService {
     data: TokenPayload | null;
   }> {
     return this.http
-      .get<{ data: TokenPayload | null }>(
-        `${this.apiUrl}/auth/user`,
-        {
-          withCredentials: true,
-        }
-      )
+      .get<{ data: TokenPayload | null }>(`${this.apiUrl}/auth/user`, {
+        withCredentials: true,
+      })
       .pipe(
         map((response) => ({
           data: response ? response.data : null,
         })),
-        catchError(() => of( {data: null} ))
+        catchError(() => of({ data: null }))
       );
   }
 

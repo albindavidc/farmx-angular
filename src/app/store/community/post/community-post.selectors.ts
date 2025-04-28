@@ -1,10 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Post } from '../../../shared/models/post.model';
-import { PostState } from './community-post.reducer';
+import { CommunityPostState } from './community-post.reducer';
 
 // Community Post Selectors
 export const selectCommunityPostState =
-  createFeatureSelector<PostState>('post');
+  createFeatureSelector<CommunityPostState>('communityPost');
 
 export const selectCommunityPosts = createSelector(
   selectCommunityPostState,

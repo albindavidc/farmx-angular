@@ -29,10 +29,12 @@
       </div>
 
       <div class="join-actions">
-        <ng-container *ngIf="isCommunityJoined() | async; else joinBlock">
-          <button mat-raised-button color="warn" (click)="leaveCommunity()">
-            <mat-icon>exit_to_app</mat-icon> Leave Community
-          </button>
+        <ng-container *ngIf="userRole === 'user'">
+          <ng-container *ngIf="isCommunityJoined() | async; else joinBlock">
+            <button mat-raised-button color="warn" (click)="leaveCommunity()">
+              <mat-icon>exit_to_app</mat-icon> Leave Community
+            </button>
+          </ng-container>
         </ng-container>
 
         <ng-template #joinBlock>
@@ -45,8 +47,8 @@
   </div>
 
   <div class="community-content">
-    <!-- <app-message-input [communityId]="communityId"></app-message-input> -->
+    <app-message-input [communityId]="communityId"></app-message-input>
 
-    <!-- <app-posts-list></app-posts-list> -->
+    <app-post-list [communityId]="communityId"></app-post-list>
   </div>
 </div>

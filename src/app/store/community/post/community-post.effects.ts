@@ -16,8 +16,12 @@ export class CommunityPostEffects {
   loadPosts$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CommunityPostActions.loadPosts),
+      tap(action => console.log('Loading posts for community:', action.communityId)),
+
       switchMap(({ communityId }) =>
         this.postService.getPosts(communityId).pipe(
+          tap(posts => console.log('Posts received from API:', posts)),
+
           map((posts) => CommunityPostActions.loadPostsSuccess({ posts })),
           catchError((error) => of(CommunityPostActions.loadPostsFailure({ error })))
         )

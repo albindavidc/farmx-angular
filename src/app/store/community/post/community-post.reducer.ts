@@ -4,13 +4,13 @@ import { Post } from '../../../shared/models/post.model';
 
 export const communityPostFeatureKey = 'communityPost';
 
-export interface PostState {
+export interface CommunityPostState {
   posts: Post[];
   loading: boolean;
   error: any;
 }
 
-export const initialState: PostState = {
+export const initialState: CommunityPostState = {
   posts: [],
   loading: false,
   error: null,

@@ -7,6 +7,12 @@ import { selectUser } from '../../auth/selectors/auth.selectors';
 import { Store } from '@ngrx/store';
 import { CommunityService } from '../community.service';
 
+export interface ApiResponse<T> {
+  message: string;
+  success: string;
+  data: T;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -18,22 +24,32 @@ export class CommunityPostService {
     private communityService: CommunityService
   ) {}
 
-  uploadImage(image: File): Observable<string> {
+  uploadImage(image: File, postId: string): Observable<string> {
     const formData = new FormData();
     if (image) {
       formData.append('file', image);
+    }
+    if (postId) {
+      formData.append('postId', postId);
     }
 
     return this.http
       .post<{ imageUrl: string }>(
         `${this.apiUrl}/community/post-upload-image`,
-        formData
+        formData,
+        { withCredentials: true }
       )
       .pipe(map((response) => response.imageUrl));
   }
 
-  getPosts(communityId: string): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.apiUrl}?communityId=${communityId}`);
+  getPosts(id: string): Observable<Post[]> {
+    return this.http
+      .get<ApiResponse<Post[]>>(`${this.apiUrl}/community/${id}`, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((response) => (Array.isArray(response.data) ? response.data : []))
+      );
   }
 
   createPost(
@@ -49,30 +65,44 @@ export class CommunityPostService {
         }
         return this.communityService.getCommunity(communityId).pipe(
           switchMap((community) => {
-            let processedImage$: Observable<string | undefined>;
+            // First create the post without image
+            const post: Omit<Post, 'id'> = {
+              text,
+              imageUrl: undefined,
+              communityId,
+              communityName: community.name,
+              createdAt: new Date(),
+              userId: currentUser.id,
+              userName: currentUser.name,
+              userRole: currentUser.role,
+            };
 
-            if (image) {
-              processedImage$ = this.uploadImage(image);
-            } else {
-              processedImage$ = of(undefined);
-            }
-
-            return processedImage$.pipe(
-              switchMap((imageUrl) => {
-                const post: Omit<Post, 'id'> = {
-                  text,
-                  imageUrl,
-                  communityId,
-                  communityName: community.name,
-                  createdAt: new Date(),
-                  userId: currentUser.id,
-                  userName: currentUser.name,
-                  userRole: currentUser.role,
-                };
-
-                return this.http.post<Post>(this.apiUrl, post);
+            return this.http
+              .post<Post>(`${this.apiUrl}/community/create-post`, post, {
+                withCredentials: true,
               })
-            );
+              .pipe(
+                // Then upload image with the post ID if image exists
+                switchMap((createdPost) => {
+                  if (image && createdPost.id) {
+                    return this.uploadImage(image, createdPost.id).pipe(
+                      switchMap((imageUrl) => {
+                        // Update the post with the image URL
+                        const updatedPost = {
+                          ...createdPost,
+                          imageUrl,
+                        };
+                        return this.http.put<Post>(
+                          `${this.apiUrl}/community/${createdPost.id}`,
+                          updatedPost,
+                          { withCredentials: true }
+                        );
+                      })
+                    );
+                  }
+                  return of(createdPost);
+                })
+              );
           })
         );
       })
@@ -80,12 +110,12 @@ export class CommunityPostService {
   }
 
   editPost(postId: string, text: string, image?: File): Observable<Post> {
-    return this.http.get<Post>(`${this.apiUrl}/${postId}`).pipe(
+    return this.http.get<Post>(`${this.apiUrl}/community/${postId}`).pipe(
       switchMap((post) => {
         let processedImage$: Observable<string | undefined>;
 
         if (image) {
-          processedImage$ = this.uploadImage(image);
+          processedImage$ = this.uploadImage(image, postId); // Pass postId here
         } else {
           processedImage$ = of(post.imageUrl);
         }
@@ -100,7 +130,11 @@ export class CommunityPostService {
               lastEditedAt: new Date(),
             };
 
-            return this.http.put<Post>(`${this.apiUrl}/${postId}`, updatedPost);
+            return this.http.put<Post>(
+              `${this.apiUrl}/community/${postId}`,
+              updatedPost,
+              { withCredentials: true }
+            );
           })
         );
       })
@@ -110,7 +144,9 @@ export class CommunityPostService {
   deletePost(postId: string): Observable<void> {
     return this.http.get<Post>(`${this.apiUrl}/${postId}`).pipe(
       switchMap((post) => {
-        return this.http.delete<void>(`${this.apiUrl}/${postId}`);
+        return this.http.delete<void>(`${this.apiUrl}/community/${postId}`, {
+          withCredentials: true,
+        });
       })
     );
   }
