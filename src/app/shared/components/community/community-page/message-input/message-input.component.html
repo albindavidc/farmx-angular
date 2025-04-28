@@ -1,0 +1,65 @@
+<!-- File: components/message-input/message-input.component.html -->
+<div class="message-input-container">
+  <form [formGroup]="postForm" (ngSubmit)="submitPost()">
+    <div class="input-area">
+      <textarea
+        id="auto-resize-textarea"
+        formControlName="text"
+        placeholder="Share your thoughts with the community..."
+        rows="2"
+        (input)="onTextareaInput()"
+        class="message-textarea"
+      ></textarea>
+
+      <div class="image-preview" *ngIf="imagePreview">
+        <img [src]="imagePreview" alt="Selected image preview" />
+        <button type="button" class="remove-image-btn" (click)="removeImage()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="message-actions">
+      <div class="left-actions">
+        <button
+          type="button"
+          class="image-upload-btn"
+          (click)="fileInput.click()"
+        >
+          <mat-icon>image</mat-icon>
+          <span>Add Image</span>
+        </button>
+        <input
+          #fileInput
+          type="file"
+          hidden
+          accept="image/*"
+          (change)="onImageSelected($event)"
+        />
+      </div>
+
+      <div class="right-actions">
+        <span
+          class="character-count"
+          [ngClass]="{ warning: getRemainingChars() < 50 }"
+        >
+          {{ getRemainingChars() }} remaining
+        </span>
+        <button
+          type="submit"
+          mat-raised-button
+          color="primary"
+          [disabled]="postForm.invalid || (loading$ | async)"
+          class="submit-btn"
+        >
+          <span *ngIf="!(loading$ | async)">Post</span>
+          <mat-spinner
+            *ngIf="loading$ | async"
+            diameter="20"
+            color="accent"
+          ></mat-spinner>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

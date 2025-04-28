@@ -1,4 +1,4 @@
-import { UserRole } from './user-role';
+import { UserRole } from "./user-role";
 
 export interface Post {
   id?: string;
@@ -9,6 +9,7 @@ export interface Post {
   userName: string;
   userRole: UserRole;
   communityId: string;
+  communityName: string;
   isEdited?: boolean;
   lastEditedAt?: Date;
 }

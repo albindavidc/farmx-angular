@@ -1,3 +1,5 @@
+import { UserRole } from "./user-role";
+
 export interface AuthState {
   isAuthenticated: boolean;
   user: User | null;
@@ -42,6 +44,6 @@ export interface User {
   name: string;
   password: string;
   phone: string;
-  role: 'user' | 'farmer' | 'admin';
+  role: UserRole;
   isVerified: boolean;
 }

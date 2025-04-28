@@ -27,6 +27,8 @@ import { SettingsEffects } from './store/settings/settings.effects';
 import { settingsReducer } from './store/settings/settings.reducer';
 import { CommunityEffects } from './store/community/community.effects';
 import { communityReducer } from './store/community/community.reducer';
+import { CommunityPostEffects } from './store/community/post/community-post.effects';
+import { communityPostReducer } from './store/community/post/community-post.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -46,6 +48,7 @@ export const appConfig: ApplicationConfig = {
 
       SettingsEffects,
       CommunityEffects,
+      CommunityPostEffects,
     ]),
 
     provideState('signup', signupReducer),
@@ -55,5 +58,6 @@ export const appConfig: ApplicationConfig = {
 
     provideState('settings', settingsReducer),
     provideState('community', communityReducer),
+    provideState('communityPost', communityPostReducer),
   ],
 };

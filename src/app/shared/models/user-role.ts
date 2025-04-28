@@ -1,6 +1,5 @@
-export interface UserRole{
-    USER: string;
-    FARMER: string;
-    ADMIN: string;
-
+export enum UserRole {
+  USER = 'user',
+  FARMER = 'farmer',
+  ADMIN = 'admin',
 }
