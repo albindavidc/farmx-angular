@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, of, switchMap, take, throwError } from 'rxjs';
+import { map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Post } from '../../../shared/models/post.model';
@@ -44,12 +44,11 @@ export class CommunityPostService {
 
   getPosts(id: string): Observable<Post[]> {
     return this.http
-      .get<ApiResponse<Post[]>>(`${this.apiUrl}/community/${id}`, {
+      .get<ApiResponse<Post[]>>(`${this.apiUrl}/community/posts/${id}`, {
         withCredentials: true,
       })
       .pipe(
-        map((response) => (Array.isArray(response.data) ? response.data : []))
-      );
+        map((response) => response.data));
   }
 
   createPost(

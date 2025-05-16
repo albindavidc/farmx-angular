@@ -12,21 +12,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
 import { Post } from '../../../../models/post.model';
 import { Store } from '@ngrx/store';
-import {
-  map,
-  Observable,
-  Subject,
-  switchMap,
-  take,
-  takeUntil,
-  tap,
-} from 'rxjs';
+import { map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { CommunityPostActions } from '../../../../../store/community/post/community-post.actions';
 import {
   selectCommunityPostLoading,
   selectCommunityPosts,
 } from '../../../../../store/community/post/community-post.selectors';
-import { selectCommunityLoading } from '../../../../../store/community/community.selectors';
 import { MatDialog } from '@angular/material/dialog';
 import { UserRole } from '../../../../models/user-role';
 import { selectUser } from '../../../../../store/auth/selectors/auth.selectors';
@@ -118,6 +109,10 @@ export class PostListComponent implements OnInit, OnDestroy {
     } else {
       console.error('Community ID is not defined');
     }
+
+     this.posts$.subscribe(posts => {
+    console.log('Posts in component:', posts);
+  });
   }
 
   canEdit(post: Post): Observable<boolean> {

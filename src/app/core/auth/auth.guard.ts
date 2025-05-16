@@ -47,40 +47,15 @@ export const authGuard: CanActivateFn = (
             if (!user) return true;
             if (user) {
               if (isAuthRoute) {
-                console.log('navigating to the user', user, user.role)
+                console.log('navigating to the user', user, user.role);
                 return router.createUrlTree([`/${user.role}/home`]);
               }
             }
             return true;
-            // store.dispatch(AuthActions.checkAuthStatus());
-            // return false;
           })
         );
       }
       return true;
-
-      // /* If the user is not authenticated */
-      // if (isAuthRoute) {
-      //   return of(true);
-      // }
-
-      // /* Refresh for non auth routes */
-      // store.dispatch(AuthActions.refreshToken());
-
-      // return store.select(selectIsAuthenticated).pipe(
-      //   take(2),
-      //   map((isAuthenticated) => isAuthenticated),
-      //   filter((isAuthenticated) => isAuthenticated === true),
-      //   timeout(3000),
-      //   map(() => true),
-      //   catchError(() => {
-      //     return of(
-      //       router.createUrlTree(['/auth/login'], {
-      //         queryParams: { redirectUrl: state.url },
-      //       })
-      //     );
-      //   })
-      // );
     }),
     switchMap((result) => (typeof result === 'boolean' ? of(result) : result))
   );

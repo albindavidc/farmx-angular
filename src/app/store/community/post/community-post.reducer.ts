@@ -29,6 +29,7 @@ export const communityPostReducer = createReducer(
     ...state,
     posts,
     loading: false,
+    error: null,
   })),
   on(CommunityPostActions.loadPostsFailure, (state, { error }) => ({
     ...state,
@@ -46,6 +47,7 @@ export const communityPostReducer = createReducer(
     ...state,
     posts: [post, ...state.posts], // Add new post at the beginning
     loading: false,
+    error: null,
   })),
   on(CommunityPostActions.createPostFailure, (state, { error }) => ({
     ...state,
