@@ -130,7 +130,7 @@ export class CommunityPostService {
             };
 
             return this.http.put<Post>(
-              `${this.apiUrl}/community/${postId}`,
+              `${this.apiUrl}/community/posts/${postId}`,
               updatedPost,
               { withCredentials: true }
             );
@@ -141,12 +141,9 @@ export class CommunityPostService {
   }
 
   deletePost(postId: string): Observable<void> {
-    return this.http.get<Post>(`${this.apiUrl}/${postId}`).pipe(
-      switchMap((post) => {
-        return this.http.delete<void>(`${this.apiUrl}/community/${postId}`, {
-          withCredentials: true,
-        });
-      })
-    );
+    return this.http.delete<void>(`${this.apiUrl}/community/posts/${postId}`, {
+      withCredentials: true
+    })
+    
   }
 }

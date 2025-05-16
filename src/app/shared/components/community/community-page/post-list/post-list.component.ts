@@ -204,9 +204,10 @@ export class PostListComponent implements OnInit, OnDestroy {
     }
   }
 
-  deletePost(postId: string): void {
-    if (confirm('Are you sure you want to delete this post?')) {
-      this.store.dispatch(CommunityPostActions.deletePost({ postId }));
+  deletePost(post: Post): void {
+    console.log('this is from the front-end of the postid', post)
+    if (post.id && confirm('Are you sure you want to delete this post?')) {
+      this.store.dispatch(CommunityPostActions.deletePost({ postId : post.id}));
     }
   }
 
