@@ -33,9 +33,13 @@ export class CommunityPostService {
       formData.append('postId', postId);
     }
 
+    console.log('this is the upload image postid and image', image, postId)
+
+    const id = postId.toString();
+
     return this.http
       .post<{ imageUrl: string }>(
-        `${this.apiUrl}/community/post-upload-image`,
+        `${this.apiUrl}/community/post-upload-image/${id}`,
         formData,
         { withCredentials: true }
       )
@@ -86,19 +90,24 @@ export class CommunityPostService {
                   if (image && createdPost.id) {
                     return this.uploadImage(image, createdPost.id).pipe(
                       switchMap((imageUrl) => {
+
+                        console.log('this is created post id while uploading image' + createdPost.id)
+
                         // Update the post with the image URL
                         const updatedPost = {
                           ...createdPost,
                           imageUrl,
                         };
                         return this.http.put<Post>(
-                          `${this.apiUrl}/community/${createdPost.id}`,
+                          `${this.apiUrl}/community/posts/${createdPost.id}`,
                           updatedPost,
                           { withCredentials: true }
                         );
                       })
                     );
                   }
+
+                  console.log('this is the image and createpost.id after creating post' + image + createdPost.id)
                   return of(createdPost);
                 })
               );
@@ -109,12 +118,12 @@ export class CommunityPostService {
   }
 
   editPost(postId: string, text: string, image?: File): Observable<Post> {
-    return this.http.get<Post>(`${this.apiUrl}/community/${postId}`).pipe(
+    return this.http.get<Post>(`${this.apiUrl}/community/community-post/${postId}`, {withCredentials: true}).pipe(
       switchMap((post) => {
         let processedImage$: Observable<string | undefined>;
 
         if (image) {
-          processedImage$ = this.uploadImage(image, postId); // Pass postId here
+          processedImage$ = this.uploadImage(image, postId); 
         } else {
           processedImage$ = of(post.imageUrl);
         }
