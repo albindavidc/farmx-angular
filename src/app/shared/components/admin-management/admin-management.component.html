@@ -6,7 +6,7 @@
     </button>
   </div>
 
-  <div *ngIf="config.showFilter" class="management-table-filter">
+  <div *ngIf="config.showFilter" class="management-table-filter" style="border-radius: 20px;">
     <mat-form-field appearance="outline">
       <mat-label>{{ config.filterPlaceholder || "Filter" }}</mat-label>
       <input matInput [(ngModel)]="filterValue" (keyup.enter)="applyFilter()" />

@@ -1,3 +1,14 @@
+/* Material Theming */
+@use '@angular/material' as mat;
+
+:host::ng-deep {
+  @include mat.form-field-overrides((
+    outlined-container-shape: 20px, 
+    // container-width: 20px
+  ));
+}
+
+
 // Styles for the management table component
 .management-table-container {
   display: flex;
@@ -24,8 +35,11 @@
 }
 
 .management-table-filter {
-  padding: 0 16px;
+  // padding: 0 10px;
   background-color: #fff;
+
+  margin: 0 12rem;
+  margin-top: 10px;
 
   mat-form-field {
     width: 100%;
