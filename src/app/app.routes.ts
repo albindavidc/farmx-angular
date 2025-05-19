@@ -12,7 +12,7 @@ import { FarmerSettingsComponent } from './modules/farmer/farmer-settings/farmer
 import { FarmerCommunityComponent } from './modules/farmer/farmer-community/farmer-community.component';
 import { CreateCommunityComponent } from './shared/components/community/create-community/create-community.component';
 import { AdminSettingsComponent } from './modules/admin/admin-settings/admin-settings.component';
-import { AdminCommunityComponent } from './modules/admin/admin-community/admin-community.component';
+import { AdminCommunityManagementComponent } from './modules/admin/admin-community-management/admin-community-management.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
@@ -52,9 +52,9 @@ export const routes: Routes = [
     children: [
       { path: 'home', component: AdminComponent },
       { path: 'settings', component: AdminSettingsComponent },
-      { path: 'community', component: AdminCommunityComponent },
+      { path: 'community', component: AdminCommunityManagementComponent },
       { path: 'create-community', component: CreateCommunityComponent },
-      { path: 'community/:id', component: AdminCommunityComponent },
+      { path: 'community/:id', component: AdminCommunityManagementComponent },
     ],
   },
 

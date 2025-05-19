@@ -1,0 +1,20 @@
+<app-admin-nav-bar></app-admin-nav-bar>
+<div class="page-container">
+  <h1 class="page-title">Community Management</h1>
+
+  <app-admin-management
+    [title]="'Communities'"
+    [data]="communities"
+    [config]="tableConfig"
+    [isLoading]="isLoading"
+    [totalItems]="totalItems"
+
+    (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)"
+    (filterChange)="onFilterChange($event)"
+    
+    (rowAction)="onRowAction($event)"
+    (createNew)="onCreateNew()"
+  >
+  </app-admin-management>
+</div>
