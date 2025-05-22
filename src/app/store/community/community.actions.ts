@@ -11,7 +11,7 @@ export const CommunityActions = createActionGroup({
     'Create Community Success': props<{ community: Community }>(),
     'Create Community Failure': props<{ error: string }>(),
 
-    'Load Communities': emptyProps(),
+    'Load Communities': props<{ createdById: string }>(),
     'Load Communities Success': props<{ communities: Community[] }>(),
     'Load Communities Failure': props<{ error: string }>(),
 

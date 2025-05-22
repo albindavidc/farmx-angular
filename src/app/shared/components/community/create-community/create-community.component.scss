@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @use "sass:map";
+@use "tailwindcss";
 
 $font-weights: (
   thin: 100,

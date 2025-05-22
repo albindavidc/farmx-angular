@@ -1,13 +1,13 @@
 /* Material Theming */
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 :host::ng-deep {
-  @include mat.form-field-overrides((
-    outlined-container-shape: 20px, 
-    // container-width: 20px
-  ));
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: 20px,
+    )
+  );
 }
-
 
 // Styles for the management table component
 .management-table-container {

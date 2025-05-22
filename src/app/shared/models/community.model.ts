@@ -4,6 +4,7 @@ export interface Community {
   description: string;
   createdAt: Date;
   createdBy: string; //User Id
+  isActive: boolean;
   memberCount: number;
   imageUrl?: string;
   categories?: string[]; //eg: organic farming, sustainable agriculture

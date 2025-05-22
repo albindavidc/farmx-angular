@@ -58,8 +58,8 @@ export class CommunityEffects {
   loadCommunities$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CommunityActions.loadCommunities),
-      mergeMap(() =>
-        this.communityService.getCommunities().pipe(
+      mergeMap(({ createdById }) =>
+        this.communityService.getCommunities(createdById).pipe(
           map((communities) =>
             CommunityActions.loadCommunitiesSuccess({ communities })
           ),
@@ -92,9 +92,7 @@ export class CommunityEffects {
       ofType(CommunityActions.joinCommunity),
       exhaustMap(({ communityId }) =>
         this.communityService.joinCommunity(communityId).pipe(
-          map((success) =>
-            CommunityActions.joinCommunitySuccess(success)
-          ),
+          map((success) => CommunityActions.joinCommunitySuccess(success)),
           catchError((error) =>
             of(CommunityActions.joinCommunityFailure({ error }))
           )

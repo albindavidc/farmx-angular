@@ -66,9 +66,7 @@ export class AdminDialogComponent {
     });
   }
 
-  ngOnInit(): void {
-    // Additional initialization logic if needed
-  }
+
 
   onCancel(): void {
     this.dialogRef.close();

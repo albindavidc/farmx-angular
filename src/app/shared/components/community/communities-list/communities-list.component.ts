@@ -20,6 +20,7 @@ import {
   selectIsAuthenticated,
   selectUser,
 } from '../../../../store/auth/selectors/auth.selectors';
+import { User } from '../../../models/auth-state.model';
 
 @Component({
   selector: 'app-communities-list',
@@ -32,28 +33,30 @@ export class CommunitiesListComponent implements OnInit {
   loading$ = this.store.select(selectCommunityLoading);
   isUserLoggedIn$: Observable<boolean>;
   userRole!: string;
-  userDetails: Observable<string>;
+  userDetails: Observable<User>;
+  createdById!: string;
 
   constructor(private store: Store) {
     this.isUserLoggedIn$ = this.store.select(selectIsAuthenticated);
 
     this.userDetails = this.store.select(selectUser).pipe(
       take(1),
-      filter((user) => !!user),
-      map((user) => user.role)
+      filter((user) => !!user)
     );
   }
 
   ngOnInit(): void {
-    this.store.dispatch(CommunityActions.loadCommunities());
-
-    this.userDetails.subscribe((role) => {
-      this.userRole = role;
+    this.userDetails.subscribe((user) => {
+      this.userRole = user.role;
+      this.createdById = user.id;
     });
+
+    this.store.dispatch(
+      CommunityActions.loadCommunities({ createdById: this.createdById })
+    );
     console.log(this.userRole, 'this is the front the front-end');
 
-
-    this.communities$.subscribe(communities => {
+    this.communities$.subscribe((communities) => {
       console.log('Communities data:', communities);
     });
   }

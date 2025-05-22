@@ -79,9 +79,9 @@ export class CommunityService {
       .pipe(map((response) => response.imageUrl));
   }
 
-  getCommunities(): Observable<Community[]> {
+  getCommunities(createdById: string): Observable<Community[]> {
     return this.http
-      .get<ApiResponse<Community[]>>(`${this.apiUrl}/community`, {
+      .get<ApiResponse<Community[]>>(`${this.apiUrl}/community/${createdById}`, {
         withCredentials: true,
       })
       .pipe(map((response) => response.data));
