@@ -13,6 +13,7 @@ import {
 } from '../../../shared/services/admin/community.service';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-community-management',
@@ -75,24 +76,13 @@ export class AdminCommunityManagementComponent {
       edit: true,
       delete: true,
       view: true,
-      custom: [
-        {
-          label: 'Export',
-          icon: 'file_download',
-          action: 'export',
-        },
-        {
-          label: 'Send Notification',
-          icon: 'notifications',
-          action: 'notify',
-        },
-      ],
     },
   };
 
   constructor(
     private communityService: CommunityService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -110,9 +100,8 @@ export class AdminCommunityManagementComponent {
         },
         complete: () => {
           console.log('Community data fetch completed'); // Optional: Log completion
-        }
+        },
       });
-    
   }
 
   loadCommunities(): void {
@@ -179,12 +168,7 @@ export class AdminCommunityManagementComponent {
       case 'view':
         this.viewCommunity(item);
         break;
-      case 'export':
-        this.exportCommunity(item);
-        break;
-      case 'notify':
-        this.notifyCommunity(item);
-        break;
+
       default:
         console.warn(`Unhandled action: ${action}`);
     }
@@ -211,6 +195,7 @@ export class AdminCommunityManagementComponent {
 
     this.communityService.updateCommunity(community.id, community).subscribe({
       next: () => {
+        console.log(community, community.id, 'these are the things in the admin community managment')
         this.showNotification('Community updated successfully');
         this.loadCommunities();
       },
@@ -240,24 +225,11 @@ export class AdminCommunityManagementComponent {
   }
 
   viewCommunity(community: Community): void {
-    // Navigate to community details page or show in a modal
-    console.log('View community details:', community);
-    // For example:
-    // this.router.navigate(['/communities', community._id]);
-  }
-
-  exportCommunity(community: Community): void {
-    // Example of custom action
-    console.log('Export community:', community);
-    this.showNotification(`Exporting ${community.name} data...`);
-    // Implement export functionality
-  }
-
-  notifyCommunity(community: Community): void {
-    // Example of custom action
-    console.log('Send notification to community:', community);
-    this.showNotification(`Sending notification to ${community.name}...`);
-    // Implement notification functionality
+    if (!community.id) {
+      this.showNotification('Community ID is missing');
+      return;
+    }
+    this.router.navigate(['/communities', community.id]);
   }
 
   showNotification(message: string): void {

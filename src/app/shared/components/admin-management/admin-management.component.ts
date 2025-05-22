@@ -86,6 +86,8 @@ export class AdminManagementComponent {
 
   ngOnInit(): void {
     this.setupDisplayColumns();
+
+    console.log('Config:', this.config); // Debug
   }
 
   private setupDisplayColumns(): void {

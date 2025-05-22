@@ -36,10 +36,13 @@ export class CommunityService {
       params = params.set('filter', filter);
     }
 
-    return this.http.get<PaginatedResponse<Community>>(`${this.apiUrl}/admin/communities-listing`, {
-      params,
-      withCredentials: true,
-    });
+    return this.http.get<PaginatedResponse<Community>>(
+      `${this.apiUrl}/admin/communities-listing`,
+      {
+        params,
+        withCredentials: true,
+      }
+    );
   }
 
   getCommunityById(id: string): Observable<Community> {
@@ -51,7 +54,9 @@ export class CommunityService {
   }
 
   updateCommunity(id: string, community: Community): Observable<Community> {
-    return this.http.put<Community>(`${this.apiUrl}/${id}`, community);
+    return this.http.put<Community>(`${this.apiUrl}/${id}`, 
+      community,
+    );
   }
 
   deleteCommunity(id: string): Observable<void> {

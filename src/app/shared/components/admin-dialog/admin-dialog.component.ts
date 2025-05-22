@@ -77,8 +77,8 @@ export class AdminDialogComponent {
       const formData = this.form.value;
 
       // If editing, preserve the original ID
-      if (this.data.mode === 'edit' && this.data.item._id) {
-        formData._id = this.data.item._id;
+      if (this.data.mode === 'edit' && this.data.item.id) {
+        formData.id = this.data.item.id;
       }
 
       this.dialogRef.close(formData);
