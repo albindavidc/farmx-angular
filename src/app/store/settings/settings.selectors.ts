@@ -31,6 +31,21 @@ export const selectProfileError = createSelector(
 );
 
 /* Security Selectors */
+export const selectForgotPasswordSuccess = createSelector(
+  selectSettingsFeature,
+  (state) => state.success
+);
+
+export const selectGeneratePasswordSuccess = createSelector(
+  selectSettingsFeature,
+  (state) => state.success
+)
+
+export const selectForgotPasswordEmail = createSelector(
+  selectSettingsFeature,
+  (state) => state.email
+);
+
 export const selectisOldPasswordValid = createSelector(
   selectSettingsFeature,
   (state) => state.isOldPasswordValid
@@ -39,4 +54,4 @@ export const selectisOldPasswordValid = createSelector(
 export const selectChangePasswordState = createSelector(
   selectSettingsFeature,
   (state) => state.success
-)
+);

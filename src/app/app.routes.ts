@@ -13,6 +13,7 @@ import { FarmerCommunityComponent } from './modules/farmer/farmer-community/farm
 import { CreateCommunityComponent } from './shared/components/community/create-community/create-community.component';
 import { AdminSettingsComponent } from './modules/admin/admin-settings/admin-settings.component';
 import { AdminCommunityManagementComponent } from './modules/admin/admin-community-management/admin-community-management.component';
+import { ForgotPasswordComponent } from './modules/auth/login/forgot-password/forgot-password.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
@@ -23,6 +24,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   { path: 'auth/login', component: LoginComponent, canActivate: [authGuard] },
+  {
+    path: 'auth/forgot-password',
+    component: ForgotPasswordComponent,
+    canActivate: [authGuard],
+  },
   {
     path: 'user',
     canActivate: [authGuard, roleGuard],
@@ -45,6 +51,7 @@ export const routes: Routes = [
       { path: 'community/:id', component: FarmerCommunityComponent },
     ],
   },
+
   {
     path: 'admin',
     canActivate: [authGuard, roleGuard],

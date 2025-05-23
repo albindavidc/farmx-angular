@@ -5,6 +5,7 @@ import { User } from '../../shared/models/auth-state.model';
 export const settingsFeatureKey = 'settings';
 
 export interface SettingsState {
+  email: string;
   photoUrl: string | null;
   profile: User | null;
   loading: boolean;
@@ -15,6 +16,7 @@ export interface SettingsState {
 }
 
 export const initialState: SettingsState = {
+  email: '',
   photoUrl: null,
   profile: null,
   loading: false,
@@ -54,6 +56,17 @@ export const settingsReducer = createReducer(
   })),
 
   /* Security Reducers */
+  on(SettingsActions.forgotPasswordGenerateOtp, (state, { email }) => ({
+    ...state,
+    email: email,
+  })),
+  on(
+    SettingsActions.forgotPasswordGenerateOtpSuccess,
+    (state, { success }) => ({
+      ...state,
+      success: success,
+    })
+  ),
   on(SettingsActions.validateOldPassword, (state) => ({
     ...state,
     loading: true,

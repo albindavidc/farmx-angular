@@ -35,7 +35,8 @@ export const authGuard: CanActivateFn = (
   const isAuthRoute =
     state.url.startsWith('/auth/login') ||
     state.url.startsWith('/auth/signup') ||
-    state.url.startsWith('auth/otp-verification');
+    state.url.startsWith('auth/otp-verification') ||
+    state.url.startsWith('auth/forgot-password');
 
   return store.select(selectIsAuthenticated).pipe(
     take(1),
