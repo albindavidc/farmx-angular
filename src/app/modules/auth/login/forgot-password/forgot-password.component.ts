@@ -1,16 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import {
-  selectChangePasswordState,
-  selectForgotPasswordEmail,
-  selectForgotPasswordSuccess,
-  selectGeneratePasswordSuccess,
-} from '../../../../store/settings/settings.selectors';
+import { Observable, Subject } from 'rxjs';
+
 import { Router } from '@angular/router';
 import { ForgotPasswordActions } from '../../../../store/auth/actions/forgot-password.actions';
+import {
+  selectChangePasswordSuccess,
+  selectForgotPasswordEmail,
+  selectGeneratePasswordSuccess,
+  selectShowEmailForm,
+  selectShowOtpForm,
+  selectValidateOtpSuccess,
+} from '../../../../store/auth/selectors/forgot-password.selectors';
 
 @Component({
   selector: 'app-forgot-password',
@@ -18,37 +21,53 @@ import { ForgotPasswordActions } from '../../../../store/auth/actions/forgot-pas
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss',
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  showEmailForm$: Observable<boolean>;
+  showOtpForm$: Observable<boolean>;
+
   showEmailForm: boolean = true;
   showOtpForm: boolean = false;
   showChangePasswordForm: boolean = false;
-  forgotPasswordStatus$: Observable<boolean>;
-  forgotPasswordEmail$: Observable<string>;
 
+  forgotPasswordEmail$: Observable<string>;
   generateOtpStatus$: Observable<boolean>;
+  validatePasswordStatus$: Observable<boolean>;
   changePasswordStatus$: Observable<boolean>;
 
   constructor(private store: Store, private router: Router) {
-    this.forgotPasswordStatus$ = this.store.select(selectForgotPasswordSuccess);
     this.forgotPasswordEmail$ = this.store.select(selectForgotPasswordEmail);
-
     this.generateOtpStatus$ = this.store.select(selectGeneratePasswordSuccess);
-    this.changePasswordStatus$ = this.store.select(selectChangePasswordState);
+    this.validatePasswordStatus$ = this.store.select(selectValidateOtpSuccess);
+    this.changePasswordStatus$ = this.store.select(selectChangePasswordSuccess);
+
+    this.showEmailForm$ = this.store.select(selectShowEmailForm);
+    this.showOtpForm$ = this.store.select(selectShowOtpForm);
   }
 
   ngOnInit() {
-    this.forgotPasswordStatus$.subscribe((success) => {
-      if (success === true) {
+    this.generateOtpStatus$.subscribe((state) => {
+      console.log('Forgot Password State:', state);
+    });
+
+    this.store.subscribe((state) => {
+      console.log('ENTIRE APPLICATION STATE:', state);
+    });
+
+    this.generateOtpStatus$.subscribe((success) => {
+      console.log('this iss generating otp status', success);
+      if (success) {
         this.showEmailForm = false;
         this.showOtpForm = true;
         this.showChangePasswordForm = false;
       }
     });
 
-    this.generateOtpStatus$.subscribe((success) => {
-      if (success === true) {
+    this.validatePasswordStatus$.subscribe((success) => {
+      if (success) {
         this.showEmailForm = false;
-        this.showOtpForm = true;
+        this.showOtpForm = false;
         this.showChangePasswordForm = true;
       }
     });
@@ -81,6 +100,11 @@ export class ForgotPasswordComponent implements OnInit {
   onSubmitValidateOtp(form: NgForm) {
     if (form.valid) {
       this.forgotPasswordEmail$.subscribe((email) => {
+        console.log(
+          email,
+          form.value.otp,
+          'these are the values from the front-end'
+        );
         this.store.dispatch(
           ForgotPasswordActions.forgotPasswordValidateOtp({
             email: email,
@@ -93,12 +117,20 @@ export class ForgotPasswordComponent implements OnInit {
 
   onSubmitChangePassword(form: NgForm) {
     if (form.valid) {
-      this.store.dispatch(
-        ForgotPasswordActions.changePassword({
-          newPassword: form.value.newPassword,
-          confirmPassword: form.value.confirmPassword,
-        })
-      );
+      this.forgotPasswordEmail$.subscribe((email) => {
+        this.store.dispatch(
+          ForgotPasswordActions.changePassword({
+            email: email,
+            newPassword: form.value.newPassword,
+            confirmPassword: form.value.confirmPassword,
+          })
+        );
+      });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -12,14 +12,14 @@ export class ForgotPasswordService {
 
   forgotPasswordGenerateOtp(email: string): Observable<{ success: boolean }> {
     return this.http.post<{ success: boolean }>(
-      `${this.apiurl}/auth/send-otp`,
+      `${this.apiurl}/auth/forgot-password/send-otp`,
       { email }
     );
   }
 
   forgotPasswordResendOtp(email: string): Observable<{ success: boolean }> {
     return this.http.post<{ success: boolean }>(
-      `${this.apiurl}/auth/resend-otp`,
+      `${this.apiurl}/auth/forgot-password/resend-otp`,
       { email }
     );
   }
@@ -29,18 +29,19 @@ export class ForgotPasswordService {
     otp: string
   ): Observable<{ success: boolean }> {
     return this.http.post<{ success: boolean }>(
-      `${this.apiurl}/auth/verify-otp`,
+      `${this.apiurl}/auth/forgot-password/verify-otp`,
       { email, otp }
     );
   }
 
   changePassword(
+    email: string,
     newPassword: string,
-    confirmPassword: string
+    confirmPassword: string,
   ): Observable<{ success: boolean }> {
     return this.http.post<{ success: boolean }>(
-      `${this.apiurl}/auth/change-password`,
-      { newPassword, confirmPassword }
+      `${this.apiurl}/auth/forgot-password/change-password`,
+      {email, newPassword, confirmPassword }
     );
   }
 }

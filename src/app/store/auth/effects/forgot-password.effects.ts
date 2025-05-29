@@ -1,9 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { response } from 'express';
 import { catchError, exhaustMap, map, of, switchMap, tap } from 'rxjs';
-import { error, profile } from 'console';
 import { ForgotPasswordService } from '../services/forgot-password.service';
 import { ForgotPasswordActions } from '../actions/forgot-password.actions';
 
@@ -18,7 +15,7 @@ export class ForgotPasswordEffects {
       ofType(ForgotPasswordActions.changePassword),
       exhaustMap((action) =>
         this.forgotPasswordService
-          .changePassword(action.newPassword, action.confirmPassword)
+          .changePassword(action.email, action.newPassword, action.confirmPassword)
           .pipe(
             map((response) =>
               response.success
@@ -47,6 +44,7 @@ export class ForgotPasswordEffects {
       exhaustMap((action) =>
         this.forgotPasswordService.forgotPasswordGenerateOtp(action.email).pipe(
           map((response) => {
+            console.log('this is from the front-end effects', response, response.success)
             if (response.success) {
               return ForgotPasswordActions.forgotPasswordGenerateOtpSuccess({
                 success: response.success,

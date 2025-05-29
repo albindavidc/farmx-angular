@@ -29,6 +29,8 @@ import { CommunityEffects } from './store/community/community.effects';
 import { communityReducer } from './store/community/community.reducer';
 import { CommunityPostEffects } from './store/community/post/community-post.effects';
 import { communityPostReducer } from './store/community/post/community-post.reducer';
+import { ForgotPasswordEffects } from './store/auth/effects/forgot-password.effects';
+import { forgotPasswordReducer } from './store/auth/reducers/forgot-password.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -45,6 +47,7 @@ export const appConfig: ApplicationConfig = {
       SignupEffects,
       OtpEffects,
       LoginEffects,
+      ForgotPasswordEffects,
 
       SettingsEffects,
       CommunityEffects,
@@ -55,6 +58,7 @@ export const appConfig: ApplicationConfig = {
     provideState('otp', otpReducer),
     provideState('auth', authReducer),
     provideState('login', loginReducer),
+    provideState('forgotPassword', forgotPasswordReducer),
 
     provideState('settings', settingsReducer),
     provideState('community', communityReducer),

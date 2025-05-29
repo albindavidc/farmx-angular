@@ -37,6 +37,9 @@ export const forgotPasswordReducer = createReducer(
     ForgotPasswordActions.forgotPasswordGenerateOtpSuccess,
     (state, { success }) => ({
       ...state,
+      showEmailForm: false,
+      showOtpForm: true,
+      showChangePasswordForm: false,
       generateOtpStatus: { success: success },
       isLoading: false,
     })
@@ -72,6 +75,24 @@ export const forgotPasswordReducer = createReducer(
     })
   ),
 
+  /* Validate-Otp */
+  on(ForgotPasswordActions.forgotPasswordValidateOtp, (state) => ({
+    ...state,
+    isLoading: true,
+  })),
+
+  on(
+    ForgotPasswordActions.forgotPasswordValidateOtpSuccess,
+    (state, { success }) => ({
+      ...state,
+      showEmailForm: false,
+      showOtpForm: false,
+      showChangePasswordForm: true,
+      validateOtpStatus: { success: success },
+      isLoading: false,
+    })
+  ),
+
   /* Change-Password */
   on(ForgotPasswordActions.changePassword, (state) => ({
     ...state,
@@ -79,12 +100,12 @@ export const forgotPasswordReducer = createReducer(
   })),
   on(ForgotPasswordActions.changePasswordSuccess, (state, { success }) => ({
     ...state,
-    success,
+    changePasswordStatus: { success },
     isLoading: false,
   })),
   on(ForgotPasswordActions.changePasswordFailure, (state, { error }) => ({
     ...state,
-    error,
+    changePasswordStatus: { success: false, error },
     isLoading: false,
   }))
 );

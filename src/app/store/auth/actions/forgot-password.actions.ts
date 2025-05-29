@@ -18,6 +18,7 @@ export const ForgotPasswordActions = createActionGroup({
     'Change Password': props<{
       newPassword: string;
       confirmPassword: string;
+      email: string;
     }>(),
     'Change Password Success': props<{ success: boolean }>(),
     'Change Password Failure': props<{ error: string }>(),

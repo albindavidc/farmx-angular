@@ -16,9 +16,19 @@ export const selectGeneratePasswordSuccess = createSelector(
 
 export const selectValidateOtpSuccess = createSelector(
   selectForgotPasswordFeature,
-  (state) => state.changePasswordStatus.success
+  (state) => state.validateOtpStatus.success
 );
-export const selectChangePasswordState = createSelector(
+
+export const selectChangePasswordSuccess = createSelector(
   selectForgotPasswordFeature,
   (state) => state.changePasswordStatus.success
 );
+
+export const selectShowEmailForm = createSelector(
+  selectForgotPasswordFeature,
+  (state) => state.showEmailForm
+)
+export const selectShowOtpForm = createSelector(
+  selectForgotPasswordFeature,
+  (state) => state.showOtpForm
+)
