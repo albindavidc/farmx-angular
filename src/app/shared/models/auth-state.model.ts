@@ -1,4 +1,4 @@
-import { UserRole } from "./user-role";
+import { UserRole } from './user-role';
 
 export interface AuthState {
   isAuthenticated: boolean;
@@ -35,7 +35,7 @@ export interface LoginState {
   isLoading: boolean;
   accessToken: string | null;
   refreshToken: string | null;
-  isAuthenticated: boolean,
+  isAuthenticated: boolean;
 }
 
 export interface User {

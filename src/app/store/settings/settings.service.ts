@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../../shared/models/auth-state.model';
 import { Observable } from 'rxjs';
+import { User } from '../../shared/models/user.model';
 
 @Injectable({
   providedIn: 'root',

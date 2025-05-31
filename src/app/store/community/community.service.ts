@@ -5,8 +5,8 @@ import { Store } from '@ngrx/store';
 import { selectUser } from '../auth/selectors/auth.selectors';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
-import { User } from '../../shared/models/auth-state.model';
 import { response } from 'express';
+import { User } from '../../shared/models/user.model';
 
 export interface ApiResponse<T> {
   message: string;

@@ -20,7 +20,7 @@ import {
   selectIsAuthenticated,
   selectUser,
 } from '../../../../store/auth/selectors/auth.selectors';
-import { User } from '../../../models/auth-state.model';
+import { User } from '../../../models/user.model';
 
 @Component({
   selector: 'app-communities-list',

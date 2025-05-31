@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { SettingsActions } from './settings.actions';
-import { User } from '../../shared/models/auth-state.model';
+import { User } from '../../shared/models/user.model';
 
 export const settingsFeatureKey = 'settings';
 

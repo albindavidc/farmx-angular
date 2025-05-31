@@ -1,4 +1,8 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -31,6 +35,17 @@ import { CommunityPostEffects } from './store/community/post/community-post.effe
 import { communityPostReducer } from './store/community/post/community-post.reducer';
 import { ForgotPasswordEffects } from './store/auth/effects/forgot-password.effects';
 import { forgotPasswordReducer } from './store/auth/reducers/forgot-password.reducer';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -42,6 +57,23 @@ export const appConfig: ApplicationConfig = {
 
     SvgIconRegistryService,
     { provide: SvgLoader, useClass: SvgHttpLoader },
+
+    importProvidersFrom([
+      MatTableModule,
+      MatInputModule,
+      MatFormFieldModule,
+      MatButtonModule,
+
+      MatIconModule,
+      MatSelectModule,
+      MatCheckboxModule,
+
+      MatProgressSpinnerModule,
+      MatSnackBarModule,
+
+      MatSortModule,
+      MatPaginatorModule,
+    ]),
 
     provideEffects([
       SignupEffects,

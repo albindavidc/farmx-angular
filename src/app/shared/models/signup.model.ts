@@ -1,4 +1,4 @@
-import { User } from "./auth-state.model";
+import { User } from "./user.model";
 
 export interface SignupRequestModel {
     name: string;

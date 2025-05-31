@@ -14,6 +14,7 @@ import { CreateCommunityComponent } from './shared/components/community/create-c
 import { AdminSettingsComponent } from './modules/admin/admin-settings/admin-settings.component';
 import { AdminCommunityManagementComponent } from './modules/admin/admin-community-management/admin-community-management.component';
 import { ForgotPasswordComponent } from './modules/auth/login/forgot-password/forgot-password.component';
+import { AdminUserManagementComponent } from './modules/admin/admin-user-management/admin-user-management.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
@@ -62,6 +63,7 @@ export const routes: Routes = [
       { path: 'community', component: AdminCommunityManagementComponent },
       { path: 'create-community', component: CreateCommunityComponent },
       { path: 'community/:id', component: AdminCommunityManagementComponent },
+      { path: 'user-management', component: AdminUserManagementComponent },
     ],
   },
 

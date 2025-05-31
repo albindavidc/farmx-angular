@@ -11,6 +11,12 @@ import { NavBarComponent } from '../nav-bar.component';
 export class AdminNavBarComponent {
   menuItems: MenuItems[] = [
     {
+      icon: 'manage_accounts',
+      label: 'User',
+      selectEl: true,
+      route: '/admin/user-management',
+    },
+    {
       icon: 'group',
       label: 'Community',
       selectEl: true,
