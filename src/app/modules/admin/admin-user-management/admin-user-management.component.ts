@@ -115,6 +115,7 @@ export class AdminUserManagementComponent implements OnInit, AfterViewInit {
   }
   editUser(user: User) {}
   viewUser(user: User): void {
+    console.log('this is view user', user)
     this.dialog.open(AdminUserManagementModelComponent, {
       data: { user: user, mode: 'view' },
       ariaLabel: 'View user details dialog',

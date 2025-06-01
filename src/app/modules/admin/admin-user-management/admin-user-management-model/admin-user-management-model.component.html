@@ -44,7 +44,6 @@
     <mat-label>Role</mat-label>
     <mat-select
       [(ngModel)]="data.user.role"
-
       required
       aria-label="User role"
       [disabled]="mode === 'view'"
@@ -66,47 +65,41 @@
     />
   </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Verified</mat-label>
+  <div class="form-field-wrapper">
     <mat-slide-toggle
       [(ngModel)]="data.user.isVerified"
       [disabled]="mode === 'view'"
     >
       Verify User
     </mat-slide-toggle>
-  </mat-form-field>
+  </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Admin</mat-label>
+  <div class="toggle-field">
     <mat-slide-toggle
       [(ngModel)]="data.user.isAdmin"
       [disabled]="mode === 'view'"
     >
+      Admin User
     </mat-slide-toggle>
-  </mat-form-field>
+  </div>
 
-  <mat-form-field appearance="outline">
+  <div class="toggle-field">
     <mat-slide-toggle
       [(ngModel)]="data.user.isBlocked"
       [disabled]="mode === 'view'"
     >
       Blocked User
     </mat-slide-toggle>
-  </mat-form-field>
+  </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Is Farmer</mat-label>
-
-    <mat-select
+  <div class="toggle-field">
+    <mat-slide-toggle
       [(ngModel)]="data.user.isFarmer"
-      required
-      aria-label="Check Farmer"
       [disabled]="mode === 'view'"
     >
-      <mat-option [value]="true">Yes</mat-option>
-      <mat-option [value]="false">No</mat-option>
-    </mat-select>
-  </mat-form-field>
+      Farmer User
+    </mat-slide-toggle>
+  </div>
 
   <!--  -->
   <mat-form-field appearance="outline">
@@ -122,12 +115,12 @@
   </mat-form-field>
 
   <!--  -->
-  <mat-form-field appearance="outline" *ngIf="data.user.isFarmer">
-    <mat-label>Experience {{ data.user.experience || 0 }} years </mat-label>
+  <div class="slider-field" *ngIf="data.user.isFarmer">
+    <label>Experience: {{ data.user.experience || 0 }} years</label>
     <mat-slider [disabled]="mode === 'view'" min="0" max="50" step="1" discrete>
       <input matSliderThumb [(ngModel)]="data.user.experience" />
     </mat-slider>
-  </mat-form-field>
+  </div>
 
   <mat-form-field appearance="outline">
     <mat-label>Qualification</mat-label>

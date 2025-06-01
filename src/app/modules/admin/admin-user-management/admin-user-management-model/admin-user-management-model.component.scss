@@ -1,0 +1,22 @@
+@use "@angular/material" as mat;
+
+:host::ng-deep {
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: 20px,
+    )
+  );
+}
+
+.toggle-field,
+.slider-field {
+  margin: 16px 0;
+  display: block;
+}
+
+.slider-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: black;
+}
