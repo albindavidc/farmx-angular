@@ -37,10 +37,10 @@ export class UserService {
     });
   }
 
-  blockUser(user: User): Observable<User> {
+  blockUser(user: User, newStatus: boolean): Observable<User> {
     return this.http.put<User>(
       `${this.apiUrl}/admin/block-user/${user.id}`,
-      user,
+      { id: user.id, isBlocked: newStatus },
       { withCredentials: true }
     );
   }

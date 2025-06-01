@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AdminNavBarComponent } from '../../../shared/components/nav-bar/admin-nav-bar/admin-nav-bar.component';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -40,8 +46,11 @@ export class AdminUserManagementComponent implements OnInit, AfterViewInit {
   filteredValue: string = '';
   isLoading: boolean = false;
 
-  constructor(private userService: UserService) {
-    this.dataSource.filterPredicate = this.customFilter
+  constructor(
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.dataSource.filterPredicate = this.customFilter;
   }
 
   ngOnInit(): void {
@@ -57,8 +66,9 @@ export class AdminUserManagementComponent implements OnInit, AfterViewInit {
   loadUsers(): void {
     this.isLoading = true;
     this.userService.getUsers().subscribe({
-      next: (users) => {
-        this.dataSource.data = users;
+      next: (transformedUsers) => {
+        console.log(transformedUsers, 'this is transformed users');
+        this.dataSource.data = transformedUsers;
         this.isLoading = false;
       },
       error: (error) => {
@@ -67,6 +77,37 @@ export class AdminUserManagementComponent implements OnInit, AfterViewInit {
       },
     });
   }
+
+  /* Create, Edit, Block Users */
+  toggleBlock(user: User) {
+    console.log('thisis iuser', user, 'ddddddddddd', user.id);
+    const newStatus = !user.isBlocked;
+
+    const currentData = this.dataSource.data;
+    const index = currentData.findIndex((u) => u.id === user.id);
+
+    if (index !== -1) {
+      currentData[index] = { ...user, isBlocked: newStatus };
+      this.dataSource.data = [...currentData];
+    }
+
+    this.userService.blockUser(user, newStatus).subscribe({
+      next: (updatedUser) => {
+        const currentData = this.dataSource.data;
+        const index = currentData.findIndex((u) => u.id === updatedUser.id);
+
+        if (index !== -1) {
+          currentData[index] = updatedUser;
+
+          this.dataSource.data = [...currentData];
+          // this.cdr.detectChanges()
+        }
+      },
+      error: (error) => console.error('Error toggling block user', error),
+      complete: () => console.log('Succfully blocked the user'),
+    });
+  }
+  editUser(user: User) {}
 
   /* Filter */
   applyFilter(event: Event): void {
@@ -88,8 +129,4 @@ export class AdminUserManagementComponent implements OnInit, AfterViewInit {
       data.role.toLowerCase().includes(searchString)
     );
   }
-
-  /* Create, Edit, Block Users */
-  toggleBlock(user: User) {}
-  editUser(user: User){};
 }
