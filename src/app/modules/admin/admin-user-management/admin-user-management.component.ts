@@ -8,7 +8,11 @@ import {
 import { AdminNavBarComponent } from '../../../shared/components/nav-bar/admin-nav-bar/admin-nav-bar.component';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import {
+  MatTable,
+  MatTableDataSource,
+  MatTableModule,
+} from '@angular/material/table';
 import { User } from '../../../shared/models/user.model';
 import { UserService } from '../../../shared/services/admin/user.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,6 +23,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminUserManagementModelComponent } from './admin-user-management-model/admin-user-management-model.component';
+import { UserRole } from '../../../shared/models/user-role';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-user-management',
@@ -40,6 +46,7 @@ import { AdminUserManagementModelComponent } from './admin-user-management-model
   styleUrl: './admin-user-management.component.scss',
 })
 export class AdminUserManagementComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatTable) table!: MatTable<User>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -55,7 +62,12 @@ export class AdminUserManagementComponent implements OnInit, AfterViewInit {
   filteredValue: string = '';
   isLoading: boolean = false;
 
-  constructor(private userService: UserService, private dialog: MatDialog) {
+  constructor(
+    private userService: UserService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
+  ) {
     this.dataSource.filterPredicate = this.customFilter;
   }
 
@@ -84,7 +96,98 @@ export class AdminUserManagementComponent implements OnInit, AfterViewInit {
     });
   }
 
-  /* Create, Edit, Block Users */
+  /* View, Edit, Create, Block Users */
+  viewUser(user: User): void {
+    this.dialog.open(AdminUserManagementModelComponent, {
+      data: { user: user, mode: 'view' },
+      ariaLabel: 'View user details dialog',
+      width: '600px',
+    });
+  }
+
+  editUser(user: User) {
+    const dialogRef = this.dialog.open(AdminUserManagementModelComponent, {
+      data: { user: { ...user }, mode: 'edit' },
+      ariaLabel: 'Edit user dialog',
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe((result: User | undefined) => {
+      if (result) {
+        this.userService.updateUser(result).subscribe({
+          next: (updatedUser) => {
+            console.log('this is the updated user', updatedUser);
+            console.log('this is the updated user id', updatedUser.id);
+
+            this.dataSource.data = this.dataSource.data.map((u) =>
+              u.id === updatedUser.id ? updatedUser : u
+            );
+
+            this.cdr.detectChanges();
+            this.table.renderRows();
+
+            this.snackBar.open('Successfully created user', 'Close', {
+              duration: 10000,
+              panelClass: ['success-snackbar'],
+            });
+          },
+          error: (error) => {
+            this.snackBar.open('Error updating the user', 'Close', {
+              duration: 5000,
+              panelClass: ['error-snackbar'],
+            });
+          },
+        });
+      }
+    });
+  }
+
+  createUser(): void {
+    const dialogRef = this.dialog.open(AdminUserManagementModelComponent, {
+      data: {
+        user: {
+          id: '',
+          name: '',
+          email: '',
+          password: '',
+          phone: '',
+          role: UserRole.USER,
+          isVerified: false,
+          isBlocked: false,
+          isFarmer: false,
+          farmerRegId: '',
+          experience: 0,
+          qualification: '',
+          expertise: [],
+          awards: [],
+          farmerStatus: null,
+        },
+        mode: 'create',
+      },
+      ariaLabel: 'Create user dialog',
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe((result: User | undefined) => {
+      if (result) {
+        this.userService.createUser(result).subscribe({
+          next: () => {
+            this.dataSource.data = [...this.dataSource.data, result];
+
+            this.snackBar.open('User Created Successfully', 'Close', {
+              duration: 3000,
+            });
+          },
+          error: (error) => {
+            this.snackBar.open('Error in creating user', 'Close', {
+              duration: 5000,
+            });
+          },
+        });
+      }
+    });
+  }
+
   toggleBlock(user: User) {
     console.log('thisis iuser', user, 'ddddddddddd', user.id);
     const newStatus = !user.isBlocked;
@@ -111,15 +214,6 @@ export class AdminUserManagementComponent implements OnInit, AfterViewInit {
       },
       error: (error) => console.error('Error toggling block user', error),
       complete: () => console.log('Succfully blocked the user'),
-    });
-  }
-  editUser(user: User) {}
-  viewUser(user: User): void {
-    console.log('this is view user', user)
-    this.dialog.open(AdminUserManagementModelComponent, {
-      data: { user: user, mode: 'view' },
-      ariaLabel: 'View user details dialog',
-      width: '600px',
     });
   }
 

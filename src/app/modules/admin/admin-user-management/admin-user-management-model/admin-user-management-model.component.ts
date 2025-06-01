@@ -53,12 +53,10 @@ export class AdminUserManagementModelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.data.user.role){
+    if (this.data.user.role) {
       // this.data.user.role = this.data.user.role.toLowerCase()
     }
   }
-
-
 
   /* Chip Add & Remove Expertise */
   addExpertise(event: MatChipInputEvent): void {
@@ -97,16 +95,5 @@ export class AdminUserManagementModelComponent implements OnInit {
     if (this.mode !== 'view' && this.data.user.awards) {
       this.data.user.awards.splice(index, 1);
     }
-  }
-
-  isValid(): boolean {
-    const { user, mode } = this.data;
-    return !!(
-      user.name &&
-      user.email &&
-      user.role &&
-      (mode !== 'create' || user.password) &&
-      (!user.isFarmer || (user.farmerRegId && user.farmerStatus))
-    );
   }
 }

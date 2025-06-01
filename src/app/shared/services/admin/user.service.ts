@@ -26,9 +26,11 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/admin/${user.id}`, user, {
-      withCredentials: true,
-    });
+    return this.http
+      .put<ApiResponse<User>>(`${this.apiUrl}/admin/${user.id}`, user, {
+        withCredentials: true,
+      })
+      .pipe(map((response) => response.data));
   }
 
   createUser(user: User): Observable<User> {
