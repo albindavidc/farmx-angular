@@ -1,0 +1,232 @@
+<h2 mat-dialog-title>
+  {{
+    mode === "create"
+      ? "Create User"
+      : mode === "edit"
+      ? "Edit User"
+      : "View User"
+  }}
+</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label> Name </mat-label>
+    <input
+      matInput
+      [(ngModel)]="data.user.name"
+      required
+      aria-label="User name"
+      [disabled]="mode === 'view'"
+    />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      [(ngModel)]="data.user.email"
+      required
+      aria-label="User Email"
+      [disabled]="mode === 'view'"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      [(ngModel)]="data.user.password"
+      required
+      aria-label="User Password"
+      [disabled]="mode === 'view'"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Role</mat-label>
+    <mat-select
+      [(ngModel)]="data.user.role"
+
+      required
+      aria-label="User role"
+      [disabled]="mode === 'view'"
+    >
+      <mat-option *ngFor="let role of roles" [value]="role"
+        >{{ role }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Phone</mat-label>
+    <input
+      matInput
+      [(ngModel)]="data.user.phone"
+      required
+      aria-label="User Phone"
+      [disabled]="mode === 'view'"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Verified</mat-label>
+    <mat-slide-toggle
+      [(ngModel)]="data.user.isVerified"
+      [disabled]="mode === 'view'"
+    >
+      Verify User
+    </mat-slide-toggle>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Admin</mat-label>
+    <mat-slide-toggle
+      [(ngModel)]="data.user.isAdmin"
+      [disabled]="mode === 'view'"
+    >
+    </mat-slide-toggle>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-slide-toggle
+      [(ngModel)]="data.user.isBlocked"
+      [disabled]="mode === 'view'"
+    >
+      Blocked User
+    </mat-slide-toggle>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Is Farmer</mat-label>
+
+    <mat-select
+      [(ngModel)]="data.user.isFarmer"
+      required
+      aria-label="Check Farmer"
+      [disabled]="mode === 'view'"
+    >
+      <mat-option [value]="true">Yes</mat-option>
+      <mat-option [value]="false">No</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!--  -->
+  <mat-form-field appearance="outline">
+    <mat-label>Farmer Registration Id</mat-label>
+
+    <input
+      matInput
+      [(ngModel)]="data.user.farmerRegId"
+      required
+      aria-label="Farmer Registration Id"
+      [disabled]="mode === 'view'"
+    />
+  </mat-form-field>
+
+  <!--  -->
+  <mat-form-field appearance="outline" *ngIf="data.user.isFarmer">
+    <mat-label>Experience {{ data.user.experience || 0 }} years </mat-label>
+    <mat-slider [disabled]="mode === 'view'" min="0" max="50" step="1" discrete>
+      <input matSliderThumb [(ngModel)]="data.user.experience" />
+    </mat-slider>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Qualification</mat-label>
+
+    <input
+      matInput
+      [(ngModel)]="data.user.qualification"
+      required
+      aria-label="Farmer Qualification"
+      [disabled]="mode === 'view'"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Expertise</mat-label>
+
+    <mat-chip-grid #chipGrid aria-label="Enter Expertise">
+      <mat-chip-row
+        *ngFor="let expertise of data.user.expertise; let i = index"
+        (removed)="removeExpertise(i)"
+        [editable]="mode !== 'view'"
+        [aria-description]="'press enter to edit' + expertise"
+      >
+        {{ expertise }}
+
+        <button
+          matChipRemove
+          *ngIf="mode !== 'view'"
+          [attr.aria-label]="'remove' + expertise"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+      <input
+        [matChipInputFor]="chipGrid"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="true"
+        (matChipInputTokenEnd)="addExpertise($event)"
+        placeholder="Add Expertise..."
+        [disabled]="mode === 'view'"
+      />
+    </mat-chip-grid>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Awards</mat-label>
+
+    <mat-chip-grid #awardChipGrid aria-label="Enter Awards">
+      <mat-chip-row
+        *ngFor="let award of data.user.awards; let i = index"
+        (removed)="removeAward(i)"
+        [editable]="mode !== 'view'"
+        [aria-label]="'press enter to edit' + award"
+      >
+        {{ award }}
+        <button
+          matChipRemove
+          *ngIf="mode !== 'view'"
+          [attr.aria-label]="'remove' + award"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+      <input
+        [matChipInputFor]="awardChipGrid"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="true"
+        (matChipInputTokenEnd)="addAward($event)"
+        placeholder="Add Awards..."
+        [disabled]="mode === 'view'"
+      />
+    </mat-chip-grid>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>FarmerStatus</mat-label>
+    <mat-select
+      [disabled]="mode === 'view'"
+      [(ngModel)]="data.user.farmerStatus"
+      aria-label="Farmer Status"
+    >
+      <mat-option *ngFor="let status of farmerStatuses" [value]="status"
+        >{{ status }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close()" aria-label="Cancel">
+    Cancel
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="dialogRef.close(data.user)"
+    [disabled]="!isValid()"
+    aria-label="Save User Button"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

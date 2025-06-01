@@ -24,7 +24,7 @@
       aria-label="User Management Table"
       role="grid"
     >
-      <!-- Name, Email, Role -->
+      <!-- Name, Email, Role columns -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header aria-sort="none">
           Full Name
@@ -46,7 +46,17 @@
         <td mat-cell *matCellDef="let user" [innerHTML]="user.role"></td>
       </ng-container>
 
-      <!-- Block user -->
+
+      <!-- View User column -->
+       <ng-container matColumnDef="view">
+        <th mat-header-cell *matHeaderCellDef>View</th>
+        <td mat-cell *matCellDef="let user">
+          <button mat-icon-button aria-label="View user details" (click)="viewUser(user)">
+          <mat-icon>visibility</mat-icon>
+        </button></td>
+       </ng-container>
+
+      <!-- Block user column-->
       <ng-container matColumnDef="block">
         <th mat-header-cell *matHeaderCellDef>Block</th>
         <td mat-cell *matCellDef="let user">

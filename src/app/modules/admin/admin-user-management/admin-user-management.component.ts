@@ -17,6 +17,8 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { AdminUserManagementModelComponent } from './admin-user-management-model/admin-user-management-model.component';
 
 @Component({
   selector: 'app-admin-user-management',
@@ -41,15 +43,19 @@ export class AdminUserManagementComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['name', 'email', 'role', 'edit', 'block'];
+  displayedColumns: string[] = [
+    'name',
+    'email',
+    'role',
+    'view',
+    'edit',
+    'block',
+  ];
   dataSource = new MatTableDataSource<User>([]);
   filteredValue: string = '';
   isLoading: boolean = false;
 
-  constructor(
-    private userService: UserService,
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor(private userService: UserService, private dialog: MatDialog) {
     this.dataSource.filterPredicate = this.customFilter;
   }
 
@@ -108,6 +114,13 @@ export class AdminUserManagementComponent implements OnInit, AfterViewInit {
     });
   }
   editUser(user: User) {}
+  viewUser(user: User): void {
+    this.dialog.open(AdminUserManagementModelComponent, {
+      data: { user: user, mode: 'view' },
+      ariaLabel: 'View user details dialog',
+      width: '600px',
+    });
+  }
 
   /* Filter */
   applyFilter(event: Event): void {
