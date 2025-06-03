@@ -2,6 +2,7 @@
 <div class="communities-container">
   <div class="community-header">
     <h1>Chat Communities</h1>
+
     <button
       mat-button
       type="button"
@@ -9,6 +10,22 @@
     >
       Create
     </button>
+  </div>
+
+  <!-- Search feature for user role -->
+  <div>
+    <div *ngIf="userRole === 'user'" class="community-search">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search communities</mat-label>
+        <input
+          matInput
+          placeholder="Search by name, description, or category"
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange($event)"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
   </div>
 
   <div *ngIf="loading$ | async" class="loading-container">

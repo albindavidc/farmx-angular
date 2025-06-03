@@ -24,6 +24,24 @@ export const initialState: CommunityState = {
 
 export const communityReducer = createReducer(
   initialState,
+
+  on(CommunityActions.loadAllCommunities, (state) => ({
+    ...state,
+    isLoading: true,
+    error: null,
+  })),
+  on(CommunityActions.loadAllCommunitiesSuccess, (state, { communities }) => ({
+    ...state,
+    communities,
+    isLoading: false,
+    error: null,
+  })),
+  on(CommunityActions.loadAllCommunitiesFailure, (state, { error }) => ({
+    ...state,
+    isLoading: false,
+    error,
+  })),
+
   on(CommunityActions.loadCommunities, (state) => ({
     ...state,
     isLoading: true,

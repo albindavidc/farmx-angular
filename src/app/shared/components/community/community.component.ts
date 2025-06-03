@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MessageInputComponent } from '../message-input/message-input.component';
 import { MatButtonModule } from '@angular/material/button';
 import { CreateCommunityComponent } from './create-community/create-community.component';
@@ -16,13 +16,12 @@ import { CommunityPageComponent } from './community-page/community-page.componen
   selector: 'app-community',
   imports: [
     CommonModule,
-
     MatButtonModule,
     RouterModule,
-
+    MatIconModule,
     CommunitiesListComponent,
     CommunityPageComponent,
-  ],
+],
   templateUrl: './community.component.html',
   styleUrl: './community.component.scss',
 })

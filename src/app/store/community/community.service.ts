@@ -79,11 +79,23 @@ export class CommunityService {
       .pipe(map((response) => response.imageUrl));
   }
 
+  getAllCommunities(): Observable<Community[]> {
+    return this.http.get<Community[]>(
+      `${this.apiUrl}/community/user/get-all-community`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
   getCommunities(createdById: string): Observable<Community[]> {
     return this.http
-      .get<ApiResponse<Community[]>>(`${this.apiUrl}/community/${createdById}`, {
-        withCredentials: true,
-      })
+      .get<ApiResponse<Community[]>>(
+        `${this.apiUrl}/community/${createdById}`,
+        {
+          withCredentials: true,
+        }
+      )
       .pipe(map((response) => response.data));
   }
 

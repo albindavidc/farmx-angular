@@ -10,6 +10,12 @@ import { MenuItems } from '../../../models/menu-item.model';
 })
 export class UserNavBarComponent {
   menuItems: MenuItems[] = [
-    { icon: 'chat', label: 'Chat', selectEl: true, route: '/settings/chat' },
+    { icon: 'chat', label: 'Chat', selectEl: true, route: '/user/chat' },
+    {
+      icon: 'group',
+      label: 'Community',
+      selectEl: true,
+      route: '/user/community',
+    },
   ];
 }

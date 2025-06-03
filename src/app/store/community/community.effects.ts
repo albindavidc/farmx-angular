@@ -55,6 +55,22 @@ export class CommunityEffects {
     { dispatch: false }
   );
 
+  loadAllCommunities$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CommunityActions.loadAllCommunities),
+      mergeMap(() =>
+        this.communityService.getAllCommunities().pipe(
+          map((communities) =>
+            CommunityActions.loadAllCommunitiesSuccess({ communities })
+          ),
+          catchError((error) =>
+            of(CommunityActions.loadAllCommunitiesFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
   loadCommunities$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CommunityActions.loadCommunities),

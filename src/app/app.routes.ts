@@ -1,20 +1,21 @@
 import { Routes } from '@angular/router';
-import { SignupComponent } from './modules/auth/signup/signup.component';
-import { OtpVerificationComponent } from './modules/auth/otp-verification/otp-verification.component';
-import { UserComponent } from './modules/user/user.component';
-import { AdminComponent } from './modules/admin/admin.component';
-import { FarmerComponent } from './modules/farmer/farmer.component';
-import { LoginComponent } from './modules/auth/login/login.component';
-import { UserSettingsComponent } from './modules/user/user-settings/user-settings.component';
 import { authGuard } from './core/auth/auth.guard';
 import { roleGuard } from './core/auth/role.guard';
-import { FarmerSettingsComponent } from './modules/farmer/farmer-settings/farmer-settings.component';
-import { FarmerCommunityComponent } from './modules/farmer/farmer-community/farmer-community.component';
-import { CreateCommunityComponent } from './shared/components/community/create-community/create-community.component';
-import { AdminSettingsComponent } from './modules/admin/admin-settings/admin-settings.component';
 import { AdminCommunityManagementComponent } from './modules/admin/admin-community-management/admin-community-management.component';
-import { ForgotPasswordComponent } from './modules/auth/login/forgot-password/forgot-password.component';
+import { AdminSettingsComponent } from './modules/admin/admin-settings/admin-settings.component';
 import { AdminUserManagementComponent } from './modules/admin/admin-user-management/admin-user-management.component';
+import { AdminComponent } from './modules/admin/admin.component';
+import { ForgotPasswordComponent } from './modules/auth/login/forgot-password/forgot-password.component';
+import { LoginComponent } from './modules/auth/login/login.component';
+import { OtpVerificationComponent } from './modules/auth/otp-verification/otp-verification.component';
+import { SignupComponent } from './modules/auth/signup/signup.component';
+import { FarmerCommunityComponent } from './modules/farmer/farmer-community/farmer-community.component';
+import { FarmerSettingsComponent } from './modules/farmer/farmer-settings/farmer-settings.component';
+import { FarmerComponent } from './modules/farmer/farmer.component';
+import { UserCommunityComponent } from './modules/user/user-community/user-community.component';
+import { UserSettingsComponent } from './modules/user/user-settings/user-settings.component';
+import { UserComponent } from './modules/user/user.component';
+import { CreateCommunityComponent } from './shared/components/community/create-community/create-community.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
@@ -37,6 +38,8 @@ export const routes: Routes = [
     children: [
       { path: 'home', component: UserComponent },
       { path: 'settings', component: UserSettingsComponent },
+      { path: 'community', component: UserCommunityComponent },
+      { path: 'community/:id', component: UserCommunityComponent },
     ],
   },
 

@@ -9,22 +9,35 @@ import { CommunityActions } from '../../../../store/community/community.actions'
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
-import {
-  MatCard,
-  MatCardActions,
-  MatCardContent,
-} from '@angular/material/card';
 import { RouterLink } from '@angular/router';
-import { filter, map, Observable, take } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  filter,
+  map,
+  Observable,
+  take,
+} from 'rxjs';
 import {
   selectIsAuthenticated,
   selectUser,
 } from '../../../../store/auth/selectors/auth.selectors';
 import { User } from '../../../models/user.model';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-communities-list',
-  imports: [CommonModule, RouterLink, MatIconModule, MatProgressSpinner],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    MatIconModule,
+    MatProgressSpinner,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './communities-list.component.html',
   styleUrl: './communities-list.component.scss',
 })
@@ -36,6 +49,11 @@ export class CommunitiesListComponent implements OnInit {
   userDetails: Observable<User>;
   createdById!: string;
 
+  /* Search in user side */
+  filteredCommunites$: Observable<any[]>;
+  searchTerm: string = '';
+  private searchSubject = new BehaviorSubject<string>('');
+
   constructor(private store: Store) {
     this.isUserLoggedIn$ = this.store.select(selectIsAuthenticated);
 
@@ -43,22 +61,53 @@ export class CommunitiesListComponent implements OnInit {
       take(1),
       filter((user) => !!user)
     );
+
+    /* Search in User side */
+    this.filteredCommunites$ = combineLatest([
+      this.communities$,
+      this.searchSubject.asObservable(),
+    ]).pipe(
+      map(([communities, searchTerm]) => {
+        if (!searchTerm.trim()) {
+          return communities;
+        }
+
+        const term = searchTerm.toLowerCase().trim();
+        return communities.filter(
+          (community) =>
+            community.name.toLowerCase().includes(term) ||
+            community.description.toLowerCase().includes(term)
+        );
+      })
+    );
   }
 
   ngOnInit(): void {
+    /* User Side */
+    this.store.dispatch(CommunityActions.loadAllCommunities());
+
+    /* Farmer Side */
     this.userDetails.subscribe((user) => {
       this.userRole = user.role;
       this.createdById = user.id;
     });
+    if (this.userRole === 'farmer') {
+      this.store.dispatch(
+        CommunityActions.loadCommunities({ createdById: this.createdById })
+      );
+      console.log(this.userRole, 'this is the front the front-end');
 
-    this.store.dispatch(
-      CommunityActions.loadCommunities({ createdById: this.createdById })
-    );
-    console.log(this.userRole, 'this is the front the front-end');
+      this.communities$.subscribe((communities) => {
+        console.log('Communities data:', communities);
+      });
+    }
+  }
 
-    this.communities$.subscribe((communities) => {
-      console.log('Communities data:', communities);
-    });
+  /* User side */
+  onSearchChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.searchTerm = target.value;
+    this.searchSubject.next(this.searchTerm);
   }
 
   joinCommunity(communityId: string): void {

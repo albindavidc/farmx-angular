@@ -47,7 +47,9 @@
   </div>
 
   <div class="community-content">
-    <app-message-input [communityId]="communityId"></app-message-input>
+    <ng-container *ngIf="userRole === 'farmer'">
+      <app-message-input [communityId]="communityId"></app-message-input>
+    </ng-container>
 
     <app-post-list [communityId]="communityId"></app-post-list>
   </div>
