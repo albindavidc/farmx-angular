@@ -1,6 +1,11 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Observable, takeUntil } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Router, RouterLink } from '@angular/router';
@@ -20,6 +25,7 @@ import {
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginRequest } from '../../../shared/models/login';
 import { User } from '../../../shared/models/auth-state.model';
+import { PasswordValidatorDirective } from '../../../shared/directives/password-validator.directive';
 
 interface Testimonial {
   quote: string;
@@ -31,15 +37,17 @@ interface Testimonial {
   selector: 'app-login',
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule, 
     RouterLink,
     SvgIconComponent,
     FontAwesomeModule,
+    PasswordValidatorDirective, 
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
   isLoading$: Observable<boolean>;
   error$: Observable<string | null>;
   user$: Observable<User | null>;
@@ -47,29 +55,62 @@ export class LoginComponent {
   faQuoteRight = faQuoteLeft;
   faStar = faStar;
   faQuoteLeft = faQuoteLeftAlt;
-  isBrowser = isPlatformBrowser(inject(PLATFORM_ID)); // Check if running in browser
+  isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  constructor(private store: Store, private router: Router) {
+  constructor(
+    private store: Store,
+    private router: Router,
+    private fb: FormBuilder // Inject FormBuilder
+  ) {
     this.isLoading$ = this.store.select(selectLoginLoading);
     this.error$ = this.store.select(selectLoginError);
     this.user$ = this.store.select(selectLoginUser);
   }
 
-  onSubmit(form: NgForm) {
-    if (form.valid) {
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  initializeForm(): void {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      verificationType: ['email'], 
+    });
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.valid) {
       const request: LoginRequest = {
-        email: form.value.email,
-        password: form.value.password,
-        verificationType: form.value.verificationType || 'email',
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password,
+        verificationType: this.loginForm.value.verificationType || 'email',
       };
       this.store.dispatch(LoginActions.loadLogin({ request }));
     } else {
-      console.error(`The form is invalid: ${form.errors}`);
+      // Mark all fields as touched to trigger validation messages
+      this.markFormGroupTouched();
+      console.error('The form is invalid');
     }
+  }
+
+  private markFormGroupTouched(): void {
+    Object.keys(this.loginForm.controls).forEach((key) => {
+      const control = this.loginForm.get(key);
+      control?.markAsTouched();
+    });
   }
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  // Helper methods for template access
+  get email() {
+    return this.loginForm.get('email');
+  }
+  get password() {
+    return this.loginForm.get('password');
   }
 
   //Testimonials

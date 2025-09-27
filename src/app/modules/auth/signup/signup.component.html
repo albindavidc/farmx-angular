@@ -87,6 +87,7 @@
           formControlName="phone"
           placeholder="Enter your phone number"
           aria-required="true"
+          appMobileValidator
           [attr.aria-invalid]="
             signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched
           "
@@ -126,6 +127,13 @@
             formControlName="password"
             placeholder="Enter your password"
             [type]="showPassword ? 'text' : 'password'"
+            [appPasswordValidator]="{
+              minLength: 8,
+              requiredUpperCase: true,
+              requiredLowerCase: true,
+              requiredDigit: true,
+              requiredSpecialChar: true
+            }"
             aria-label="Password"
             [attr.aria-invalid]="
               signupForm.get('password')?.invalid &&

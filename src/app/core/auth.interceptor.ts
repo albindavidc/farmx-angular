@@ -72,8 +72,6 @@ function handle401Error(
   next: HttpHandlerFn,
   store: Store
 ): Observable<HttpEvent<any>> {
-  const cookieService = inject(CookieService);
-
   if (!refreshingInProgress.value) {
     refreshingInProgress.value = true;
     refreshTokenSubject.next(null);

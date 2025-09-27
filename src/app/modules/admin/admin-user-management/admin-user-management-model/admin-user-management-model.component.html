@@ -36,6 +36,13 @@
       [(ngModel)]="data.user.password"
       required
       aria-label="User Password"
+      [appPasswordValidator]="{
+        minLength: 8,
+        requiredUpperCase: true,
+        requiredLowerCase: true,
+        requiredDigit: true,
+        requiredSpecialChar: true
+      }"
       [disabled]="mode === 'view'"
     />
   </mat-form-field>
@@ -61,6 +68,7 @@
       [(ngModel)]="data.user.phone"
       required
       aria-label="User Phone"
+      appMobileValidator
       [disabled]="mode === 'view'"
     />
   </mat-form-field>

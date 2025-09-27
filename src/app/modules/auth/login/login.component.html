@@ -1,5 +1,3 @@
-<!-- login.component.html -->
-
 <div class="auth-container">
   <!-- Left Side: Login Form -->
   <div
@@ -17,10 +15,10 @@
 
     <h2 id="signup-heading" class="animate__slideInUp">Welcome Back</h2>
 
-    <!-- Login Form -->
+    <!-- Login Form - Changed to Reactive Form -->
     <form
-      #loginForm="ngForm"
-      (ngSubmit)="onSubmit(loginForm)"
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
       class="animate__slideInUp"
       novalidate
     >
@@ -38,22 +36,18 @@
         <label for="email">Email</label>
         <input
           type="email"
-          name="email"
           id="email"
-          ngModel
-          #email="ngModel"
-          [class.error]="email.invalid && email.touched"
+          formControlName="email"
+          [class.error]="email?.invalid && email?.touched"
           placeholder="Enter your email"
-          required
-          email
           aria-label="Email address"
         />
         <div
           class="field-error animate__fadeIn"
-          *ngIf="email.invalid && email.touched"
+          *ngIf="email?.invalid && email?.touched"
         >
-          <span *ngIf="email.errors?.['required']">Email is required</span>
-          <span *ngIf="email.errors?.['email']"
+          <span *ngIf="email?.errors?.['required']">Email is required</span>
+          <span *ngIf="email?.errors?.['email']"
             >Please enter a valid email address.</span
           >
         </div>
@@ -64,14 +58,17 @@
         <div class="password-input">
           <input
             id="password"
-            name="password"
-            #password="ngModel"
-            ngModel
+            formControlName="password"
             [type]="showPassword ? 'text' : 'password'"
-            [class.error]="password.invalid && password.touched"
+            [class.error]="password?.invalid && password?.touched"
             placeholder="Enter your password"
-            required
-            minlength="6"
+            [appPasswordValidator]="{
+              minLength: 6,
+              requiredUpperCase: true,
+              requiredLowerCase: true,
+              requiredDigit: true,
+              requiredSpecialChar: true
+            }"
             aria-label="Password"
           />
 
@@ -86,13 +83,26 @@
         </div>
         <div
           class="field-error animate__fadeIn"
-          *ngIf="password.invalid && password.touched"
+          *ngIf="password?.invalid && password?.touched"
         >
-          <span *ngIf="password.errors?.['required']"
+          <span *ngIf="password?.errors?.['required']"
             >Password is required.</span
           >
-          <span *ngIf="password.errors?.['minlength']"
-            >Password must be atleast 6 characters</span
+          <span *ngIf="password?.errors?.['minlength']"
+            >Password must be at least 6 characters</span
+          >
+          <!-- Add custom validator errors if needed -->
+          <span *ngIf="password?.errors?.['requireUppercase']"
+            >Password must contain at least one uppercase letter</span
+          >
+          <span *ngIf="password?.errors?.['requireLowercase']"
+            >Password must contain at least one lowercase letter</span
+          >
+          <span *ngIf="password?.errors?.['requireNumbers']"
+            >Password must contain at least one number</span
+          >
+          <span *ngIf="password?.errors?.['requireSpecialChars']"
+            >Password must contain at least one special character</span
           >
         </div>
       </div>

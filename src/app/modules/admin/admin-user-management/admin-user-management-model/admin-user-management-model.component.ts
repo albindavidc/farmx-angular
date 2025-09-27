@@ -17,14 +17,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { Observable, of } from 'rxjs';
+import { PasswordValidatorDirective } from '../../../../shared/directives/password-validator.directive';
 
 @Component({
   selector: 'app-admin-user-management-model',
   imports: [
     CommonModule,
     FormsModule,
-
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -34,6 +33,7 @@ import { Observable, of } from 'rxjs';
     MatIconModule,
     MatSliderModule,
     MatSlideToggleModule,
+    PasswordValidatorDirective,
   ],
   templateUrl: './admin-user-management-model.component.html',
   styleUrl: './admin-user-management-model.component.scss',

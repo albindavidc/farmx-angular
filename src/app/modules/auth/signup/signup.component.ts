@@ -23,6 +23,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { SignupRequestModel } from '../../../shared/models/signup.model';
+import { PasswordValidatorDirective } from "../../../shared/directives/password-validator.directive";
 
 interface Testimonial {
   quote: string;
@@ -38,7 +39,8 @@ interface Testimonial {
     RouterLink,
     FontAwesomeModule,
     SvgIconComponent,
-  ],
+    PasswordValidatorDirective
+],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })

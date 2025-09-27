@@ -30,7 +30,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { authInterceptor } from './core/guards/auth.interceptor';
+import { authInterceptor } from './core/auth.interceptor';
 import { ForgotPasswordEffects } from './store/auth/effects/forgot-password.effects';
 import { LoginEffects } from './store/auth/effects/login.effects';
 import { OtpEffects } from './store/auth/effects/otp.effects';
