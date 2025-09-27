@@ -16,7 +16,7 @@ import {
   throwError,
 } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AuthActions } from '../../store/auth/actions/auth.actions';
+import { AuthActions } from '../store/auth/actions/auth.actions';
 import { CookieService } from 'ngx-cookie-service';
 
 const refreshingInProgress = { value: false };
