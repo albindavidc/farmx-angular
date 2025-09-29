@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -5,26 +6,25 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { AdminNavBarComponent } from '../../../shared/components/nav-bar/admin-nav-bar/admin-nav-bar.component';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import {
   MatTable,
   MatTableDataSource,
   MatTableModule,
 } from '@angular/material/table';
-import { User } from '../../../shared/models/user.model';
-import { UserService } from '../../../shared/services/admin/user.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialog } from '@angular/material/dialog';
-import { AdminUserManagementModelComponent } from './admin-user-management-model/admin-user-management-model.component';
+import { AdminNavBarComponent } from '../../../shared/components/nav-bar/admin-nav-bar/admin-nav-bar.component';
 import { UserRole } from '../../../shared/models/user-role';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from '../../../shared/models/user/user.model';
+import { UserService } from '../../../shared/services/admin/user.service';
+import { AdminUserManagementModelComponent } from './admin-user-management-model/admin-user-management-model.component';
 
 @Component({
   selector: 'app-admin-user-management',

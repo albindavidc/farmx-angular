@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { ResendOtpRequest, VerifyOtpRequest } from '../../../shared/models/otp.model';
-import { User } from '../../../shared/models/user.model';
+import { User } from '../../../shared/models/user/user.model';
 
 export const OtpActions = createActionGroup({
   source: 'Auth',

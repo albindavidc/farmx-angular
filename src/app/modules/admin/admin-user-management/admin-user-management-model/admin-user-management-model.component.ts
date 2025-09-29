@@ -1,23 +1,23 @@
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FarmerStatus, User } from '../../../../shared/models/user.model';
-import { UserRole } from '../../../../shared/models/user-role';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSliderModule } from '@angular/material/slider';
 import { PasswordValidatorDirective } from '../../../../shared/directives/password-validator.directive';
+import { UserRole } from '../../../../shared/models/user-role';
+import { FarmerStatus, User } from '../../../../shared/models/user/user.model';
 
 @Component({
   selector: 'app-admin-user-management-model',

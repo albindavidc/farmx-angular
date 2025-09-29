@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
-import { map, Observable, of, switchMap, take, throwError } from 'rxjs';
-import { Community } from '../../shared/models/community.model';
-import { Store } from '@ngrx/store';
-import { selectUser } from '../auth/selectors/auth.selectors';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { map, Observable, of, switchMap, take, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
-import { response } from 'express';
-import { User } from '../../shared/models/user.model';
+import { Community } from '../../shared/models/community.model';
+import { User } from '../../shared/models/user/user.model';
+import { selectUser } from '../auth/selectors/auth.selectors';
 
 export interface ApiResponse<T> {
   message: string;

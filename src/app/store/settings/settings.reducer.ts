@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
+import { User } from '../../shared/models/user/user.model';
 import { SettingsActions } from './settings.actions';
-import { User } from '../../shared/models/user.model';
 
 export const settingsFeatureKey = 'settings';
 

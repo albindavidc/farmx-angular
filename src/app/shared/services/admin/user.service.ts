@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment.development';
 import { map, Observable } from 'rxjs';
-import { User } from '../../models/user.model';
+import { environment } from '../../../../environments/environment.development';
+import { User } from '../../models/user/user.model';
 
 interface ApiResponse<T> {
   success: string;

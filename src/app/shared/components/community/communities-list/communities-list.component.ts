@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import {
-  selectAllCommunities,
-  selectCommunityLoading,
-  selectJoinedCommunity,
-} from '../../../../store/community/community.selectors';
-import { CommunityActions } from '../../../../store/community/community.actions';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
 import {
   BehaviorSubject,
   combineLatest,
@@ -22,10 +19,13 @@ import {
   selectIsAuthenticated,
   selectUser,
 } from '../../../../store/auth/selectors/auth.selectors';
-import { User } from '../../../models/user.model';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { CommunityActions } from '../../../../store/community/community.actions';
+import {
+  selectAllCommunities,
+  selectCommunityLoading,
+  selectJoinedCommunity,
+} from '../../../../store/community/community.selectors';
+import { User } from '../../../models/user/user.model';
 
 @Component({
   selector: 'app-communities-list',

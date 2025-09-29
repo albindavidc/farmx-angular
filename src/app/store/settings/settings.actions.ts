@@ -1,5 +1,5 @@
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { User } from '../../shared/models/user.model';
+import { createActionGroup, props } from '@ngrx/store';
+import { User } from '../../shared/models/user/user.model';
 
 export const SettingsActions = createActionGroup({
   source: 'Settings',
