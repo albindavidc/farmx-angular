@@ -26,7 +26,7 @@ export class UserService {
     return throwError(() => new Error(message));
   }
 
-  getUsers(params: UserQueryParams): Observable<PaginatedResponse<User[]>> {
+  getUsers(params: UserQueryParams): Observable<PaginatedResponse<User>> {
     let httpParams = new HttpParams()
       .set('page', params.page.toString())
       .set('limit', params.limit.toString())
@@ -38,7 +38,7 @@ export class UserService {
     }
 
     return this.http
-      .get<ApiResponse<PaginatedResponse<User[]>>>(
+      .get<ApiResponse<PaginatedResponse<User>>>(
         `${this.apiUrl}/admin/get-users`,
         {
           params: httpParams,
