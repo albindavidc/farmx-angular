@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
-import { UserRole } from '../../../shared/models/user-role';
+import { UserRole } from '../../../shared/models/user/user-role';
 
 export interface TokenPayload {
   id: string;

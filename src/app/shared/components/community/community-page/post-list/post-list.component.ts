@@ -19,7 +19,7 @@ import {
   selectCommunityPosts,
 } from '../../../../../store/community/post/community-post.selectors';
 import { MatDialog } from '@angular/material/dialog';
-import { UserRole } from '../../../../models/user-role';
+import { UserRole } from '../../../../models/user/user-role';
 import { selectUser } from '../../../../../store/auth/selectors/auth.selectors';
 import { Actions, ofType } from '@ngrx/effects';
 

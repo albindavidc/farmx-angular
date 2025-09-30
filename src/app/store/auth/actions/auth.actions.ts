@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { TokenPayload } from '../services/token.service';
-import { UserRole } from '../../../shared/models/user-role';
+import { UserRole } from '../../../shared/models/user/user-role';
 
 export const AuthActions = createActionGroup({
   source: 'Auth',

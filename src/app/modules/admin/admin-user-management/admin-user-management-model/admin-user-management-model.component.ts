@@ -16,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { PasswordValidatorDirective } from '../../../../shared/directives/password-validator.directive';
-import { UserRole } from '../../../../shared/models/user-role';
+import { UserRole } from '../../../../shared/models/user/user-role';
 import { FarmerStatus, User } from '../../../../shared/models/user/user.model';
 
 @Component({
