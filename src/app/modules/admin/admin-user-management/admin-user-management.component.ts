@@ -29,6 +29,7 @@ import { UserRole } from '../../../shared/models/user/user-role';
 import { User } from '../../../shared/models/user/user.model';
 import { UserService } from '../../../shared/services/admin/user.service';
 import { AdminUserManagementModelComponent } from './admin-user-management-model/admin-user-management-model.component';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-admin-user-management',
@@ -219,7 +220,7 @@ export class AdminUserManagementComponent
 
     dialogRef.afterClosed().subscribe((result: User | undefined) => {
       if (result) {
-        console.log(result, 'this is the user')
+        console.log(result, 'this is the user');
         this.userService.updateUser(result).subscribe({
           next: (updatedUser) => {
             // Update the specific user in the current view

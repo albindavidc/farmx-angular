@@ -3,13 +3,13 @@
 <div class="main-wrapper">
   <div class="table-header">
     <div class="main-header">
-      <h2>User Management</h2>
+      <h1 class="page-title">User Management</h1>
 
       <div class="action-buttons">
         <button
           mat-icon-button
           (click)="refresh()"
-          aria-label="Refresh users"
+          aria-label="Refresh users list"
           [disabled]="isLoading"
         >
           <mat-icon>refresh</mat-icon>
@@ -19,7 +19,7 @@
           mat-raised-button
           color="primary"
           (click)="createUser()"
-          aria-label="Create User"
+          aria-label="Create new user"
           [disabled]="isLoading"
         >
           <mat-icon>add</mat-icon>
@@ -28,41 +28,47 @@
       </div>
     </div>
 
-    <mat-form-field appearance="outline" class="search-field" role="search">
-      <mat-label>Search Users</mat-label>
+    <div class="management-table-filter" style="border-radius: 20px">
+      <mat-form-field appearance="outline">
+        <mat-label>Search Users</mat-label>
+        <input
+          matInput
+          placeholder="Search by name, email, username..."
+          (input)="onSearchChange($event)"
+          [value]="searchValue"
+          aria-label="Search users by name, email, or username"
+          autocomplete="off"
+          [disabled]="isLoading"
+          type="search"
+        />
+        <mat-icon matSuffix aria-hidden="true">search</mat-icon>
 
-      <input
-        matInput
-        placeholder="Search by name, email, username..."
-        (input)="onSearchChange($event)"
-        [value]="searchValue"
-        aria-label="Search users"
-        autocomplete="off"
-        [disabled]="isLoading"
-      />
-
-      <mat-icon matSuffix>search</mat-icon>
-
-      <button
-        *ngIf="searchValue"
-        matSuffix
-        mat-icon-button
-        aria-label="Clear search"
-        (click)="clearSearch()"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
+        @if (searchValue) {
+        <button
+          matSuffix
+          mat-icon-button
+          aria-label="Clear search"
+          (click)="clearSearch()"
+          class="clear-btn"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+        }
+      </mat-form-field>
+    </div>
   </div>
 
-  <!-- Loading Spinner -->
-  <div *ngIf="isLoading" class="loading-container">
-    <mat-spinner diameter="50"></mat-spinner>
+  <!-- Loading State -->
+  @if (isLoading) {
+  <div class="loading-container" aria-live="polite" aria-busy="true">
+    <mat-spinner diameter="50" aria-label="Loading users"></mat-spinner>
     <p>Loading users...</p>
   </div>
+  }
 
-  <!-- Table Container -->
-  <div class="table-container" *ngIf="!isLoading">
+  <!-- Table Section -->
+  @if (!isLoading) {
+  <div class="table-container">
     <table
       mat-table
       [dataSource]="dataSource"
@@ -70,25 +76,34 @@
       (matSortChange)="onSortChange($event)"
       [matSortActive]="sortBy"
       [matSortDirection]="sortDirection"
-      aria-label="User Management Table"
-      role="grid"
+      aria-label="User management table"
     >
       <!-- Name Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
-        <td mat-cell *matCellDef="let user">{{ user.name }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
+          Full Name
+        </th>
+        <td mat-cell *matCellDef="let user" data-label="Full Name">
+          {{ user.name || "Not provided" }}
+        </td>
       </ng-container>
 
       <!-- Email Column -->
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-        <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
+          Email
+        </th>
+        <td mat-cell *matCellDef="let user" data-label="Email">
+          {{ user.email }}
+        </td>
       </ng-container>
 
       <!-- Role Column -->
       <ng-container matColumnDef="role">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
-        <td mat-cell *matCellDef="let user">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
+          Role
+        </th>
+        <td mat-cell *matCellDef="let user" data-label="Role">
           <span class="role-badge" [class]="'role-' + user.role.toLowerCase()">
             {{ user.role }}
           </span>
@@ -97,35 +112,42 @@
 
       <!-- Communities Count Column -->
       <ng-container matColumnDef="communitiesCount">
-        <th mat-header-cell *matHeaderCellDef>Communities</th>
-        <td mat-cell *matCellDef="let user">
+        <th mat-header-cell *matHeaderCellDef scope="col">Communities</th>
+        <td mat-cell *matCellDef="let user" data-label="Communities">
           {{ user.communitiesCount || 0 }}
         </td>
       </ng-container>
 
       <!-- Posts Count Column -->
       <ng-container matColumnDef="postsCount">
-        <th mat-header-cell *matHeaderCellDef>Posts</th>
-        <td mat-cell *matCellDef="let user">{{ user.postsCount || 0 }}</td>
+        <th mat-header-cell *matHeaderCellDef scope="col">Posts</th>
+        <td mat-cell *matCellDef="let user" data-label="Posts">
+          {{ user.postsCount || 0 }}
+        </td>
       </ng-container>
 
       <!-- Created At Column -->
       <ng-container matColumnDef="createdAt">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Created</th>
-        <td mat-cell *matCellDef="let user">
-          {{ user.createdAt | date : "short" }}
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
+          Created
+        </th>
+        <td mat-cell *matCellDef="let user" data-label="Created">
+          <time [attr.datetime]="user.createdAt">
+            {{ user.createdAt | date : "short" }}
+          </time>
         </td>
       </ng-container>
 
       <!-- View Action -->
       <ng-container matColumnDef="view">
-        <th mat-header-cell *matHeaderCellDef>View</th>
+        <th mat-header-cell *matHeaderCellDef scope="col">View</th>
         <td mat-cell *matCellDef="let user">
           <button
             mat-icon-button
-            aria-label="View user details"
+            [attr.aria-label]="'View details for ' + (user.name || 'user')"
             (click)="viewUser(user)"
             color="primary"
+            class="action-btn"
           >
             <mat-icon>visibility</mat-icon>
           </button>
@@ -134,13 +156,14 @@
 
       <!-- Edit Action -->
       <ng-container matColumnDef="edit">
-        <th mat-header-cell *matHeaderCellDef>Edit</th>
+        <th mat-header-cell *matHeaderCellDef scope="col">Edit</th>
         <td mat-cell *matCellDef="let user">
           <button
             mat-icon-button
-            aria-label="Edit user"
+            [attr.aria-label]="'Edit ' + (user.name || 'user')"
             (click)="editUser(user)"
             color="accent"
+            class="action-btn"
           >
             <mat-icon>edit</mat-icon>
           </button>
@@ -149,13 +172,18 @@
 
       <!-- Block Action -->
       <ng-container matColumnDef="block">
-        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <th mat-header-cell *matHeaderCellDef scope="col">Status</th>
         <td mat-cell *matCellDef="let user">
           <button
             mat-icon-button
-            [attr.aria-label]="user.isBlocked ? 'Unblock user' : 'Block user'"
+            [attr.aria-label]="
+              user.isBlocked
+                ? 'Unblock ' + (user.name || 'user')
+                : 'Block ' + (user.name || 'user')
+            "
             (click)="toggleBlock(user)"
             [color]="user.isBlocked ? 'warn' : 'primary'"
+            class="action-btn"
           >
             <mat-icon>{{ user.isBlocked ? "lock" : "lock_open" }}</mat-icon>
           </button>
@@ -164,26 +192,34 @@
 
       <!-- Table Rows -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="viewUser(row)"
+        class="clickable-row"
+      ></tr>
 
-      <!-- No Data Row -->
+      <!-- Empty State -->
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
-          <mat-icon>inbox</mat-icon>
-          <p>No users found</p>
-          <button
-            mat-button
-            color="primary"
-            (click)="clearSearch()"
-            *ngIf="searchValue"
-          >
-            Clear Search
-          </button>
+          <div class="empty-state">
+            <mat-icon aria-hidden="true">inbox</mat-icon>
+            <p>
+              {{
+                searchValue ? "No users match your search" : "No users found"
+              }}
+            </p>
+            @if (searchValue) {
+            <button mat-button color="primary" (click)="clearSearch()">
+              Clear Search
+            </button>
+            }
+          </div>
         </td>
       </tr>
     </table>
 
-    <!-- Server-Side Paginator -->
+    <!-- Pagination -->
     <mat-paginator
       [length]="totalItems"
       [pageSize]="pageSize"
@@ -191,8 +227,10 @@
       [pageIndex]="currentPage - 1"
       (page)="onPageChange($event)"
       showFirstLastButtons
-      aria-label="Select page of users"
+      aria-label="User pagination"
+      class="elite-paginator"
     >
     </mat-paginator>
   </div>
+  }
 </div>

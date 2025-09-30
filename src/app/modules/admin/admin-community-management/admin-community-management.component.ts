@@ -47,7 +47,7 @@ export class AdminCommunityManagementComponent {
       { name: 'description', label: 'Description', isVisible: true },
       {
         name: 'createdAt',
-        label: 'Created On',
+        label: 'Created ',
         isVisible: true,
         sortable: true,
         type: 'date',

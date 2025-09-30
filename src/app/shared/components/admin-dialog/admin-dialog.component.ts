@@ -78,8 +78,19 @@ export class AdminDialogComponent implements OnInit {
   isSubmitting = false;
   isUploadingImage = false;
   categories: string[] = [];
-
   pondFiles: any[] = [];
+
+  constructor(
+    private fb: FormBuilder,
+    public dialogRef: MatDialogRef<AdminDialogComponent>,
+    private snackBar: MatSnackBar,
+    private communityService: CommunityService,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {
+    this.dialogTitle =
+      data.mode === 'create' ? 'Create New Community' : 'Edit Community';
+  }
+  
   pondOptions: FilePondOptions = {
     name: 'file',
     className: 'filepond-custom',
@@ -145,16 +156,6 @@ export class AdminDialogComponent implements OnInit {
     },
   };
 
-  constructor(
-    private fb: FormBuilder,
-    public dialogRef: MatDialogRef<AdminDialogComponent>,
-    private snackBar: MatSnackBar,
-    private communityService: CommunityService,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {
-    this.dialogTitle =
-      data.mode === 'create' ? 'Create New Community' : 'Edit Community';
-  }
 
   ngOnInit(): void {
     this.initializeForm();
