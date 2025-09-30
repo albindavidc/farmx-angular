@@ -1,54 +1,756 @@
 /* Material Theming */
 @use "@angular/material" as mat;
 
+// Variables from your theme
+$primary-color: rgb(71 103 48);
+$primary-container: rgb(200 238 168);
+$on-primary-container: #304f1a;
+$surface-color: rgb(249, 250, 239);
+$on-surface: rgb(25 29 22);
+$surface-variant: rgb(224 228 214);
+$outline: rgb(116 121 109);
+$error-color: rgb(186 26 26);
+$secondary-color: rgb(86 98 75);
+
+// Mixins
+@mixin focus-ring {
+  outline: 2px solid $primary-color;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@mixin card-shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+@mixin transition($properties...) {
+  transition-property: $properties;
+  transition-duration: 0.3s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Material overrides
 :host::ng-deep {
   @include mat.form-field-overrides(
     (
-      outlined-container-shape: 20px,
+      outlined-container-shape: 12px,
     )
   );
+
+  // Remove default browser outline
+  .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      .mat-mdc-form-field-flex {
+        .mat-mdc-form-field-infix {
+          input,
+          textarea {
+            outline: none !important;
+
+            &:focus {
+              outline: none !important;
+            }
+          }
+        }
+      }
+    }
+
+    // Remove the fieldset outline
+    .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-width: 1px;
+        border-color: $outline;
+      }
+
+      // Properly connect the outline segments
+      .mdc-notched-outline__leading {
+
+        border-right-width: 0;
+      }
+
+      .mdc-notched-outline__notch {
+        border-left-width: 0;
+        border-right-width: 0;
+        border-top-width: 1px;
+        // Ensure the notch has bottom border
+        // border-bottom-width: 0 !important;
+        max-width: 100%;
+      }
+
+      .mdc-notched-outline__trailing {
+        border-left-width: 0;
+      }
+    }
+
+    // Fix the notched outline to ensure full coverage
+    .mat-mdc-notched-outline {
+      .mdc-notched-outline {
+        &__leading,
+        &__notch,
+        &__trailing {
+          border-style: solid;
+        }
+      }
+    }
+
+    // Focused state - only thicken the Material outline
+    &.mat-focused {
+      .mdc-notched-outline {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: $primary-color !important;
+        }
+
+        .mdc-notched-outline__leading {
+          border-width: 2px;
+          border-right-width: 0;
+        }
+
+        .mdc-notched-outline__notch {
+          border-top-width: 2px;
+          border-left-width: 0;
+          border-right-width: 0;
+          // border-bottom-width: 0 !important;
+        }
+
+        .mdc-notched-outline__trailing {
+          border-width: 2px;
+          border-left-width: 0;
+        }
+      }
+
+      // Remove any browser default outline
+      .mat-mdc-form-field-flex {
+        outline: none !important;
+      }
+    }
+
+    // Error state styling
+    &.mat-form-field-invalid {
+      .mdc-notched-outline {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: $error-color !important;
+        }
+      }
+    }
+
+    // Ensure no outline on the form field container
+    &:focus,
+    &:focus-within {
+      outline: none !important;
+    }
+  }
+
+  // Custom scrollbar for dialog content
+  .mat-mdc-dialog-content {
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $surface-variant;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $outline;
+      border-radius: 4px;
+
+      &:hover {
+        background: $secondary-color;
+      }
+    }
+  }
+
+  // Form field customizations
+  .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      background-color: $surface-color;
+      padding-bottom: 5px;
+    }
+
+    .mat-mdc-form-field-focus-overlay {
+      background-color: transparent;
+    }
+
+    // Ensure the outline covers the entire field
+    .mat-mdc-notched-outline {
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    // Fix for the notched outline - ensure all corners are rounded properly
+    .mdc-notched-outline {
+      height: 100%;
+
+      .mdc-notched-outline__leading {
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+        border: 1px solid; // All 4 sides
+
+        border-right: none;
+        width: 12px;
+      }
+
+      .mdc-notched-outline__notch {
+        border-left: none;
+        border-right: none;
+      }
+
+      .mdc-notched-outline__trailing {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+        border: 1px solid; // All 4 sides
+
+        border-left: none;
+      }
+    }
+
+    // Icon prefix styling
+    .mat-mdc-form-field-icon-prefix {
+      color: $primary-color;
+      margin-right: 8px;
+    }
+  }
+
+  // Checkbox customization
+  .mat-mdc-checkbox {
+    --mdc-checkbox-selected-checkmark-color: var(--md-sys-color-on-primary);
+    --mdc-checkbox-selected-focus-icon-color: var(--md-sys-color-primary);
+    --mdc-checkbox-selected-hover-icon-color: var(--md-sys-color-primary);
+    --mdc-checkbox-selected-icon-color: var(--md-sys-color-primary);
+    --mdc-checkbox-selected-pressed-icon-color: var(--md-sys-color-primary);
+  }
+
+  // Datepicker customization
+  .mat-datepicker-content {
+    background-color: $surface-color;
+    border-radius: 16px;
+    @include card-shadow;
+  }
+
+  .mat-calendar-body-selected {
+    background-color: $primary-color;
+    color: white;
+  }
 }
 
-// Dialog component styles
+// Component styles
 :host {
   display: block;
   overflow: hidden;
 }
 
+.dialog-container {
+  min-width: 500px;
+  max-width: 600px;
+
+  @media screen and (max-width: 768px) {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: $on-surface;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  padding: 24px 24px 16px;
+
+  .title-icon {
+    color: $primary-color;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.dialog-content {
+  padding: 0 24px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
 .full-width {
   width: 100%;
-  height: 100%;
 }
 
 .form-fields {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 8px 0;
+  gap: 20px;
+  padding: 8px 0 16px;
 }
 
 .form-row {
   display: flex;
   gap: 16px;
+  align-items: flex-start;
 
-  mat-form-field {
+  .form-field-half {
     flex: 1;
+    min-width: 0; // Prevent overflow
   }
-}
 
-.checkbox-field {
-  margin-top: 8px;
-}
-
-mat-dialog-actions {
-  margin-top: 16px;
-  padding: 16px 0 0;
-}
-
-// Responsive styles
-@media screen and (max-width: 600px) {
-  .form-row {
+  @media screen and (max-width: 600px) {
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
+
+    .form-field-half {
+      width: 100%;
+    }
   }
+}
+
+// Image Upload Section
+.image-upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background-color: rgba($surface-variant, 0.3);
+  border-radius: 12px;
+  border: 1px dashed $outline;
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: $on-surface;
+    margin-bottom: 8px;
+
+    mat-icon {
+      color: $primary-color;
+    }
+
+    .optional-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: $outline;
+      margin-left: 4px;
+    }
+  }
+}
+
+.filepond-wrapper {
+  width: 100%;
+  position: relative;
+
+  .upload-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 12px;
+    background-color: rgba($primary-color, 0.1);
+    border-radius: 8px;
+    color: $primary-color;
+    font-size: 14px;
+    font-weight: 500;
+
+    mat-spinner {
+      ::ng-deep circle {
+        stroke: $primary-color;
+      }
+    }
+  }
+
+  ::ng-deep {
+    .filepond--root {
+      margin-bottom: 0;
+      font-family: inherit;
+    }
+
+    .filepond--drop-label {
+      color: $on-surface;
+
+      label {
+        cursor: pointer;
+      }
+    }
+
+    .filepond--label-action {
+      color: $primary-color;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+
+    .filepond--panel-root {
+      background-color: $surface-color;
+      border: 2px dashed $outline;
+      border-radius: 12px;
+      @include transition(border-color, background-color);
+
+      &:hover {
+        border-color: $primary-color;
+        background-color: rgba($primary-container, 0.1);
+      }
+    }
+
+    .filepond--item {
+      .filepond--file-info {
+        .filepond--file-info-main {
+          color: $on-surface;
+        }
+      }
+    }
+
+    .filepond--credits {
+      display: none !important;
+    }
+
+    // Upload progress styling
+    .filepond--file-status {
+      color: $primary-color;
+    }
+
+    .filepond--file-status-main {
+      font-weight: 500;
+    }
+
+    // Success state
+    .filepond--item-panel {
+      &.filepond--item-panel-complete {
+        background-color: rgba($primary-color, 0.1);
+      }
+    }
+
+    // Error state
+    .filepond--item-panel {
+      &.filepond--item-panel-invalid {
+        background-color: rgba($error-color, 0.1);
+      }
+    }
+  }
+}
+
+.url-input-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 8px 0;
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid $outline;
+  }
+
+  span {
+    padding: 0 16px;
+    color: $outline;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.image-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+
+  .preview-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: $on-surface;
+    margin: 0;
+  }
+
+  img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid $outline;
+    @include card-shadow;
+    @include transition(transform, box-shadow);
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.info-icon {
+  color: $outline;
+  cursor: help;
+  @include transition(color);
+
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+// Checkbox field
+.checkbox-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background-color: rgba($primary-container, 0.2);
+  border-radius: 12px;
+  border-left: 4px solid $primary-color;
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 500;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $primary-color;
+    }
+  }
+
+  .checkbox-hint {
+    margin: 0;
+    margin-left: 32px;
+    font-size: 13px;
+    color: $on-primary-container;
+    font-style: italic;
+  }
+
+  ::ng-deep .mat-mdc-checkbox {
+    .mdc-checkbox {
+      &:hover {
+        .mdc-checkbox__ripple {
+          background-color: rgba($primary-color, 0.1);
+        }
+      }
+    }
+
+    &.mat-mdc-checkbox-checked {
+      .mdc-form-field label {
+        color: $on-surface;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Dialog actions
+.dialog-actions {
+  padding: 16px 24px;
+  gap: 12px;
+  border-top: 1px solid $surface-variant;
+  margin-top: 16px;
+
+  button {
+    min-width: 100px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    @include transition(transform, box-shadow);
+
+    mat-icon {
+      margin-right: 4px;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    &:not(:disabled) {
+      &:hover {
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+    }
+  }
+
+  .submit-button {
+    position: relative;
+
+    mat-spinner {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &[disabled] span {
+      opacity: 0;
+    }
+  }
+}
+
+// Accessibility improvements
+.mat-mdc-form-field {
+  &:focus-within {
+    outline: none !important;
+
+    .mat-mdc-form-field-focus-overlay {
+      opacity: 0;
+    }
+  }
+}
+
+// Remove browser default focus styles
+input,
+textarea,
+select {
+  &:focus {
+    outline: none !important;
+  }
+
+  &:focus-visible {
+    outline: none !important;
+  }
+}
+
+// Error state styling
+.mat-mdc-form-field.mat-form-field-invalid {
+  .mat-mdc-text-field-wrapper {
+    animation: shake 0.4s ease-in-out;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-4px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+// Loading state
+.submit-button {
+  &[disabled] {
+    background-color: rgba($primary-color, 0.5) !important;
+  }
+}
+
+// Hint text styling
+::ng-deep .mat-mdc-form-field-hint {
+  font-size: 12px;
+  color: $outline;
+}
+
+// Touch device optimizations
+@media (hover: none) and (pointer: coarse) {
+  .dialog-actions button {
+    min-height: 48px;
+    padding: 12px 24px;
+  }
+
+  .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      min-height: 56px;
+    }
+  }
+}
+
+// Dark mode support (if needed)
+@media (prefers-color-scheme: dark) {
+  .dialog-title {
+    color: var(--md-sys-color-on-surface);
+  }
+
+  .image-upload-section {
+    background-color: rgba(var(--md-sys-color-surface-variant), 0.2);
+  }
+}
+
+// Print styles
+@media print {
+  .dialog-actions,
+  .filepond-wrapper {
+    display: none;
+  }
+
+  .dialog-container {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .mat-mdc-form-field {
+    .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-width: 2px !important;
+      }
+    }
+  }
+
+  .checkbox-field {
+    border-left-width: 6px;
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Focus visible for keyboard navigation
+button:focus-visible {
+  @include focus-ring;
+}
+
+// Remove outline from inputs when using keyboard
+input:focus-visible,
+textarea:focus-visible {
+  outline: none !important;
+}
+
+// Custom tooltip styling
+::ng-deep .mat-mdc-tooltip {
+  background-color: $on-surface;
+  color: $surface-color;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
 }
