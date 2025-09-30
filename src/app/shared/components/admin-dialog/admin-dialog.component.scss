@@ -29,6 +29,14 @@ $secondary-color: rgb(86 98 75);
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+::ng-deep .mat-mdc-form-field .mat-mdc-form-field-icon-prefix {
+  border-left: none !important; // removes the vertical divider
+}
+
+::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--outlined {
+  border-left: none !important;
+}
+
 // Material overrides
 :host::ng-deep {
   @include mat.form-field-overrides(
@@ -65,7 +73,6 @@ $secondary-color: rgb(86 98 75);
 
       // Properly connect the outline segments
       .mdc-notched-outline__leading {
-
         border-right-width: 0;
       }
 
@@ -192,7 +199,7 @@ $secondary-color: rgb(86 98 75);
       .mdc-notched-outline__leading {
         border-top-left-radius: 12px;
         border-bottom-left-radius: 12px;
-        border: 1px solid; // All 4 sides
+        // border: 1px solid; // All 4 sides
 
         border-right: none;
         width: 12px;

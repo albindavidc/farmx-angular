@@ -125,7 +125,7 @@ export class AdminManagementComponent {
   }
 
   onCreateNew(): void {
-    this.createNew.emit();
+    // this.createNew.emit();
 
     // Open the dialog for creating new item
     const dialogRef = this.dialog.open(AdminDialogComponent, {

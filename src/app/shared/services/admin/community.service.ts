@@ -46,20 +46,28 @@ export class CommunityService {
   }
 
   getCommunityById(id: string): Observable<Community> {
-    return this.http.get<Community>(`${this.apiUrl}/${id}`);
+    return this.http.get<Community>(`${this.apiUrl}/${id}`, {
+      withCredentials: true,
+    });
   }
 
   createCommunity(community: Community): Observable<Community> {
-    return this.http.post<Community>(this.apiUrl, community);
-  }
-
-  updateCommunity(id: string, community: Community): Observable<Community> {
-    return this.http.put<Community>(`${this.apiUrl}/${id}`, 
+    return this.http.post<Community>(
+      `${this.apiUrl}/create-community`,
       community,
+      { withCredentials: true }
     );
   }
 
+  updateCommunity(id: string, community: Community): Observable<Community> {
+    return this.http.put<Community>(`${this.apiUrl}/${id}`, community, {
+      withCredentials: true,
+    });
+  }
+
   deleteCommunity(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, {
+      withCredentials: true,
+    });
   }
 }

@@ -1,19 +1,19 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { AdminNavBarComponent } from '../../../shared/components/nav-bar/admin-nav-bar/admin-nav-bar.component';
+import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Sort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 import {
   AdminManagementComponent,
   TableConfig,
 } from '../../../shared/components/admin-management/admin-management.component';
-import { CommonModule } from '@angular/common';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AdminNavBarComponent } from '../../../shared/components/nav-bar/admin-nav-bar/admin-nav-bar.component';
 import { Community } from '../../../shared/models/community.model';
 import {
   CommunityService,
   PaginatedResponse,
 } from '../../../shared/services/admin/community.service';
-import { PageEvent } from '@angular/material/paginator';
-import { Sort } from '@angular/material/sort';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-community-management',
@@ -175,16 +175,16 @@ export class AdminCommunityManagementComponent {
   }
 
   createCommunity(community: Community): void {
-    this.communityService.createCommunity(community).subscribe({
-      next: () => {
-        this.showNotification('Community created successfully');
-        this.loadCommunities();
-      },
-      error: (error) => {
-        console.error('Error creating community:', error);
-        this.showNotification('Failed to create community');
-      },
-    });
+    // this.communityService.createCommunity(community).subscribe({
+    //   next: () => {
+    //     this.showNotification('Community created successfully');
+    //     this.loadCommunities();
+    //   },
+    //   error: (error) => {
+    //     console.error('Error creating community:', error);
+    //     this.showNotification('Failed to create community');
+    //   },
+    // });
   }
 
   updateCommunity(community: Community): void {
@@ -195,7 +195,11 @@ export class AdminCommunityManagementComponent {
 
     this.communityService.updateCommunity(community.id, community).subscribe({
       next: () => {
-        console.log(community, community.id, 'these are the things in the admin community managment')
+        console.log(
+          community,
+          community.id,
+          'these are the things in the admin community managment'
+        );
         this.showNotification('Community updated successfully');
         this.loadCommunities();
       },
