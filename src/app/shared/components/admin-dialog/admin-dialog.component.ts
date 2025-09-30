@@ -26,7 +26,11 @@ import { FilePondModule } from 'ngx-filepond';
 import { FilePondOptions } from 'filepond';
 import { environment } from '../../../../environments/environment.development';
 import { CommunityService } from '../../services/admin/community.service';
-import { MatChipListbox, MatChipOption, MatChipRemove } from '@angular/material/chips';
+import {
+  MatChipListbox,
+  MatChipOption,
+  MatChipRemove,
+} from '@angular/material/chips';
 
 export interface DialogData {
   mode: 'create' | 'edit';
@@ -77,10 +81,11 @@ export class AdminDialogComponent implements OnInit {
 
   pondFiles: any[] = [];
   pondOptions: FilePondOptions = {
+    name: 'file',
     className: 'filepond-custom',
-    labelIdle: 'Drag & Drop your image or <span class="filepond--label-action">Browse</span>',
+    labelIdle:
+      'Drag & Drop your image or <span class="filepond--label-action">Browse</span>',
     acceptedFileTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-    // maxFileSize: '5MB',
     maxFiles: 1,
     allowMultiple: false,
     instantUpload: true,
@@ -98,7 +103,10 @@ export class AdminDialogComponent implements OnInit {
         onload: (response: string): string => {
           try {
             const parsedResponse = JSON.parse(response);
-            const imageUrl = parsedResponse.fileUrl || parsedResponse.url || parsedResponse.imageUrl;
+            const imageUrl =
+              parsedResponse.fileUrl ||
+              parsedResponse.url ||
+              parsedResponse.imageUrl;
             if (imageUrl) {
               this.uploadedImageUrl = imageUrl;
               this.form.patchValue({ imageUrl });
@@ -120,10 +128,14 @@ export class AdminDialogComponent implements OnInit {
         },
         onerror: (): void => {
           this.uploadedImageUrl = null;
-          this.snackBar.open('Image upload failed. Please try again.', 'Close', {
-            duration: 5000,
-            panelClass: ['error-snackbar'],
-          });
+          this.snackBar.open(
+            'Image upload failed. Please try again.',
+            'Close',
+            {
+              duration: 5000,
+              panelClass: ['error-snackbar'],
+            }
+          );
         },
       },
       revert: null,
@@ -140,7 +152,8 @@ export class AdminDialogComponent implements OnInit {
     private communityService: CommunityService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
-    this.dialogTitle = data.mode === 'create' ? 'Create New Community' : 'Edit Community';
+    this.dialogTitle =
+      data.mode === 'create' ? 'Create New Community' : 'Edit Community';
   }
 
   ngOnInit(): void {
@@ -155,13 +168,25 @@ export class AdminDialogComponent implements OnInit {
     this.form = this.fb.group({
       name: [
         this.data.item?.name || '',
-        [Validators.required, Validators.minLength(3), Validators.maxLength(100), this.noWhitespaceValidator],
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(100),
+          this.noWhitespaceValidator,
+        ],
       ],
       description: [
         this.data.item?.description || '',
-        [Validators.required, Validators.minLength(10), Validators.maxLength(500), this.noWhitespaceValidator],
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(500),
+          this.noWhitespaceValidator,
+        ],
       ],
-      isActive: [this.data.item?.isActive !== undefined ? this.data.item.isActive : true],
+      isActive: [
+        this.data.item?.isActive !== undefined ? this.data.item.isActive : true,
+      ],
       imageUrl: [this.data.item?.imageUrl || ''],
       categories: [this.data.item?.categories || []],
       categoryInput: [''],
@@ -171,14 +196,18 @@ export class AdminDialogComponent implements OnInit {
   private loadExistingImage(): void {
     if (this.data.item?.imageUrl) {
       this.uploadedImageUrl = this.data.item.imageUrl;
-      this.pondFiles = [{
-        source: this.data.item.imageUrl,
-        options: { type: 'local' },
-      }];
+      this.pondFiles = [
+        {
+          source: this.data.item.imageUrl,
+          options: { type: 'local' },
+        },
+      ];
     }
   }
 
-  private noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
+  private noWhitespaceValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
     const isWhitespace = (control.value || '').trim().length === 0;
     return isWhitespace && control.value ? { whitespace: true } : null;
   }
@@ -186,7 +215,7 @@ export class AdminDialogComponent implements OnInit {
   addCategory(): void {
     const input = this.form.get('categoryInput');
     const value = input?.value?.trim();
-    
+
     if (value && !this.categories.includes(value)) {
       this.categories.push(value);
       this.form.patchValue({ categories: this.categories });
@@ -234,10 +263,18 @@ export class AdminDialogComponent implements OnInit {
     });
   }
 
-  get nameControl() { return this.form.get('name'); }
-  get descriptionControl() { return this.form.get('description'); }
-  get imageUrlControl() { return this.form.get('imageUrl'); }
-  get categoryInputControl() { return this.form.get('categoryInput'); }
+  get nameControl() {
+    return this.form.get('name');
+  }
+  get descriptionControl() {
+    return this.form.get('description');
+  }
+  get imageUrlControl() {
+    return this.form.get('imageUrl');
+  }
+  get categoryInputControl() {
+    return this.form.get('categoryInput');
+  }
 
   getNameErrorMessage(): string {
     const c = this.nameControl;
@@ -251,9 +288,12 @@ export class AdminDialogComponent implements OnInit {
   getDescriptionErrorMessage(): string {
     const c = this.descriptionControl;
     if (c?.hasError('required')) return 'Description is required';
-    if (c?.hasError('minlength')) return 'Description must be at least 10 characters';
-    if (c?.hasError('maxlength')) return 'Description cannot exceed 500 characters';
-    if (c?.hasError('whitespace')) return 'Description cannot be only whitespace';
+    if (c?.hasError('minlength'))
+      return 'Description must be at least 10 characters';
+    if (c?.hasError('maxlength'))
+      return 'Description cannot exceed 500 characters';
+    if (c?.hasError('whitespace'))
+      return 'Description cannot be only whitespace';
     return '';
   }
 
@@ -261,7 +301,7 @@ export class AdminDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
- onSubmit(): void {
+  onSubmit(): void {
     if (this.form.invalid) {
       this.markFormGroupTouched(this.form);
       this.snackBar.open('Please fix all errors before submitting', 'Close', {
