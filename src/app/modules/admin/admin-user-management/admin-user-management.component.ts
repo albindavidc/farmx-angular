@@ -1,34 +1,34 @@
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
   ViewChild,
-  OnDestroy,
 } from '@angular/core';
-import { AdminNavBarComponent } from '../../../shared/components/nav-bar/admin-nav-bar/admin-nav-bar.component';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import {
   MatPaginator,
   MatPaginatorModule,
   PageEvent,
 } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
+import { AdminNavBarComponent } from '../../../shared/components/nav-bar/admin-nav-bar/admin-nav-bar.component';
+import { UserQueryParams } from '../../../shared/models/user/user-query-params.model';
+import { UserRole } from '../../../shared/models/user/user-role';
 import { User } from '../../../shared/models/user/user.model';
 import { UserService } from '../../../shared/services/admin/user.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialog } from '@angular/material/dialog';
 import { AdminUserManagementModelComponent } from './admin-user-management-model/admin-user-management-model.component';
-import { UserRole } from '../../../shared/models/user/user-role';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
-import { UserQueryParams } from '../../../shared/models/user/user-query-params.model';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-admin-user-management',
@@ -219,6 +219,7 @@ export class AdminUserManagementComponent
 
     dialogRef.afterClosed().subscribe((result: User | undefined) => {
       if (result) {
+        console.log(result, 'this is the user')
         this.userService.updateUser(result).subscribe({
           next: (updatedUser) => {
             // Update the specific user in the current view
