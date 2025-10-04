@@ -6,6 +6,8 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { CookieService } from 'ngx-cookie-service';
 import {
   BehaviorSubject,
   catchError,
@@ -15,9 +17,7 @@ import {
   take,
   throwError,
 } from 'rxjs';
-import { Store } from '@ngrx/store';
 import { AuthActions } from '../store/auth/actions/auth.actions';
-import { CookieService } from 'ngx-cookie-service';
 
 const refreshingInProgress = { value: false };
 const refreshTokenSubject = new BehaviorSubject<string | null>(null);
@@ -35,7 +35,8 @@ export const authInterceptor: HttpInterceptorFn = (
     req.url.includes('/auth/signup') ||
     req.url.includes('/auth/otp-verification') ||
     req.url.includes('/auth/user') ||
-    req.url.includes('/auth/refresh-access-token')
+    req.url.includes('/auth/refresh-access-token') ||
+    req.url.includes('/auth/logout')
   ) {
     return next(req);
   }

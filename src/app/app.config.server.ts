@@ -6,7 +6,6 @@ import { serverRoutes } from './app.routes.server';
 
 const serverConfig: ApplicationConfig = {
   providers: [
-    // provideServerRendering(),
     provideServerRouting(serverRoutes)
   ]
 };

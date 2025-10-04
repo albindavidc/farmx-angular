@@ -44,8 +44,21 @@ import { CommunityEffects } from './store/community/community.effects';
 import { communityReducer } from './store/community/community.reducer';
 import { CommunityPostEffects } from './store/community/post/community-post.effects';
 import { communityPostReducer } from './store/community/post/community-post.reducer';
+import { metaReducers } from './store/meta-reducers';
 import { SettingsEffects } from './store/settings/settings.effects';
 import { settingsReducer } from './store/settings/settings.reducer';
+
+const reducers = {
+  auth: authReducer,
+  login: loginReducer,
+  signup: signupReducer,
+  otp: otpReducer,
+  forgotPassword: forgotPasswordReducer,
+
+  settings: settingsReducer,
+  community: communityReducer,
+  communityPost: communityPostReducer,
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -53,7 +66,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
 
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
-    provideStore(),
+    provideStore(reducers, { metaReducers }),
 
     SvgIconRegistryService,
     { provide: SvgLoader, useClass: SvgHttpLoader },

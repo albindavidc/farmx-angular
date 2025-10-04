@@ -31,6 +31,7 @@ export enum FarmerStatus {
   APPROVED = 'approved',
   REJECTED = 'rejected',
 }
+
 export interface CourseProgress {
   courseId: string;
   progress: number;

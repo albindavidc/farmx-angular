@@ -128,6 +128,10 @@ export class AdminUserManagementComponent
       });
   }
 
+  verifyFarmer(user: string){
+
+  }
+
   /**
    * Load users from server with current params
    */

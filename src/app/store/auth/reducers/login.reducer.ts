@@ -36,5 +36,10 @@ export const loginReducer = createReducer(
     ...state,
     isLoading: false,
     error,
+  })),
+  on(LoginActions.logout, (state) => ({
+    ...state,
+    isLoading: true,
+    error: null,
   }))
 );

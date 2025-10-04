@@ -49,10 +49,7 @@ export const authReducer = createReducer(
     ...state,
     error,
   })),
-  on(AuthActions.logout, (state) => {
-    localStorage.removeItem('authState');
-    return initialState;
-  }),
+  on(AuthActions.logout, () => initialState),
   on(AuthActions.checkAuthStatusSuccess, (state, { data }) => ({
     ...state,
     isAuthenticated: true,

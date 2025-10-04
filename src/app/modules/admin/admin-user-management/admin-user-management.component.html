@@ -154,6 +154,21 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="verifyFarmer">  
+        <th mat-header-cell *matHeaderCellDef scope="col">Verify Farmer</th>
+        <td mat-cell *matCellDef="let user">
+          <button
+            mat-icon-button
+            [attr.aria-label]="'Verify farmer for ' + (user.name || 'user')"
+            (click)="verifyFarmer(user)"
+            color="primary"
+            class="action-btn"
+          >
+            <mat-icon>verified_user</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
       <!-- Edit Action -->
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef scope="col">Edit</th>

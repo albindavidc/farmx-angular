@@ -1,6 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { LoginActions } from '../actions/login.actions';
 import {
   catchError,
   exhaustMap,
@@ -10,13 +11,12 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { AuthActions } from '../actions/auth.actions';
-import { LoginService } from '../services/login.service';
 import { LoginResponse } from '../../../shared/models/login';
-import { TokenService } from '../services/token.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { AuthActions } from '../actions/auth.actions';
+import { LoginActions } from '../actions/login.actions';
+import { LoginService } from '../services/login.service';
 import { OtpService } from '../services/otp.service';
-import { Router } from '@angular/router';
+import { TokenService } from '../services/token.service';
 
 @Injectable()
 export class LoginEffects {
@@ -122,8 +122,13 @@ export class LoginEffects {
       this.actions$.pipe(
         ofType(AuthActions.logout),
         tap(() => {
-          this.router.navigate(['/login']);
-        })
+          localStorage.removeItem('authState');
+          localStorage.removeItem('user');
+          localStorage.removeItem('initialState');
+
+          this.router.navigate(['/login'], { replaceUrl: true });
+        }),
+        switchMap(() => this.authService.logout())
       ),
     { dispatch: false }
   );
